@@ -10,10 +10,10 @@ Made with 💝 for <img src=".github/ubuntu.png" align="top" width="18" /></p>
 
 # OBS Studio Portable for Ubuntu
 
-Running OBS Studio in Portable Mode means that all settings (Profiles and Scene
+**Running OBS Studio in Portable Mode means that all settings (Profiles and Scene
 Collections) are saved within the same directory tree as the OBS Studio
 executables, plugins and. You can copy the whole folder to a another computer
-and just use it.
+and just use it.**
 
   - Nearly 40 of the best 3rd Party plugins for OBS Studio are bundled
   - Chromium Embedded Frameworks (CEF) to enable Browser Sources
@@ -25,7 +25,7 @@ and just use it.
 ## Supported Software
 
 Each tarball of OBS Studio Portable includes a `manifest.txt` that describes
-exactly which versions are of plugins and add-ons are included.
+exactly which versions of plugins and add-ons are included.
 
 | Distro       | OBS Studio 27 | OBS Studio 28 |
 | ------------ | ------------- | ------------- |
@@ -36,10 +36,13 @@ exactly which versions are of plugins and add-ons are included.
 ### Caveats
 
   - PipeWire support is not available in builds for Ubuntu 20.04
-  - Teleport is not available in builds for Ubuntu 20.04
-  - SRT & RIST Protocol support is only available in builds for Ubuntu 22.10 and newer
+  - [Teleport](https://github.com/fzwoch/obs-teleport) is not included in builds for Ubuntu 20.04
+  - [SRT & RIST Protocol](https://obsproject.com/wiki/Streaming-With-SRT-Or-RIST-Protocols) support is only available in builds for Ubuntu 22.10 and newer
 
 # Install
+
+You can safely install these OBS Studio Portable builds alongside `.deb`,
+FlatPak or Snap installs of OBS Studio.
 
 The install process is simple:
 
@@ -51,16 +54,14 @@ The install process is simple:
     - **It is essential you use `obs-portable` to launch OBS Studio** to ensure it finds all the associated libraries and add-ons.
 
 ```bash
-wget "https://github.com/wimpysworld/obs-portable/releases/download/r22271/obs-portable-28.0.2-r22271-ubuntu-22.04.tar.bz2"
-sha256sum -c obs-portable-28.0.2-r22271-ubuntu-22.04.tar.bz2.sha256
-tar xvf obs-portable-28.0.2-r22271-ubuntu-22.04.tar.bz2
-cd obs-portable-28.0.2-r22271-ubuntu-22.04
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r22271/obs-portable-28.0.2-r22271-ubuntu-$(lsb_release -rs).tar.bz2"
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r22271/obs-portable-28.0.2-r22271-ubuntu-$(lsb_release -rs).tar.bz2.sha256"
+sha256sum -c obs-portable-28.0.2-r22271-ubuntu-$(lsb_release -rs).tar.bz2.sha256
+tar xvf obs-portable-28.0.2-r22271-ubuntu-$(lsb_release -rs).tar.bz2
+cd obs-portable-28.0.2-r22271-ubuntu-$(lsb_release -rs)
 sudo ./obs-dependencies
 ./obs-portable
 ```
-
-You can safely install these OBS Studio Portable builds alongside `.deb`,
-FlatPak or Snap installs of OBS Studio.
 
 ## Upgrades
 
@@ -77,27 +78,27 @@ Studio useful.
  - **I want a version of OBS Studio for Ubuntu that has all the features enabled, *by default***
    - I use lots of 3rd party OBS Studio plugins in my stream configuration.
  - **I stream from two different locations using multiple computers**
-   - [Syncthing](https://syncthing.net/) keeps most of my streaming configuration synced between sites, but I'd like to include OBS Studio itself.
- - **I sometimes make changes to my OBS Studio configuration from various computers**
-   - Keeping these changes in sync manually can be cumbersome. But now I can automate that with [Syncthing](https://syncthing.net/).
+   - [Syncthing](https://syncthing.net/) sync my streaming configuration between sites, but I'd like to include OBS Studio itself.
+ - **I make changes to my OBS Studio configuration from various computers**
+   - Keeping these changes in sync manually can be cumbersome. But now I can automate that with [Syncthing](https://syncthing.net/) and Portable OBS Studio.
  - **I stream to multiple channels**
    - Having discrete OBS Studio instances is easier to work with than switching between dozens of Profile and Scene Collection combinations.
  - **I don't want to deal with flag day releases of new software**
-   - New software is wonderful, but I'd like more control over when and how I upgrade each of my streaming configuration instances.
+   - New software is wonderful, but want to control when and how I upgrade each of my streaming configuration instances.
  - **My stream integrations are not (currently) compatible with confined packages of OBS Studio**
    - I have some funky stream integrations, and will likely create more.
  - **I sometimes stream how to do stuff with OBS Studio**
-   - Being able to run demo instances of OBS Studio with isolated configurations is great for this.
- - **I want a stable streaming setup and an WIP streaming setup**
-   - When developing new features for my stream, I want to freely experiment with new versions of OBS Studio and plugins without fear of breaking my stable setup.
- - **I sometimes need old and new version of OBS Studio available**
-   - I have some streaming projects that are archived and do not need upgrading, but I do want to reference from time to time.
+   - Being able to run *"demo"* instances of OBS Studio with isolated configurations is great for this.
+ - **I want a stable OBS setup and an in-development OBS setup**
+   - When developing new features for my stream, I want to freely experiment with new versions of OBS Studio and it's plugins without fear of disrupting my stable setup.
+ - **I sometimes need old and new versions of OBS Studio available**
+   - I have some streaming projects that are archived and do not need upgrading, but I do want to reference them from time to time.
 
 # Batteries included
 
 I am extremely thankful to the OBS Studio developers and developers of the
-growing list of excellent plugins. The Portable build of OBS Studio for Ubuntu
-celebrate the best of what is available. Thank you! 🙇
+growing list of excellent plugins. These Portable build of OBS Studio for Ubuntu
+celebrate the best of what's available. Thank you! 🙇
 
 Here are the 3rd party plugins that come bundled with OBS Studio Portable for
 Ubuntu:
@@ -105,7 +106,7 @@ Ubuntu:
 ## Audio
 
   * **[Audio Pan](https://github.com/norihiro/obs-audio-pan-filter)** plugin; control stereo pan of audio source.
-  * **[Mute Filter](https://github.com/norihiro/obs-mute-filter)**plugin; to mute audio of a source.
+  * **[Mute Filter](https://github.com/norihiro/obs-mute-filter)** plugin; to mute audio of a source.
   * **[PipeWire Audio Capture](https://github.com/dimtpap/obs-pipewire-audio-capture)** plugin; capture application audio from PipeWire.
   * **[Scale to Sound](https://github.com/Qufyy/obs-scale-to-sound)** plugin; adds a filter which makes a source scale based on the audio levels of any audio source you choose
   * **[Soundboard](https://github.com/cg2121/obs-soundboard)** plugin; adds a soundboard dock.
@@ -140,7 +141,7 @@ Ubuntu:
 
   * **[GStreamer](https://github.com/fzwoch/obs-gstreamer)** plugins; feed GStreamer launch pipelines into OBS Studio.
   * **[Source Record](https://github.com/exeldro/obs-source-record)** plugin; make sources available to record via a filter.
-  * **[StreamFX](https://github.com/Xaymar/obs-StreamFX)** plugin; unlocks the fully potential of NVENC.
+  * **[StreamFX](https://github.com/Xaymar/obs-StreamFX)** plugin; unlocks the full potential of NVENC along with useful composition filters.
   * **[Teleport](https://github.com/fzwoch/obs-teleport)** plugin; open NDI-like replacement. (*not NDI compatible*)
   * **[VAAPI](https://github.com/exeldro/obs-transition-table)** plugin; GStreamer based VAAPI encoder implementation.
   * **[Virtual Cam Filter](https://github.com/exeldro/obs-virtual-cam-filter)** plugin; make sources available to the virtual camera via a filter
@@ -207,6 +208,17 @@ injected into the new container and is responsible for actually building OBS
 Studio. Perhaps it might also serve as a reference for users of other Linux
 distributions who want to create their own portable builds of OBS Studio.
 
+## Release numbers
+
+An OBS Studio Portable for Ubuntu release number will be something like r22271,
+and the filename will clearly indicate the version of OBS Studio and which
+Ubuntu is it for:
+
+> obs-portable-28.0.2-r22271-ubuntu-22.04.tar.bz2
+
+The purpose of the release number is to indicate a revision to the composition
+of the portable bundle, most likely due to adding/updating the bundled 3rd party
+plugins.
 # References
 
   - https://obsproject.com/wiki/Build-Instructions-For-Linux
