@@ -54,4 +54,4 @@ else
     echo "         Updating OBS build scripts only."
 fi
 
-cp builder/*.sh "${R}/root/"
+cp builder/* "${R}/root/"

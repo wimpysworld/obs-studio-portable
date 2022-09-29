@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Portable OBS Studio launcher
+
+if [ -e /etc/os-release ] && grep --quiet UBUNTU_CODENAME /etc/os-release; then
+    DISTRO_CODENAME=$(grep VERSION_CODENAME /etc/os-release | cut -d'=' -f2 | sed 's/"//g')
+    DISTRO_VERSION=$(grep VERSION_ID /etc/os-release | cut -d'=' -f2 | sed 's/"//g')
+    if [ "${DISTRO_CODENAME}" != "TARGET_CODENAME" ]; then
+        echo "ERROR! $(basename "${0}") is only compatible with Ubuntu TARGET_VERSION (TARGET_CODENAME), not ${DISTRO_VERSION} (${DISTRO_CODENAME})."
+        exit 1
+    fi
+else
+    echo "ERROR! Unsupported Linux distribution."
+    exit 1
+fi
+
+PORTABLE_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
+export LD_LIBRARY_PATH="${PORTABLE_DIR}/bin/64bit:${PORTABLE_DIR}/obs-plugins/64bit:${PORTABLE_DIR}/data/obs-scripting/64bit:${PORTABLE_DIR}/cef:${LD_LIBRARY_PATH}"
+
+cd "${PORTABLE_DIR}/bin/64bit"
+exec ./obs --portable ${@}

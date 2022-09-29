@@ -634,7 +634,7 @@ function stage_09_finalise() {
 
     # Strip binaries and correct permissions
     for DIR in "${BASE_DIR}/${INSTALL_DIR}/cef" "${BASE_DIR}/${INSTALL_DIR}/bin/64bit" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit" "${BASE_DIR}/${INSTALL_DIR}/data/obs-scripting/64bit" "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/StreamFX/"; do
-        for FILE in $(find "${DIR}" -type f); do
+        while read FILE; do
             TYPE=$(file "${FILE}" | cut -d':' -f2 | awk '{print $1}')
             if [ "${TYPE}" == "ELF" ]; then
                 strip --strip-unneeded "${FILE}" || true
@@ -644,56 +644,49 @@ function stage_09_finalise() {
             else
                 chmod 644 "${FILE}"
             fi
-        done
+        done < <(find "${DIR}" -type f)
     done
+
+    # Create scripts
+    for SCRIPT in obs-dependencies obs-portable; do
+        sed "s|TARGET_CODENAME|${DISTRO_CODENAME}|g" ./${SCRIPT} > "${BASE_DIR}/${INSTALL_DIR}/${SCRIPT}"
+        sed -i "s|TARGET_VERSION|${DISTRO_VERSION}|g" "${BASE_DIR}/${INSTALL_DIR}/${SCRIPT}"
+        chmod 755 "${BASE_DIR}/${INSTALL_DIR}/${SCRIPT}"
+    done
+
+    # Populate the dependencies file
+    echo "sudo apt-get install \\" >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
 
     # Build a list of all the linked libraries
-    echo -n "" > obs-libs.txt
+    rm -f obs-libs.txt 2>/dev/null || true
     for DIR in "${BASE_DIR}/${INSTALL_DIR}/cef" "${BASE_DIR}/${INSTALL_DIR}/bin/64bit" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit" "${BASE_DIR}/${INSTALL_DIR}/data/obs-scripting/64bit"; do
-        for FILE in $(find "${DIR}" -type f); do
-            ldd "${FILE}" | awk '{print $1}' | grep -Fv -e 'advanced-scene-switcher' -e 'libobs' -e 'ld-linux' -e 'libc.so' -e 'libm.so' -e 'linux-vdso' >> obs-libs.txt || true
-        done
+        while read FILE; do
+            while read LIB; do
+                echo "${LIB}" >> obs-libs.txt
+            done < <(ldd "${FILE}" | awk '{print $1}')
+        done < <(find "${DIR}" -type f)
     done
 
-    # Map linked libraries to their package
-    echo -n "" > obs-pkgs.txt
-    for LIB in $(sort -u obs-libs.txt); do
-        dpkg -S "${LIB}" | grep -Fv -e 'i386' -e '-dev' | cut -d ':' -f1 | sort -u >> obs-pkgs.txt || true
-    done
+    # Map the library to the package it belongs to
+    rm -f obs-pkgs.txt 2>/dev/null || true
+    while read LIB; do
+        #shellcheck disable=SC2005
+        echo "$(dpkg -S "${LIB}" | grep -Fv -e 'i386' -e '-dev' | cut -d ':' -f1 | sort -u)" >> obs-pkgs.txt
+    done < <(sort -u obs-libs.txt)
 
-    # Create runtime dependencies installer
-    cat << 'EOF' > "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
-#!/usr/bin/env bash
-# Portable OBS Studio launcher dependency installer
-
-sudo apt-get -y update
-EOF
-    echo "sudo apt-get install \\" >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
-    for PKG in $(sort -u obs-pkgs.txt); do
+    # Add the packages to the dependencies file
+    while read PKG; do
         echo -e "\t${PKG} \\" >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
-    done
+    done < <(sort -u obs-pkgs.txt)
 
     # Provide additional runtime requirements
+    #shellcheck disable=SC1003
     if [ "${OBS_MAJ_VER}" -ge 28 ] && [ "${DISTRO_MAJ_VER}" -ge 22 ]; then
-        echo -e "\tqt6-qpa-plugins qt6-wayland \\" >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
+        echo -e '\tqt6-qpa-plugins \\\n\tqt6-wayland \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
     else
-        echo -e "\tqtwayland5 \\" >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
+        echo -e '\tqtwayland5 \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
     fi
-    echo -e "\tlibvlc5 vlc-plugin-base v4l2loopback-dkms v4l2loopback-utils" >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
-    chmod 755 "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
-
-    # Create launcher script
-    cat << 'EOF' > "${BASE_DIR}/${INSTALL_DIR}/obs-portable"
-#!/usr/bin/env bash
-# Portable OBS Studio launcher
-
-PORTABLE_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
-export LD_LIBRARY_PATH="${PORTABLE_DIR}/bin/64bit:${PORTABLE_DIR}/obs-plugins/64bit:${PORTABLE_DIR}/data/obs-scripting/64bit:${PORTABLE_DIR}/cef:${LD_LIBRARY_PATH}"
-
-cd "${PORTABLE_DIR}/bin/64bit"
-exec ./obs --portable ${@}
-EOF
-    chmod 755 "${BASE_DIR}/${INSTALL_DIR}/obs-portable"
+    echo -e '\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tv4l2loopback-dkms \\\n\tv4l2loopback-utils' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
 }
 
 function stage_10_make_tarball() {
