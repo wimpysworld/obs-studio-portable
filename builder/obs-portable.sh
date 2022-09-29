@@ -59,7 +59,7 @@ if [ -e /etc/os-release ] && grep --quiet UBUNTU_CODENAME /etc/os-release; then
     DISTRO_CODENAME=$(grep VERSION_CODENAME /etc/os-release | cut -d'=' -f2 | sed 's/"//g')
     DISTRO_VERSION=$(grep VERSION_ID /etc/os-release | cut -d'=' -f2 | sed 's/"//g')
     DISTRO_MAJ_VER=$(echo "${DISTRO_VERSION}" | cut -d'.' -f1)
-    DISTRO_CMP_VER=$(echo "${DISTRO_VERSION}" | sed 's/\.//g')
+    DISTRO_CMP_VER=$("${DISTRO_VERSION//./}")
     if [ "${DISTRO_MAJ_VER}" -lt 20 ]; then
         echo "Unsupported Ubuntu version: ${DISTRO_VERSION}"
         exit 1
@@ -158,6 +158,7 @@ function stage_01_get_apt() {
 
     PKG_TOOLCHAIN="bzip2 clang-format clang-tidy cmake curl ${COMPILERS} file git libarchive-tools libc6-dev make meson ninja-build pkg-config unzip wget"
     echo " - Toolchain   : ${PKG_TOOLCHAIN}" >> "${BUILD_DIR}/obs-manifest.txt"
+    #shellcheck disable=SC2086
     apt-get -y install ${PKG_TOOLCHAIN}
 
     if [ "${DISTRO_MAJ_VER}" -eq 20 ]; then
@@ -171,6 +172,7 @@ function stage_01_get_apt() {
         PKG_OBS_QT="qtbase5-dev qtbase5-private-dev qtwayland5 libqt5svg5-dev libqt5x11extras5-dev"
     fi
     echo " - Qt          : ${PKG_OBS_QT}" >> "${BUILD_DIR}/obs-manifest.txt"
+    #shellcheck disable=SC2086
     apt-get -y install ${PKG_OBS_QT}
 
     PKG_OBS_CORE="libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev \
@@ -184,6 +186,7 @@ python3-dev swig"
         PKG_OBS_CORE+=" librist-dev libsrt-openssl-dev"
     fi
     echo " - OBS Core    : ${PKG_OBS_CORE}" >> "${BUILD_DIR}/obs-manifest.txt"
+    #shellcheck disable=SC2086
     apt-get -y install ${PKG_OBS_CORE}
 
     PKG_OBS_PLUGINS="libasound2-dev libdrm-dev libfdk-aac-dev libfontconfig-dev \
@@ -197,12 +200,14 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     fi
 
     echo " - OBS Plugins : ${PKG_OBS_PLUGINS}" >> "${BUILD_DIR}/obs-manifest.txt"
+    #shellcheck disable=SC2086
     apt-get -y install ${PKG_OBS_PLUGINS}
 
     echo " - 3rd Party Plugins" >> "${BUILD_DIR}/obs-manifest.txt"
     # 3rd party plugin dependencies:
     PKG_OBS_SCENESWITCHER="libopencv-dev libprocps-dev libxss-dev libxtst-dev"
     echo "   - SceneSwitcher  : ${PKG_OBS_SCENESWITCHER}" >> "${BUILD_DIR}/obs-manifest.txt"
+    #shellcheck disable=SC2086
     apt-get -y install ${PKG_OBS_SCENESWITCHER}
 
     PKG_OBS_WAVEFORM="libfftw3-dev"
@@ -211,10 +216,12 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
 
     PKG_OBS_TEXT="libcairo2-dev libpango1.0-dev libpng-dev"
     echo "   - Pango/PThread  : ${PKG_OBS_TEXT}" >> "${BUILD_DIR}/obs-manifest.txt"
+    #shellcheck disable=SC2086
     apt-get -y install ${PKG_OBS_TEXT}
 
     PKG_OBS_GSTREAMER="libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-good1.0-dev"
     echo "   - GStreamer      : ${PKG_OBS_GSTREAMER}" >> "${BUILD_DIR}/obs-manifest.txt"
+    #shellcheck disable=SC2086
     apt-get -y install ${PKG_OBS_GSTREAMER}
 
     if [ "${DISTRO_MAJ_VER}" -ge 22 ]; then
@@ -303,9 +310,11 @@ function stage_05_build_obs() {
 
     if [ -e ./obs-options.sh ]; then
         source ./obs-options.sh
+        #shellcheck disable=SC2089
         if [ -n "${RESTREAM_CLIENTID}" ] && [ -n "${RESTREAM_HASH}" ]; then
             RESTREAM_OPTIONS="-DRESTREAM_CLIENTID='${RESTREAM_CLIENTID}' -DRESTREAM_HASH='${RESTREAM_HASH}'"
         fi
+        #shellcheck disable=SC2089
         if [ -n "${TWITCH_CLIENTID}" ] && [ -n "${TWITCH_HASH}" ]; then
             TWITCH_OPTIONS="-DTWITCH_CLIENTID='${TWITCH_CLIENTID}' -DTWITCH_HASH='${TWITCH_HASH}'"
         fi
@@ -314,6 +323,7 @@ function stage_05_build_obs() {
         fi
     fi
 
+    #shellcheck disable=SC2086,SC2090
     cmake -S "${SOURCE_DIR}/" -B "${BUILD_TO}/" -G Ninja \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_INSTALL_PREFIX="${INSTALL_TO}" \
