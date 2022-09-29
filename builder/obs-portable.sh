@@ -272,7 +272,12 @@ function stage_04_get_aja() {
 }
 
 function stage_05_build_obs() {
-    if [ "${DISTRO_MAJ_VER}" -ge 22 ]; then
+    local TARGET="system"
+    if [ -n "${1}" ]; then
+        TARGET="${1}"
+    fi
+
+    if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
         PIPEWIRE_OPTIONS="-DENABLE_PIPEWIRE=ON"
     else
         PIPEWIRE_OPTIONS="-DENABLE_PIPEWIRE=OFF"
@@ -281,27 +286,19 @@ function stage_05_build_obs() {
     if [ "${OBS_MAJ_VER}" -ge 28 ]; then
         RTMPS_OPTIONS="-DENABLE_RTMPS=ON"
         BROWSER_OPTIONS="-DENABLE_BROWSER=ON"
-        PORTABLE_OPTIONS="-DLINUX_PORTABLE=ON"
         VST_OPTIONS="-DENABLE_VST=ON"
         if [ "${DISTRO_CMP_VER}" -ge 2210 ]; then
             RTMPS_OPTIONS+=" -DENABLE_NEW_MPEGTS_OUTPUT=ON"
         else
             RTMPS_OPTIONS+=" -DENABLE_NEW_MPEGTS_OUTPUT=OFF"
         fi
-        if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
-            QT_OPTIONS="-DQT_VERSION=6"
-        else
-            QT_OPTIONS="-DQT_VERSION=5"
-        fi
     else
         RTMPS_OPTIONS="-DWITH_RTMPS=ON"
         BROWSER_OPTIONS="-DBUILD_BROWSER=ON"
-        PORTABLE_OPTIONS="-DUNIX_STRUCTURE=OFF"
-        QT_OPTIONS="-DQT_VERSION=5"
         VST_OPTIONS="-DBUILD_VST=ON"
     fi
 
-    case ${1} in
+    case "${TARGET}" in
       portable)
         BUILD_TO="${BUILD_PORTABLE}"
         INSTALL_TO="${BASE_DIR}/${INSTALL_DIR}"
@@ -319,8 +316,7 @@ function stage_05_build_obs() {
           PORTABLE_OPTIONS="-DLINUX_PORTABLE=OFF"
         else
           PORTABLE_OPTIONS="-DUNIX_STRUCTURE=ON"
-        fi
-        ;;
+        fi;;
     esac
 
     if [ -e ./obs-options.sh ]; then
@@ -358,7 +354,6 @@ function stage_05_build_obs() {
       -DENABLE_WAYLAND=ON \
       ${RTMPS_OPTIONS} \
       ${STREAMFX_OPTIONS} \
-      ${QT_OPTIONS} \
       ${YOUTUBE_OPTIONS} \
       ${TWITCH_OPTIONS} \
       ${RESTREAM_OPTIONS} \
