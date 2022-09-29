@@ -148,10 +148,21 @@ function download_tarball() {
 function clone_source() {
     local REPO="${1}"
     local BRANCH="${2}"
+    local CWD=""
+    local BRANCH_LEN=""
     local DIR="${3}"
 
     if [ ! -d "${DIR}/.git" ]; then
-        git clone "${REPO}" --depth=1 --recurse-submodules --shallow-submodules --branch "${BRANCH}" "${DIR}"
+        BRANCH_LEN=$(echo -n "${BRANCH}" | wc -m);
+        if [ "${BRANCH_LEN}" -ge 40 ]; then
+            CWD=$(pwd)
+            git clone "${REPO}" --recurse-submodules "${DIR}"
+            cd "${DIR}"
+            git checkout "${BRANCH}"
+            cd "${CWD}"
+        else
+            git clone "${REPO}" --recurse-submodules --branch "${BRANCH}" "${DIR}"
+        fi
     fi
     echo " - ${REPO} (${BRANCH})" >> "${BUILD_DIR}/obs-manifest.txt"
 }
