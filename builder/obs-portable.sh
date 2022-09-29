@@ -432,9 +432,11 @@ function stage_07_plugins_out_tree() {
         PLUGIN="$(echo "${REPO}" | cut -d':' -f2)"
         BRANCH="$(echo "${REPO}" | cut -d':' -f3)"
 
-        # Insufficient PipeWire support for Ubuntu 20.04
-        if [ "${DISTRO_CMP_VER}" -le 2004 ] && [ "${PLUGIN}" == "obs-pipewire-audio-capture" ]; then
-            continue
+        # Insufficient Golang and PipeWire support in Ubuntu 20.04
+        if [ "${DISTRO_CMP_VER}" -le 2004 ]; then
+            if [ "${PLUGIN}" == "obs-pipewire-audio-capture" ] || [ "${PLUGIN}" == "obs-teleport" ]; then
+                continue
+            fi
         fi
 
         case "${PLUGIN}" in
