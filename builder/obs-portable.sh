@@ -54,6 +54,13 @@ case ${OBS_MAJ_VER} in
       OBS_VER="26.1.2"
       CEF_VER="4280"
       ;;
+    25)
+      AJA_VER=""
+      OBS_VER="25.0.8"
+      CEF_VER="3770"
+      echo "ERROR! Unsupported version: ${OBS_MAJ_VER}"
+      exit 1
+      ;;
   *)
       echo "ERROR! Unsupported version: ${OBS_MAJ_VER}"
       exit 1
