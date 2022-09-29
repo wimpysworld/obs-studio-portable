@@ -255,6 +255,11 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     #shellcheck disable=SC2086
     apt-get -y install ${PKG_OBS_GSTREAMER}
 
+    PKG_OBS_VKCAPTURE="glslang-dev glslang-tools"
+    echo "   - Game Capture   : ${PKG_OBS_VKCAPTURE}" >> "${BUILD_DIR}/obs-manifest.txt"
+    #shellcheck disable=SC2086
+    apt-get -y install ${PKG_OBS_VKCAPTURE}
+
     if [ "${DISTRO_CMP_VER}" -ge 2204 ] && [ "${OBS_MAJ_VER}" -ge 27 ]; then
         PKG_OBS_STREAMFX="libaom-dev"
         echo "   - StreamFX       : ${PKG_OBS_STREAMFX}" >> "${BUILD_DIR}/obs-manifest.txt"
@@ -515,15 +520,16 @@ function stage_07_plugins_out_tree() {
 
         # Reorgansise some misplaced plugins
         case ${PLUGIN} in
-            obs-pipewire-audio-capture)
-                mv -v "${BASE_DIR}/${INSTALL_DIR}/lib/obs-plugins/linux-pipewire-audio.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true
-                rm -rf "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/linux-pipewire-audio/locale/"
-                mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/linux-pipewire-audio"
-                mv -v "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins/linux-pipewire-audio/locale/" "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/linux-pipewire-audio/" || true
+            obs-pipewire-audio-capture|obs-vkcapture)
+                # The plugins share a common patten
+                NEW_PLUGIN=$(echo "${PLUGIN}" | cut -d'-' -f2-3)
+                mv -v "${BASE_DIR}/${INSTALL_DIR}/lib/obs-plugins/linux-${NEW_PLUGIN}.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true
+                rm -rf "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/linux-${NEW_PLUGIN}" || true
+                mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/linux-${NEW_PLUGIN}"
+                mv -v "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins/linux-${NEW_PLUGIN}"/* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/linux-${NEW_PLUGIN}/" || true
                 ;;
             obs-text-pango)
-                mv -v "${BASE_DIR}/${INSTALL_DIR}/bin/libtext-pango.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true
-                ;;
+                mv -v "${BASE_DIR}/${INSTALL_DIR}/bin/libtext-pango.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true;;
             waveform)
                 mv -v "${BASE_DIR}/${INSTALL_DIR}"/waveform/bin/64bit/*waveform.so "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true
                 rm -rf "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/waveform"
@@ -597,7 +603,12 @@ function stage_09_finalise() {
     find "${BASE_DIR}/${INSTALL_DIR}" -type d -empty -delete
 
     # Strip binaries and correct permissions
-    for DIR in "${BASE_DIR}/${INSTALL_DIR}/cef" "${BASE_DIR}/${INSTALL_DIR}/bin/64bit" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit" "${BASE_DIR}/${INSTALL_DIR}/data/obs-scripting/64bit" "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/StreamFX/"; do
+    for DIR in "${BASE_DIR}/${INSTALL_DIR}/cef" \
+        "${BASE_DIR}/${INSTALL_DIR}/bin/64bit" \
+        "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit" \
+        "${BASE_DIR}/${INSTALL_DIR}/data/obs-scripting/64bit" \
+        "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/StreamFX/" \
+        "${BASE_DIR}/${INSTALL_DIR}/lib"; do
         #shellcheck disable=SC2162
         while read FILE; do
             TYPE=$(file "${FILE}" | cut -d':' -f2 | awk '{print $1}')
@@ -613,7 +624,7 @@ function stage_09_finalise() {
     done
 
     # Create scripts
-    for SCRIPT in obs-dependencies obs-portable; do
+    for SCRIPT in obs-dependencies obs-gamecapture obs-portable; do
         sed "s|TARGET_CODENAME|${DISTRO_CODENAME}|g" ./${SCRIPT} > "${BASE_DIR}/${INSTALL_DIR}/${SCRIPT}"
         sed -i "s|TARGET_VERSION|${DISTRO_VERSION}|g" "${BASE_DIR}/${INSTALL_DIR}/${SCRIPT}"
         chmod 755 "${BASE_DIR}/${INSTALL_DIR}/${SCRIPT}"
@@ -660,7 +671,7 @@ function stage_09_finalise() {
 function stage_10_make_tarball() {
     cd "${BASE_DIR}"
     cp "${BUILD_DIR}/obs-manifest.txt" "${BASE_DIR}/${INSTALL_DIR}/manifest.txt"
-    tar cjf "${INSTALL_DIR}.tar.bz2" --exclude cmake --exclude include --exclude lib "${INSTALL_DIR}"
+    tar cjf "${INSTALL_DIR}.tar.bz2" --exclude bin --exclude cmake --exclude include --exclude lib/pkgconfig "${INSTALL_DIR}"
     sha256sum "${INSTALL_DIR}.tar.bz2" > "${BASE_DIR}/${INSTALL_DIR}.tar.bz2.sha256"
     sed -i -r "s/ .*\/(.+)/  \1/g" "${BASE_DIR}/${INSTALL_DIR}.tar.bz2.sha256"
     cp "${BUILD_DIR}/obs-manifest.txt" "${BASE_DIR}/${INSTALL_DIR}.txt"

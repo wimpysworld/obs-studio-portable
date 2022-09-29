@@ -141,6 +141,7 @@ Ubuntu:
 
 ## Encoding & Output 🎞
 
+  * **[Game Capture](https://github.com/nowrep/obs-vkcapture)** plugins; Vulkan/OpenGL game capture.
   * **[GStreamer](https://github.com/fzwoch/obs-gstreamer)** plugins; feed GStreamer launch pipelines into OBS Studio.
   * **[Source Record](https://github.com/exeldro/obs-source-record)** plugin; make sources available to record via a filter.
   * **[StreamFX](https://github.com/Xaymar/obs-StreamFX)** plugin; unlocks the full potential of NVENC along with useful composition filters.

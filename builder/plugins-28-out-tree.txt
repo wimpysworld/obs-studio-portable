@@ -12,5 +12,6 @@ norihiro:obs-face-tracker:0.6.4:
 norihiro:obs-multisource-effect:0.2.1:
 norihiro:obs-mute-filter:0.2.1:
 norihiro:obs-text-pthread:2.0.2:
+nowrep:obs-vkcapture:b2fd16d1122df1064614ea90bf668418d0554c1b:
 obsproject:obs-websocket:4.9.1-compat:
 phandasm:waveform:v1.5.0:
