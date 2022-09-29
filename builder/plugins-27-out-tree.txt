@@ -5,6 +5,7 @@ fzwoch:obs-vaapi:0.1.0:
 kkartaltepe:obs-text-pango:8f4775d629624ea450474e39a4e7143166d8aeba:
 norihiro:obs-audio-pan-filter:0.1.2:
 norihiro:obs-command-source:0.2.1:
+norihiro:obs-face-tracker:b1452b03f2b625bf46e168c63028da8794cc0cb8:
 norihiro:obs-multisource-effect:0.1.7:
 norihiro:obs-mute-filter:0.1.0:
 norihiro:obs-text-pthread:1.0.3:

@@ -8,6 +8,7 @@ nhielost:obs-midi-mg:v1.4.2:
 norihiro:obs-async-source-duplication:0.4.0:
 norihiro:obs-audio-pan-filter:0.2.2:
 norihiro:obs-command-source:0.3.0:
+norihiro:obs-face-tracker:0.6.4:
 norihiro:obs-multisource-effect:0.2.1:
 norihiro:obs-mute-filter:0.2.1:
 norihiro:obs-text-pthread:2.0.2:

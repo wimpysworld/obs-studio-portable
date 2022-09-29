@@ -451,7 +451,7 @@ function stage_07_plugins_out_tree() {
         fi
 
         case "${PLUGIN}" in
-            obs-midi-mg|obs-websocket|waveform)
+            obs-midi-mg|obs-face-tracker|obs-websocket|waveform)
                 clone_source "https://github.com/${AUTHOR}/${PLUGIN}.git" "${BRANCH}" "${PLUGIN_DIR}/${PLUGIN}"
                 # Patch obs-websocket 4.9.1 (not the compat release) so it builds against OBS 27.2.4
                 # https://github.com/obsproject/obs-websocket/issues/916#issuecomment-1193399097
@@ -469,6 +469,12 @@ function stage_07_plugins_out_tree() {
                     download_tarball "https://github.com/${AUTHOR}/${PLUGIN}/archive/refs/tags/${BRANCH}.zip" "${PLUGIN_DIR}/${PLUGIN}"
                 fi;;
         esac
+
+        # obs-face-tracker requires that QT_VERSION is set
+        local QT_VER="6"
+        if [ "${OBS_MAJ_VER}" -le 27 ] || [ "${DISTRO_CMP_VER}" -le 2004 ] ; then
+            QT_VER="5"
+        fi
 
         if [ "${PLUGIN}" == "obs-gstreamer" ] || [ "${PLUGIN}" == "obs-vaapi" ]; then
             meson --buildtype=release --prefix="${BASE_DIR}/${INSTALL_DIR}/" --libdir="${BASE_DIR}/${INSTALL_DIR}/" "${PLUGIN_DIR}/${PLUGIN}" "${PLUGIN_DIR}/${PLUGIN}/build"
@@ -491,7 +497,8 @@ function stage_07_plugins_out_tree() {
             # Build process of OBS Studio 28
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
               -DCMAKE_BUILD_TYPE=Release \
-              -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}"
+              -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
+              -DQT_VERSION="${QT_VER}"
             cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
             cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
         else
@@ -499,7 +506,8 @@ function stage_07_plugins_out_tree() {
             cd "${PLUGIN_DIR}/${PLUGIN}"
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" \
               -DCMAKE_BUILD_TYPE=Release \
-              -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}"
+              -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
+              -DQT_VERSION="${QT_VER}"
             make -C "${PLUGIN_DIR}/${PLUGIN}/build"
             make -C "${PLUGIN_DIR}/${PLUGIN}/build" install
             cd "${CWD}"
