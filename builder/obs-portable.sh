@@ -30,47 +30,39 @@ case ${OBS_MAJ_VER} in
   clean)
       rm -rf "${BASE_DIR}/"{build,build_portable,build_system,plugins}
       rm -rf "${SOURCE_DIR}/ntv2/build/"
-      exit 0
-      ;;
+      exit 0;;
   veryclean)
       rm -rf "${BASE_DIR}/"{build,build_portable,build_system,plugins,source}
       rm -rf "${SOURCE_DIR}/ntv2/build/"
-      exit 0
-      ;;
+      exit 0;;
   28)
       AJA_VER="v16.2-bugfix5"
       OBS_VER="28.0.2"
-      CEF_VER="5060"
-      ;;
+      CEF_VER="5060";;
   27)
       AJA_VER="v16.2-bugfix5"
       OBS_VER="27.2.4"
-      CEF_VER="4638"
-      ;;
+      CEF_VER="4638";;
    26)
       AJA_VER=""
       OBS_VER="26.1.2"
-      CEF_VER="4280"
-      ;;
+      CEF_VER="4280";;
     25)
       AJA_VER=""
       OBS_VER="25.0.8"
       CEF_VER="3770"
       echo "ERROR! Unsupported version: ${OBS_MAJ_VER}"
-      exit 1
-      ;;
+      exit 1;;
   *)
       echo "ERROR! Unsupported version: ${OBS_MAJ_VER}"
-      exit 1
-      ;;
+      exit 1;;
 esac
 
 if [ -e /etc/os-release ] && grep --quiet UBUNTU_CODENAME /etc/os-release; then
     DISTRO_CODENAME=$(grep VERSION_CODENAME /etc/os-release | cut -d'=' -f2 | sed 's/"//g')
     DISTRO_VERSION=$(grep VERSION_ID /etc/os-release | cut -d'=' -f2 | sed 's/"//g')
-    DISTRO_MAJ_VER=$(echo "${DISTRO_VERSION}" | cut -d'.' -f1)
     DISTRO_CMP_VER="${DISTRO_VERSION//./}"
-    if [ "${DISTRO_MAJ_VER}" -lt 20 ]; then
+    if [ "${DISTRO_CMP_VER}" -lt 2004 ]; then
         echo "Unsupported Ubuntu version: ${DISTRO_VERSION}"
         exit 1
     fi
@@ -171,9 +163,9 @@ function stage_01_get_apt() {
     apt-get -y update
     apt-get -y upgrade
 
-    if [ "${DISTRO_MAJ_VER}" -ge 22 ]; then
+    if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
         COMPILERS="gcc g++ golang-go"
-    elif [ "${DISTRO_MAJ_VER}" -eq 20 ]; then
+    elif [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
         COMPILERS="gcc-10 g++-10 golang-1.16-go"
     fi
 
@@ -182,7 +174,7 @@ function stage_01_get_apt() {
     #shellcheck disable=SC2086
     apt-get -y install ${PKG_TOOLCHAIN}
 
-    if [ "${DISTRO_MAJ_VER}" -eq 20 ]; then
+    if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
         update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 800 --slave /usr/bin/g++ g++ /usr/bin/g++-10
         update-alternatives --install /usr/bin/go go /usr/lib/go-1.16/bin/go 10
     fi
@@ -658,7 +650,7 @@ function stage_09_finalise() {
 
     # Provide additional runtime requirements
     #shellcheck disable=SC1003
-    if [ "${OBS_MAJ_VER}" -ge 28 ] && [ "${DISTRO_MAJ_VER}" -ge 22 ]; then
+    if [ "${OBS_MAJ_VER}" -ge 28 ] && [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
         echo -e '\tqt6-qpa-plugins \\\n\tqt6-wayland \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
     else
         echo -e '\tqtwayland5 \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
