@@ -10,10 +10,8 @@ LC_ALL=C
 # - https://github.com/norihiro/obs-source-record-async
 # - https://github.com/norihiro/obs-color-monitor
 # - https://github.com/norihiro/obs-output-filter
-# - https://github.com/norihiro/obs-face-tracker
 # - https://github.com/norihiro/obs-main-view-source
 # - https://github.com/norihiro/obs-vnc
-# - https://github.com/nowrep/obs-vkcapture
 
 OBS_MAJ_VER=""
 if [ -n "${1}" ]; then
