@@ -631,7 +631,7 @@ function stage_10_make_tarball() {
 }
 
 echo -e "Portable OBS Studio ${OBS_VER} for Ubuntu ${DISTRO_VERSION} manifest (r${STAMP})\n\n" > "${BUILD_DIR}/obs-manifest.txt"
-echo -e "  - https://github.com/wimpysworld/obs-portable/\n"                                   >> "${BUILD_DIR}/obs-manifest.txt"
+echo -e "  - https://github.com/wimpysworld/obs-studio-portable/\n"                           >> "${BUILD_DIR}/obs-manifest.txt"
 stage_01_get_apt
 stage_02_get_obs
 stage_03_get_cef
