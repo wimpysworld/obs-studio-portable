@@ -27,17 +27,17 @@ and just use it.**
 Each tarball of OBS Studio Portable includes a `manifest.txt` that describes
 exactly which versions of plugins and add-ons are included.
 
-| Distro       | OBS Studio 27 | OBS Studio 28 |
-| ------------ | ------------- | ------------- |
-| Ubuntu 20.04 | 27.2.4 (Qt 5) | 28.0.2 (Qt 5) |
-| Ubuntu 22.04 | 27.2.4 (Qt 5) | 28.0.2 (Qt 6) |
-| Ubuntu 22.10 |               | 28.0.2 (Qt 6) |
+| Distro       | OBS Studio 26 | OBS Studio 27 | OBS Studio 28 |
+| ------------ | ------------- | ------------- | ------------- |
+| Ubuntu 20.04 | 26.1.2 (Qt 5) | 27.2.4 (Qt 5) | 28.0.2 (Qt 5) |
+| Ubuntu 22.04 | 26.1.2 (Qt 5) | 27.2.4 (Qt 5) | 28.0.2 (Qt 6) |
+| Ubuntu 22.10 |               |               | 28.0.2 (Qt 6) |
 
 ### Caveats
 
-  - PipeWire support is not available in builds for Ubuntu 20.04
-  - [Teleport](https://github.com/fzwoch/obs-teleport) is not included in builds for Ubuntu 20.04
-  - [SRT & RIST Protocol](https://obsproject.com/wiki/Streaming-With-SRT-Or-RIST-Protocols) support is only available in builds for Ubuntu 22.10 and newer
+  - PipeWire support is available in 22.04 and newer
+  - [Teleport](https://github.com/fzwoch/obs-teleport) is available in 22.04 and newer
+  - [SRT & RIST Protocol](https://obsproject.com/wiki/Streaming-With-SRT-Or-RIST-Protocols) support is available in 22.10 and newer
 
 # Install
 

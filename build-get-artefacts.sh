@@ -24,12 +24,11 @@ case "${DISTRO}" in
 esac
 
 case "${OBS_VER}" in
-    27|28) true;;
+    26|27|28)
+        if [ -d "${SUDO_HOME}/Builds/obs-builder-${DISTRO}/root/obs-${OBS_VER}" ]; then
+            cp -v "${SUDO_HOME}/Builds/obs-builder-${DISTRO}/root/obs-${OBS_VER}"/obs-portable-${OBS_VER}*-ubuntu-${DISTRO_VER}.* artefacts/
+            chown "${SUDO_USER}":"${SUDO_USER}" "artefacts/obs-portable-${OBS_VER}"*-ubuntu-${DISTRO_VER}.*
+        fi;;
     *) echo "ERROR! Unsupported OBS Studio version: ${OBS_VER}"
-      exit 1;;
+       exit 1;;
 esac
-
-if [ -d "${SUDO_HOME}/Builds/obs-builder-${DISTRO}/root/obs-${OBS_VER}" ]; then
-    cp -v "${SUDO_HOME}/Builds/obs-builder-${DISTRO}/root/obs-${OBS_VER}"/obs-portable-${OBS_VER}*-ubuntu-${DISTRO_VER}.* artefacts/
-    chown "${SUDO_USER}":"${SUDO_USER}" artefacts/obs-portable-${OBS_VER}*-ubuntu-${DISTRO_VER}.*
-fi

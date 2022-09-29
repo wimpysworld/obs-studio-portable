@@ -7,20 +7,27 @@ else
     SUDO_HOME=$(getent passwd "${SUDO_USER}" | cut -d: -f6)
 fi
 
-if [ -z "${1}" ]; then
-    echo "Usage: $(basename "${0}") <codename>"
+if [ -z "${1}" ] || [ -z "${2}" ]; then
+    echo "Usage: $(basename "${0}") <codename> <obs_ver|all>"
     exit 1
 fi
-DISTRO="${1}"
 
-case "${DISTRO}" in
-    focal|jammy|kinetic) true;;
-    *) echo "ERROR! Unknown Ubuntu release: ${DISTRO}"
+case "${1}" in
+    focal|jammy|kinetic) DISTRO="${1}";;
+    *) echo "ERROR! Unknown Ubuntu release: ${1}"
       exit 1;;
 esac
 
-for OBS_VER in 27 28; do
-    if [ "${DISTRO}" == "kinetic" ] && [ "${OBS_VER}" == "27" ]; then
+case "${2}" in
+    26|27|28) OBS_VERS="${2}";;
+    all)      OBS_VERS="26 27 28";;
+    *) echo "ERROR! Unsupported OBS Studio version: ${2}"
+       exit 1;;
+esac
+
+for OBS_VER in ${OBS_VERS}; do
+    if [ "${DISTRO}" == "kinetic" ] && [ "${OBS_VER}" -le 27 ]; then
+        # Do not try and build old OBS versions on Ubuntu 22.10
         continue
     fi
     ./build-trash.sh "${DISTRO}"

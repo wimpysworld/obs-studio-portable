@@ -49,6 +49,11 @@ case ${OBS_MAJ_VER} in
       OBS_VER="27.2.4"
       CEF_VER="4638"
       ;;
+   26)
+      AJA_VER=""
+      OBS_VER="26.1.2"
+      CEF_VER="4280"
+      ;;
   *)
       echo "ERROR! Unsupported version: ${OBS_MAJ_VER}"
       exit 1
@@ -166,7 +171,7 @@ function stage_01_get_apt() {
         update-alternatives --install /usr/bin/go go /usr/lib/go-1.16/bin/go 10
     fi
 
-    if [ "${OBS_MAJ_VER}" -ge 28 ] && [ "${DISTRO_MAJ_VER}" -ge 22 ]; then
+    if [ "${OBS_MAJ_VER}" -ge 28 ] && [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
         PKG_OBS_QT="qt6-base-dev qt6-base-private-dev qt6-wayland libqt6svg6-dev"
     else
         PKG_OBS_QT="qtbase5-dev qtbase5-private-dev qtwayland5 libqt5svg5-dev libqt5x11extras5-dev"
@@ -182,6 +187,8 @@ libmbedtls-dev libpci-dev libvulkan-dev libwayland-dev libx11-dev libx11-xcb-dev
 libx264-dev libxcb-composite0-dev libxcb-randr0-dev libxcb-shm0-dev libxcb-xfixes0-dev \
 libxcb-xinerama0-dev libxcb1-dev libxcomposite-dev libxinerama-dev libxss-dev \
 python3-dev swig"
+
+    # SRT & RIST Protocol Support
     if [ "${OBS_MAJ_VER}" -ge 28 ] && [ "${DISTRO_CMP_VER}" -ge 2210 ]; then
         PKG_OBS_CORE+=" librist-dev libsrt-openssl-dev"
     fi
@@ -193,7 +200,10 @@ python3-dev swig"
 libfreetype6-dev libjack-jackd2-dev libpulse-dev libsndio-dev libspeexdsp-dev \
 libudev-dev libv4l-dev libva-dev libvlc-dev"
 
-    if [ "${DISTRO_MAJ_VER}" -ge 22 ]; then
+    # CEF Browser runtime requirements
+    PKG_OBS_PLUGINS+=" libatk-bridge2.0-0 libcups2 libnspr4 libnss3 libxtst6"
+
+    if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
         PKG_OBS_PLUGINS+=" libpipewire-0.3-dev"
     else
         PKG_OBS_PLUGINS+=" libpipewire-0.2-dev"
@@ -205,7 +215,10 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
 
     echo " - 3rd Party Plugins" >> "${BUILD_DIR}/obs-manifest.txt"
     # 3rd party plugin dependencies:
-    PKG_OBS_SCENESWITCHER="libopencv-dev libprocps-dev libxss-dev libxtst-dev"
+    PKG_OBS_SCENESWITCHER="libprocps-dev libxss-dev libxtst-dev"
+    if [ "${OBS_MAJ_VER}" -ge 27 ]; then
+        PKG_OBS_SCENESWITCHER+=" libopencv-dev"
+    fi
     echo "   - SceneSwitcher  : ${PKG_OBS_SCENESWITCHER}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
     apt-get -y install ${PKG_OBS_SCENESWITCHER}
@@ -224,7 +237,7 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     #shellcheck disable=SC2086
     apt-get -y install ${PKG_OBS_GSTREAMER}
 
-    if [ "${DISTRO_MAJ_VER}" -ge 22 ]; then
+    if [ "${DISTRO_CMP_VER}" -ge 2204 ] && [ "${OBS_MAJ_VER}" -ge 27 ]; then
         PKG_OBS_STREAMFX="libaom-dev"
         echo "   - StreamFX       : ${PKG_OBS_STREAMFX}" >> "${BUILD_DIR}/obs-manifest.txt"
         apt-get -y install ${PKG_OBS_STREAMFX}
@@ -246,14 +259,16 @@ function stage_03_get_cef() {
 }
 
 function stage_04_get_aja() {
-    download_tarball "https://github.com/aja-video/ntv2/archive/refs/tags/${AJA_VER}.tar.gz" "${SOURCE_DIR}/ntv2"
-    cmake -S "${SOURCE_DIR}/ntv2/" -B "${SOURCE_DIR}/ntv2/build/" -G Ninja \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DAJA_BUILD_OPENSOURCE=ON \
-      -DAJA_BUILD_APPS=OFF \
-      -DAJA_INSTALL_HEADERS=ON
-    cmake --build "${SOURCE_DIR}/ntv2/build/"
-    cmake --install "${SOURCE_DIR}/ntv2/build/" --prefix "${BUILD_DIR}/aja"
+    if [ "${OBS_MAJ_VER}" -ge 27 ]; then
+        download_tarball "https://github.com/aja-video/ntv2/archive/refs/tags/${AJA_VER}.tar.gz" "${SOURCE_DIR}/ntv2"
+        cmake -S "${SOURCE_DIR}/ntv2/" -B "${SOURCE_DIR}/ntv2/build/" -G Ninja \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DAJA_BUILD_OPENSOURCE=ON \
+        -DAJA_BUILD_APPS=OFF \
+        -DAJA_INSTALL_HEADERS=ON
+        cmake --build "${SOURCE_DIR}/ntv2/build/"
+        cmake --install "${SOURCE_DIR}/ntv2/build/" --prefix "${BUILD_DIR}/aja"
+    fi
 }
 
 function stage_05_build_obs() {
@@ -318,7 +333,8 @@ function stage_05_build_obs() {
         if [ -n "${TWITCH_CLIENTID}" ] && [ -n "${TWITCH_HASH}" ]; then
             TWITCH_OPTIONS="-DTWITCH_CLIENTID='${TWITCH_CLIENTID}' -DTWITCH_HASH='${TWITCH_HASH}'"
         fi
-        if [ -n "${YOUTUBE_CLIENTID}" ] && [ -n "${YOUTUBE_CLIENTID_HASH}" ] && [ -n "${YOUTUBE_SECRET}" ] &&  [ -n "${YOUTUBE_SECRET_HASH}" ]; then
+        #shellcheck disable=SC2089
+        if [ "${OBS_MAJ_VER}" -ge 27 ] && [ -n "${YOUTUBE_CLIENTID}" ] && [ -n "${YOUTUBE_CLIENTID_HASH}" ] && [ -n "${YOUTUBE_SECRET}" ] &&  [ -n "${YOUTUBE_SECRET_HASH}" ]; then
             YOUTUBE_OPTIONS="-DYOUTUBE_CLIENTID='${YOUTUBE_CLIENTID}' -DYOUTUBE_CLIENTID_HASH='${YOUTUBE_CLIENTID_HASH}' -DYOUTUBE_SECRET='${YOUTUBE_SECRET}' -DYOUTUBE_SECRET_HASH='${YOUTUBE_SECRET_HASH}'"
         fi
     fi
@@ -351,6 +367,13 @@ function stage_05_build_obs() {
 
     cmake --build "${BUILD_TO}/"
     cmake --install "${BUILD_TO}/" --prefix "${INSTALL_TO}"
+
+    # Make sure the libcaption headers are discoverable
+    # Required by some out of tree plugins for OBS 26
+    if [ "${OBS_MAJ_VER}" -eq 26 ] && [ "${TARGET}" == "system" ]; then
+      mkdir -p /usr/include/caption/ || true
+      cp "${SOURCE_DIR}/deps/libcaption/caption/"*.h "${SNAPCRAFT_STAGE}/usr/include/caption/"
+    fi
 }
 
 function stage_06_plugins_in_tree() {
@@ -360,130 +383,55 @@ function stage_06_plugins_in_tree() {
     local DIRECTORY=""
     local PLUGIN=""
 
-    if [ "${OBS_MAJ_VER}" -eq 27 ]; then
-        REPOS="exeldro:obs-device-switcher:07112a8951bc57deffa3c79f7177281ef5b81420:UI/frontend-plugins \
-        exeldro:obs-dir-watch-media:270d9137c650cb419d7a57aa9e81a8e0433217df:plugins \
-        exeldro:obs-downstream-keyer:51b59b486e3c037477e0e1bac877bb75db69277d:UI/frontend-plugins \
-        exeldro:obs-dynamic-delay:33456a177f830fe63f3bc618ed606465920d072c:plugins \
-        exeldro:obs-freeze-filter:e1a8400b9f55f27e00dd9fe2ff8274ee00b39abf:plugins \
-        exeldro:obs-gradient-source:ff6c915204d31a45f576f1f43875bfef18c71f04:plugins \
-        exeldro:obs-media-controls:8d0ac3ba402e6b535bbb6781b4456a06bf415272:UI/frontend-plugins \
-        exeldro:obs-move-transition:2.6.1:plugins \
-        exeldro:obs-recursion-effect:f114388665d30a78cf907a1f167c05aa64543a90:plugins \
-        exeldro:obs-replay-source:1.6.10:plugins \
-        exeldro:obs-scene-notes-dock:9c17ffdf7b15eb3f688b893e35a5aff247d94a78:UI/frontend-plugins \
-        exeldro:obs-scene-collection-manager:f7884826996b751c44e26a35d3a8a885274fa97e:UI/frontend-plugins \
-        exeldro:obs-setting-docks:978c409c80e44151ee446f6eb18910be44cb6d83:UI/frontend-plugins \
-        exeldro:obs-source-copy:25801007d205dabcb16e3a6824727126c1695548:UI/frontend-plugins \
-        exeldro:obs-source-dock:0.3.2:UI/frontend-plugins \
-        exeldro:obs-source-record:10a9b15c6fd83ba56ffd0e2f5e44b6fba23d772c:plugins \
-        exeldro:obs-source-switcher:c83d7d2a497a4c7629e47508309a399a8b83aa06:plugins \
-        exeldro:obs-time-shift:6c93ecf1cf74647214f078e6da9178663c45bf3b:plugins \
-        exeldro:obs-time-warp-scan:630637ea3a5768e99dd43c772fb0e6766406717b:plugins \
-        exeldro:obs-transition-table:d37284703ae0b09673274124addb052600440e5e:UI/frontend-plugins \
-        exeldro:obs-virtual-cam-filter:4af4d50d25cb6afa18b29b84a6b1f795e486f4a1:plugins \
-        Qufyy:obs-scale-to-sound:1.2.2:plugins \
-        WarmUpTill:SceneSwitcher:1.17.7:UI/frontend-plugins \
-        Xaymar:obs-StreamFX:0.11.1:UI/frontend-plugins"
-    else
-        REPOS="exeldro:obs-device-switcher:d8f2c590a9c3da91ff5125d9f01b6797568b02e4:UI/frontend-plugins \
-        exeldro:obs-dir-watch-media:270d9137c650cb419d7a57aa9e81a8e0433217df:plugins \
-        exeldro:obs-downstream-keyer:0.2.5:UI/frontend-plugins \
-        exeldro:obs-dynamic-delay:33456a177f830fe63f3bc618ed606465920d072c:plugins \
-        exeldro:obs-freeze-filter:e1a8400b9f55f27e00dd9fe2ff8274ee00b39abf:plugins \
-        exeldro:obs-gradient-source:ff6c915204d31a45f576f1f43875bfef18c71f04:plugins \
-        exeldro:obs-media-controls:b37f7ab24dcf40701e1f538c14f608a5a0db868b:UI/frontend-plugins \
-        exeldro:obs-move-transition:2.6.1:plugins \
-        exeldro:obs-recursion-effect:f114388665d30a78cf907a1f167c05aa64543a90:plugins \
-        exeldro:obs-replay-source:1.6.11:plugins \
-        exeldro:obs-scene-notes-dock:0.1.1:UI/frontend-plugins \
-        exeldro:obs-scene-collection-manager:0.0.8:UI/frontend-plugins \
-        exeldro:obs-setting-docks:388fb92d253968b797c80d0a5544f49c1d2715f7:UI/frontend-plugins \
-        exeldro:obs-source-copy:c88b3c997439247749a5bffc70a69eee8929742a:UI/frontend-plugins \
-        exeldro:obs-source-dock:0.3.3:UI/frontend-plugins \
-        exeldro:obs-source-record:10a9b15c6fd83ba56ffd0e2f5e44b6fba23d772c:plugins \
-        exeldro:obs-source-switcher:c83d7d2a497a4c7629e47508309a399a8b83aa06:plugins \
-        exeldro:obs-time-shift:6c93ecf1cf74647214f078e6da9178663c45bf3b:plugins \
-        exeldro:obs-time-warp-scan:630637ea3a5768e99dd43c772fb0e6766406717b:plugins \
-        exeldro:obs-transition-table:0.2.5:UI/frontend-plugins \
-        exeldro:obs-virtual-cam-filter:4af4d50d25cb6afa18b29b84a6b1f795e486f4a1:plugins \
-        Qufyy:obs-scale-to-sound:1.2.2:plugins \
-        WarmUpTill:SceneSwitcher:1.18.0:plugins \
-        Xaymar:obs-StreamFX:0.12.0a134:UI/frontend-plugins"
-  fi
+    while read REPO; do
+        AUTHOR="$(echo "${REPO}" | cut -d':' -f1)"
+        PLUGIN="$(echo "${REPO}" | cut -d':' -f2)"
+        BRANCH="$(echo "${REPO}" | cut -d':' -f3)"
+        DIRECTORY="$(echo "${REPO}" | cut -d':' -f4)"
+        case "${PLUGIN}" in
+            obs-StreamFX|SceneSwitcher)
+                clone_source "https://github.com/${AUTHOR}/${PLUGIN}.git" "${BRANCH}" "${SOURCE_DIR}/${DIRECTORY}/${PLUGIN}";;
+            *)
+                BRANCH_LEN=$(echo -n "${BRANCH}" | wc -m);
+                if [ "${BRANCH_LEN}" -ge 40 ]; then
+                    download_tarball "https://github.com/${AUTHOR}/${PLUGIN}/archive/${BRANCH}.zip" "${SOURCE_DIR}/${DIRECTORY}/${PLUGIN}"
+                else
+                    download_tarball "https://github.com/${AUTHOR}/${PLUGIN}/archive/refs/tags/${BRANCH}.zip" "${SOURCE_DIR}/${DIRECTORY}/${PLUGIN}"
+                fi;;
+        esac
+        grep -qxF "add_subdirectory(${PLUGIN})" "${SOURCE_DIR}/${DIRECTORY}/CMakeLists.txt" || echo "add_subdirectory(${PLUGIN})" >> "${SOURCE_DIR}/${DIRECTORY}/CMakeLists.txt"
+    done < ./plugins-"${OBS_MAJ_VER}"-in-tree.txt
 
-  for REPO in ${REPOS}; do
-      AUTHOR="$(echo "${REPO}" | cut -d':' -f1)"
-      PLUGIN="$(echo "${REPO}" | cut -d':' -f2)"
-      BRANCH="$(echo "${REPO}" | cut -d':' -f3)"
-      DIRECTORY="$(echo "${REPO}" | cut -d':' -f4)"
-      case "${PLUGIN}" in
-        obs-StreamFX|SceneSwitcher)
-            clone_source "https://github.com/${AUTHOR}/${PLUGIN}.git" "${BRANCH}" "${SOURCE_DIR}/${DIRECTORY}/${PLUGIN}";;
-        *)
-            BRANCH_LEN=$(echo -n "${BRANCH}" | wc -m);
-            if [ "${BRANCH_LEN}" -ge 40 ]; then
-                download_tarball "https://github.com/${AUTHOR}/${PLUGIN}/archive/${BRANCH}.zip" "${SOURCE_DIR}/${DIRECTORY}/${PLUGIN}"
-            else
-                download_tarball "https://github.com/${AUTHOR}/${PLUGIN}/archive/refs/tags/${BRANCH}.zip" "${SOURCE_DIR}/${DIRECTORY}/${PLUGIN}"
-            fi
-            ;;
-      esac
-      grep -qxF "add_subdirectory(${PLUGIN})" "${SOURCE_DIR}/${DIRECTORY}/CMakeLists.txt" || echo "add_subdirectory(${PLUGIN})" >> "${SOURCE_DIR}/${DIRECTORY}/CMakeLists.txt"
-  done
-
-  # Monkey patch cmake VERSION for Ubuntu 20.04
-  if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
-      if [ "${OBS_MAJ_VER}" -eq 28 ]; then
-          sed -i 's/VERSION 3\.21/VERSION 3\.16/' "${SOURCE_DIR}/plugins/SceneSwitcher/CMakeLists.txt"
-      fi
-      if [ "${OBS_MAJ_VER}" -eq 27 ]; then
-          for PLUGIN in obs-device-switcher obs-downstream-keyer obs-scene-notes-dock \
-          obs-scene-collection-manager obs-source-copy obs-transition-table; do
-              sed -i 's/VERSION 3\.18/VERSION 3\.16/' "${SOURCE_DIR}/UI/frontend-plugins/${PLUGIN}/CMakeLists.txt"
-          done
-      fi
-  fi
+    # Monkey patch cmake VERSION for Ubuntu 20.04
+    if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
+        if [ "${OBS_MAJ_VER}" -ge 28 ]; then
+            sed -i 's/VERSION 3\.21/VERSION 3\.16/' "${SOURCE_DIR}/UI/frontend-plugins/SceneSwitcher/CMakeLists.txt" || true
+        fi
+        for PLUGIN in obs-device-switcher obs-downstream-keyer obs-scene-notes-dock \
+        obs-scene-collection-manager obs-source-copy obs-transition-table; do
+            sed -i 's/VERSION 3\.18/VERSION 3\.16/' "${SOURCE_DIR}/UI/frontend-plugins/${PLUGIN}/CMakeLists.txt" || true
+        done
+    fi
 }
 
 function stage_07_plugins_out_tree() {
     echo -e "\nPlugins (out of tree)\n" >> "${BUILD_DIR}/obs-manifest.txt"
     local AUTHOR=""
     local BRANCH=""
+    local CWD=""
     local DIRECTORY=""
     local PLUGIN=""
 
-    if [ "${OBS_MAJ_VER}" -eq 27 ]; then
-        REPOS="cg2121:obs-soundboard:1.0.3: \
-        kkartaltepe:obs-text-pango:8f4775d629624ea450474e39a4e7143166d8aeba: \
-        norihiro:obs-audio-pan-filter:0.1.2: \
-        norihiro:obs-command-source:0.2.1: \
-        norihiro:obs-multisource-effect:0.1.7: \
-        norihiro:obs-mute-filter:0.1.0: \
-        norihiro:obs-text-pthread:1.0.3: \
-        obsproject:obs-websocket:4.9.1: \
-        phandasm:waveform:v1.4.1:"
-    else
-        REPOS="cg2121:obs-soundboard:1.1.1: \
-        kkartaltepe:obs-text-pango:8f4775d629624ea450474e39a4e7143166d8aeba: \
-        norihiro:obs-async-source-duplication:0.4.0: \
-        norihiro:obs-audio-pan-filter:0.2.2: \
-        norihiro:obs-command-source:0.3.0: \
-        norihiro:obs-multisource-effect:0.2.1: \
-        norihiro:obs-mute-filter:0.2.1: \
-        norihiro:obs-text-pthread:2.0.2: \
-        obsproject:obs-websocket:4.9.1-compat: \
-        phandasm:waveform:v1.5.0:"
-    fi
-
-    if [ "${DISTRO_MAJ_VER}" -ge 22 ] && [ "${OBS_MAJ_VER}" -ge 28 ]; then
-        REPOS+=" dimtpap:obs-pipewire-audio-capture:dd0cfa9581481c862cddd725e23423cd975265d9: "
-    fi
-
-    for REPO in ${REPOS}; do
+    CWD="$(pwd)"
+    while read REPO; do
         AUTHOR="$(echo "${REPO}" | cut -d':' -f1)"
         PLUGIN="$(echo "${REPO}" | cut -d':' -f2)"
         BRANCH="$(echo "${REPO}" | cut -d':' -f3)"
+
+        # Insufficient PipeWire support for Ubuntu 20.04
+        if [ "${DISTRO_CMP_VER}" -le 2004 ] && [ "${PLUGIN}" == "obs-pipewire-audio-capture" ]; then
+            continue
+        fi
 
         case "${PLUGIN}" in
             obs-websocket|waveform)
@@ -496,30 +444,48 @@ function stage_07_plugins_out_tree() {
                     "${PLUGIN_DIR}/${PLUGIN}"/src/*/*.h \
                     "${PLUGIN_DIR}/${PLUGIN}"/src/*.cpp \
                     "${PLUGIN_DIR}/${PLUGIN}"/src/*/*.cpp
-                fi
-                ;;
+                fi;;
             *)  BRANCH_LEN=$(echo -n "${BRANCH}" | wc -m);
                 if [ "${BRANCH_LEN}" -ge 40 ]; then
                     download_tarball "https://github.com/${AUTHOR}/${PLUGIN}/archive/${BRANCH}.zip" "${PLUGIN_DIR}/${PLUGIN}"
                 else
                     download_tarball "https://github.com/${AUTHOR}/${PLUGIN}/archive/refs/tags/${BRANCH}.zip" "${PLUGIN_DIR}/${PLUGIN}"
-                fi
-                ;;
+                fi;;
         esac
 
-        if [ "${OBS_MAJ_VER}" -eq 27 ] && [ "${PLUGIN}" != "obs-soundboard" ]; then
+        if [ "${PLUGIN}" == "obs-gstreamer" ] || [ "${PLUGIN}" == "obs-vaapi" ]; then
+            meson --buildtype=release --prefix="${BASE_DIR}/${INSTALL_DIR}/" --libdir="${BASE_DIR}/${INSTALL_DIR}/" "${PLUGIN_DIR}/${PLUGIN}" "${PLUGIN_DIR}/${PLUGIN}/build"
+            ninja -C "${PLUGIN_DIR}/${PLUGIN}/build"
+            ninja -C "${PLUGIN_DIR}/${PLUGIN}/build" install
+            mv "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/${PLUGIN}.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/${PLUGIN}.so"
+            chmod 644 "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/${PLUGIN}.so"
+        elif [ "${PLUGIN}" == "obs-teleport" ] && [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
+            # Requires Go 1.17, which is not available in Ubuntu 20.04
+            export CGO_CPPFLAGS="${CPPFLAGS}"
+            export CGO_CFLAGS="${CFLAGS} -I/usr/include/obs"
+            export CGO_CXXFLAGS="${CXXFLAGS}"
+            export CGO_LDFLAGS="${LDFLAGS} -ljpeg -lobs -lobs-frontend-api"
+            export GOFLAGS="-buildmode=c-shared -trimpath -mod=readonly -modcacherw"
+            cd "${PLUGIN_DIR}/${PLUGIN}"
+            go build -ldflags "-linkmode external -X main.version=${BRANCH}" -v -o "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/${PLUGIN}.so" .
+            mv "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/${PLUGIN}.h" "${BASE_DIR}/${INSTALL_DIR}/include/" || true
+            cd "${CWD}"
+        elif [ "${OBS_MAJ_VER}" -ge 28 ] || [ "${PLUGIN}" == "obs-soundboard" ]; then
+            # Build process of OBS Studio 28
+            cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
+              -DCMAKE_BUILD_TYPE=Release \
+              -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}"
+            cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
+            cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
+        else
+            # Build process for OBS Studio 27 and older
             cd "${PLUGIN_DIR}/${PLUGIN}"
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" \
               -DCMAKE_BUILD_TYPE=Release \
               -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}"
             make -C "${PLUGIN_DIR}/${PLUGIN}/build"
             make -C "${PLUGIN_DIR}/${PLUGIN}/build" install
-        else
-            cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
-              -DCMAKE_BUILD_TYPE=Release \
-              -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}"
-            cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
-            cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
+            cd "${CWD}"
         fi
 
         # Reorgansise some misplaced plugins
@@ -549,32 +515,7 @@ function stage_07_plugins_out_tree() {
             mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/${PLUGIN}"
             mv -v "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins/${PLUGIN}"/* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/${PLUGIN}/" || true
         fi
-    done
-
-    for REPO in fzwoch:obs-gstreamer:v0.3.5: fzwoch:obs-vaapi:0.1.0:; do
-        AUTHOR="$(echo "${REPO}" | cut -d':' -f1)"
-        PLUGIN="$(echo "${REPO}" | cut -d':' -f2)"
-        BRANCH="$(echo "${REPO}" | cut -d':' -f3)"
-        download_tarball "https://github.com/${AUTHOR}/${PLUGIN}/archive/refs/tags/${BRANCH}.zip" "${PLUGIN_DIR}/${PLUGIN}"
-        meson --buildtype=release --prefix="${BASE_DIR}/${INSTALL_DIR}/" --libdir="${BASE_DIR}/${INSTALL_DIR}/" "${PLUGIN_DIR}/${PLUGIN}" "${PLUGIN_DIR}/${PLUGIN}/build"
-        ninja -C "${PLUGIN_DIR}/${PLUGIN}/build"
-        ninja -C "${PLUGIN_DIR}/${PLUGIN}/build" install
-        mv "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/${PLUGIN}.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/${PLUGIN}.so"
-        chmod 644 "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/${PLUGIN}.so"
-    done
-
-    # Requires Go 1.17, which is not available in Ubuntu 20.04
-    if [ "${DISTRO_MAJ_VER}" -ge 22 ]; then
-        download_tarball "https://github.com/fzwoch/obs-teleport/archive/refs/tags/0.5.0.zip" "${PLUGIN_DIR}/obs-teleport"
-        export CGO_CPPFLAGS="${CPPFLAGS}"
-        export CGO_CFLAGS="${CFLAGS} -I/usr/include/obs"
-        export CGO_CXXFLAGS="${CXXFLAGS}"
-        export CGO_LDFLAGS="${LDFLAGS} -ljpeg -lobs -lobs-frontend-api"
-        export GOFLAGS="-buildmode=c-shared -trimpath -mod=readonly -modcacherw"
-        cd "${PLUGIN_DIR}/obs-teleport"
-        go build -ldflags "-linkmode external -X main.version=0.5.0" -v -o "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/obs-teleport.so" .
-        mv "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/obs-teleport.h" "${BASE_DIR}/${INSTALL_DIR}/include/"
-    fi
+    done < ./plugins-"${OBS_MAJ_VER}"-out-tree.txt
 }
 
 function stage_08_plugins_prebuilt() {
@@ -611,11 +552,11 @@ function stage_09_finalise() {
     # Prevents OBS from enumating the .so files to determine if they can be loaded as a plugin
     rm -rf "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/locales" || true
     rm -rf "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/swiftshader" || true
-    for CEF_FILE in chrome-sandbox chrome_100_percent.pak chrome_200_percent.pak \
-        icudtl.dat libcef.so libEGL.so libGLESv2.so libvk_swiftshader.so \
-        libvulkan.so.1 resources.pak snapshot_blob.bin v8_context_snapshot.bin \
-        vk_swiftshader_icd.json; do
-        rm -f "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/${CEF_FILE}" || true
+    for CEF_FILE in chrome-sandbox *.pak icudtl.dat libcef.so libEGL.so \
+        libGLESv2.so libvk_swiftshader.so libvulkan.so.1 snapshot_blob.bin \
+        v8_context_snapshot.bin vk_swiftshader_icd.json; do
+        #shellcheck disable=SC2086
+        rm -f "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/"${CEF_FILE} || true
     done
 
     # The StreamFX log entries show it tries to load libaom.so from data/obs-plugins/StreamFX

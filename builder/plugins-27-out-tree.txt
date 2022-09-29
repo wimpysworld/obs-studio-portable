@@ -1,0 +1,12 @@
+cg2121:obs-soundboard:1.0.3:
+fzwoch:obs-gstreamer:v0.3.5:
+fzwoch:obs-teleport:0.5.0:
+fzwoch:obs-vaapi:0.1.0:
+kkartaltepe:obs-text-pango:8f4775d629624ea450474e39a4e7143166d8aeba:
+norihiro:obs-audio-pan-filter:0.1.2:
+norihiro:obs-command-source:0.2.1:
+norihiro:obs-multisource-effect:0.1.7:
+norihiro:obs-mute-filter:0.1.0:
+norihiro:obs-text-pthread:1.0.3:
+phandasm:waveform:v1.4.1:
+obsproject:obs-websocket:4.9.1:
