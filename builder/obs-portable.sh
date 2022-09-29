@@ -64,7 +64,7 @@ if [ -e /etc/os-release ] && grep --quiet UBUNTU_CODENAME /etc/os-release; then
     DISTRO_CODENAME=$(grep VERSION_CODENAME /etc/os-release | cut -d'=' -f2 | sed 's/"//g')
     DISTRO_VERSION=$(grep VERSION_ID /etc/os-release | cut -d'=' -f2 | sed 's/"//g')
     DISTRO_MAJ_VER=$(echo "${DISTRO_VERSION}" | cut -d'.' -f1)
-    DISTRO_CMP_VER=$("${DISTRO_VERSION//./}")
+    DISTRO_CMP_VER="${DISTRO_VERSION//./}"
     if [ "${DISTRO_MAJ_VER}" -lt 20 ]; then
         echo "Unsupported Ubuntu version: ${DISTRO_VERSION}"
         exit 1
