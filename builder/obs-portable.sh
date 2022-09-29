@@ -522,10 +522,7 @@ function stage_08_plugins_prebuilt() {
     local URL=""
     local ZIP=""
 
-    URLS="https://github.com/univrsal/dvds3/releases/download/v1.1/dvd-screensaver.v1.1.linux.x64.zip \
-    https://obsproject.com/forum/resources/rgb-levels.967/download"
-
-    for URL in ${URLS}; do
+    while read URL; do
         ZIP="${URL##*/}"
         if [ "${ZIP}" == "download" ]; then
             ZIP="rgb-levels.zip"
@@ -533,7 +530,7 @@ function stage_08_plugins_prebuilt() {
         echo " - ${URL}" >> "${BUILD_DIR}/obs-manifest.txt"
         wget --quiet --show-progress --progress=bar:force:noscroll "${URL}" -O "${TARBALL_DIR}/${ZIP}"
         unzip -o -qq "${TARBALL_DIR}/${ZIP}" -d "${PLUGIN_DIR}/$(basename "${ZIP}" .zip)"
-    done
+    done < ./plugins-prebuilt.txt
 
     # Reorgansise plugins
     mv -v "${PLUGIN_DIR}/dvd-screensaver.v1.1.linux.x64/dvd-screensaver/bin/64bit/dvd-screensaver.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/"
