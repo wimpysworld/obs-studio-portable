@@ -3,8 +3,6 @@
 if [ -z "${SUDO_USER}" ]; then
     echo "ERROR! You must use sudo to run this script: sudo ./$(basename "${0}")"
     exit 1
-else
-    SUDO_HOME=$(getent passwd "${SUDO_USER}" | cut -d: -f6)
 fi
 
 if [ -z "${1}" ] || [ -z "${2}" ]; then

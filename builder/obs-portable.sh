@@ -319,6 +319,7 @@ function stage_05_build_obs() {
         fi;;
     esac
 
+    #shellcheck disable=SC1091
     if [ -e ./obs-options.sh ]; then
         source ./obs-options.sh
         #shellcheck disable=SC2089
@@ -377,6 +378,7 @@ function stage_06_plugins_in_tree() {
     local DIRECTORY=""
     local PLUGIN=""
 
+    #shellcheck disable=SC2162
     while read REPO; do
         AUTHOR="$(echo "${REPO}" | cut -d':' -f1)"
         PLUGIN="$(echo "${REPO}" | cut -d':' -f2)"
@@ -417,6 +419,7 @@ function stage_07_plugins_out_tree() {
     local PLUGIN=""
 
     CWD="$(pwd)"
+    #shellcheck disable=SC2162
     while read REPO; do
         AUTHOR="$(echo "${REPO}" | cut -d':' -f1)"
         PLUGIN="$(echo "${REPO}" | cut -d':' -f2)"
@@ -517,6 +520,7 @@ function stage_08_plugins_prebuilt() {
     local URL=""
     local ZIP=""
 
+    #shellcheck disable=SC2162
     while read URL; do
         ZIP="${URL##*/}"
         if [ "${ZIP}" == "download" ]; then
@@ -566,6 +570,7 @@ function stage_09_finalise() {
 
     # Strip binaries and correct permissions
     for DIR in "${BASE_DIR}/${INSTALL_DIR}/cef" "${BASE_DIR}/${INSTALL_DIR}/bin/64bit" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit" "${BASE_DIR}/${INSTALL_DIR}/data/obs-scripting/64bit" "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/StreamFX/"; do
+        #shellcheck disable=SC2162
         while read FILE; do
             TYPE=$(file "${FILE}" | cut -d':' -f2 | awk '{print $1}')
             if [ "${TYPE}" == "ELF" ]; then
@@ -592,6 +597,7 @@ function stage_09_finalise() {
     # Build a list of all the linked libraries
     rm -f obs-libs.txt 2>/dev/null || true
     for DIR in "${BASE_DIR}/${INSTALL_DIR}/cef" "${BASE_DIR}/${INSTALL_DIR}/bin/64bit" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit" "${BASE_DIR}/${INSTALL_DIR}/data/obs-scripting/64bit"; do
+        #shellcheck disable=SC2162
         while read FILE; do
             while read LIB; do
                 echo "${LIB}" >> obs-libs.txt
@@ -601,12 +607,14 @@ function stage_09_finalise() {
 
     # Map the library to the package it belongs to
     rm -f obs-pkgs.txt 2>/dev/null || true
+    #shellcheck disable=SC2162
     while read LIB; do
         #shellcheck disable=SC2005
         echo "$(dpkg -S "${LIB}" | grep -Fv -e 'i386' -e '-dev' | cut -d ':' -f1 | sort -u)" >> obs-pkgs.txt
     done < <(sort -u obs-libs.txt)
 
     # Add the packages to the dependencies file
+    #shellcheck disable=SC2162
     while read PKG; do
         echo -e "\t${PKG} \\" >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
     done < <(sort -u obs-pkgs.txt)
