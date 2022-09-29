@@ -197,7 +197,7 @@ python3-dev swig"
     apt-get -y install ${PKG_OBS_CORE}
 
     PKG_OBS_PLUGINS="libasound2-dev libdrm-dev libfdk-aac-dev libfontconfig-dev \
-libfreetype6-dev libjack-jackd2-dev libpulse-dev libsndio-dev libspeexdsp-dev \
+libfreetype6-dev libjack-jackd2-dev libpulse-dev libspeexdsp-dev \
 libudev-dev libv4l-dev libva-dev libvlc-dev"
 
     # CEF Browser runtime requirements
@@ -349,7 +349,6 @@ function stage_05_build_obs() {
       ${BROWSER_OPTIONS} \
       -DCEF_ROOT_DIR="${BUILD_DIR}/cef" \
       -DENABLE_ALSA=OFF \
-      -DENABLE_SNDIO=OFF \
       -DENABLE_JACK=ON \
       -DENABLE_LIBFDK=ON \
       ${PIPEWIRE_OPTIONS} \
