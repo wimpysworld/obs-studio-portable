@@ -106,6 +106,7 @@ Ubuntu:
 ## Audio 🔉
 
   * **[Audio Pan](https://github.com/norihiro/obs-audio-pan-filter)** plugin; control stereo pan of audio source.
+  * **[MIDI](https://github.com/nhielost/obs-midi-mg)** plugins; allows MIDI devices to interact with OBS Studio.
   * **[Mute Filter](https://github.com/norihiro/obs-mute-filter)** plugin; to mute audio of a source.
   * **[PipeWire Audio Capture](https://github.com/dimtpap/obs-pipewire-audio-capture)** plugin; capture application audio from PipeWire.
   * **[Scale to Sound](https://github.com/Qufyy/obs-scale-to-sound)** plugin; adds a filter which makes a source scale based on the audio levels of any audio source you choose

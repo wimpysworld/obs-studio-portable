@@ -440,7 +440,7 @@ function stage_07_plugins_out_tree() {
         fi
 
         case "${PLUGIN}" in
-            obs-websocket|waveform)
+            obs-midi-mg|obs-websocket|waveform)
                 clone_source "https://github.com/${AUTHOR}/${PLUGIN}.git" "${BRANCH}" "${PLUGIN_DIR}/${PLUGIN}"
                 # Patch obs-websocket 4.9.1 (not the compat release) so it builds against OBS 27.2.4
                 # https://github.com/obsproject/obs-websocket/issues/916#issuecomment-1193399097
