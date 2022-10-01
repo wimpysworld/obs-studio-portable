@@ -172,7 +172,7 @@ function stage_01_get_apt() {
 
     apt-get -y upgrade
 
-    PKG_TOOLCHAIN="bzip2 clang-format clang-tidy cmake curl ${COMPILERS} file git libarchive-tools libc6-dev make meson ninja-build pkg-config unzip wget"
+    PKG_TOOLCHAIN="bzip2 clang-format clang-tidy cmake curl ${COMPILERS} file git libarchive-tools libc6-dev make meson ninja-build pkg-config tree unzip wget"
     echo " - Toolchain   : ${PKG_TOOLCHAIN}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
     apt-get -y install ${PKG_TOOLCHAIN}
@@ -651,6 +651,9 @@ function stage_09_finalise() {
         echo -e '\tqtwayland5 \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
     fi
     echo -e '\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tv4l2loopback-dkms \\\n\tv4l2loopback-utils' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
+
+    tree -A -n "${BASE_DIR}/${INSTALL_DIR}" >> "${BASE_DIR}/${INSTALL_DIR}/manifest.txt"
+    sed -i "s|obs-${OBS_MAJ_VER}/||" "${BASE_DIR}/${INSTALL_DIR}/manifest.txt"
 }
 
 function stage_10_make_tarball() {
