@@ -4,16 +4,6 @@ LC_ALL=C
 
 # https://obsproject.com/wiki/Build-Instructions-For-Linux
 
-# Plugins to consider:
-# - https://git.vrsal.xyz/alex/Durchblick
-# - https://github.com/cg2121/obs-decklink-output-filter
-# - https://github.com/norihiro/obs-aja-output-filter
-# - https://github.com/norihiro/obs-async-audio-filter
-# - https://github.com/norihiro/obs-source-record-async
-# - https://github.com/norihiro/obs-output-filter
-# - https://github.com/norihiro/obs-main-view-source
-# - https://github.com/norihiro/obs-vnc
-
 OBS_MAJ_VER=""
 if [ -n "${1}" ]; then
     OBS_MAJ_VER="${1}"

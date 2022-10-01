@@ -15,7 +15,7 @@ Collections) are saved within the same directory tree as the OBS Studio
 executables, plugins and. You can copy the whole folder to a another computer
 and just use it.**
 
-  - Nearly 40 of the best 3rd Party plugins for OBS Studio are bundled
+  - Over 40 of the best 3rd Party plugins for OBS Studio are bundled!
   - Chromium Embedded Frameworks (CEF) to enable Browser Sources
   - NVENC (NVIDIA) and VA-API (AMD & Intel) accelerated video encoding
   - Fraunhofer FDK AAC Codec
@@ -27,20 +27,22 @@ and just use it.**
 Each tarball of OBS Studio Portable includes a `manifest.txt` that describes
 exactly which versions of plugins and add-ons are included.
 
-| Distro       | OBS Studio 26 | OBS Studio 27 | OBS Studio 28 |
+|              | OBS Studio 26 | OBS Studio 27 | OBS Studio 28 |
 | ------------ | ------------- | ------------- | ------------- |
 | Ubuntu 20.04 | 26.1.2 (Qt 5) | 27.2.4 (Qt 5) | 28.0.2 (Qt 5) |
 | Ubuntu 22.04 | 26.1.2 (Qt 5) | 27.2.4 (Qt 5) | 28.0.2 (Qt 6) |
 | Ubuntu 22.10 |               |               | 28.0.2 (Qt 6) |
+| Plugins      | 29            | 40            | 42            |
 
 ### Caveats
 
-  - [Game Capture](https://github.com/nowrep/obs-vkcapture) is available in Ubuntu 22.04 (and newer) builds.
+  - [Game Capture](https://github.com/nowrep/obs-vkcapture) is available in Ubuntu 22.04 (*and newer*) builds.
   - [NvFBC Capture](https://gitlab.com/fzwoch/obs-nvfbc) is available in OBS Studio 26 and 27 builds; the required GLX support was removed in OBS Studio 28.
-  - PipeWire support is available in Ubuntu 22.04 (and newer) builds.
-  - [Teleport](https://github.com/fzwoch/obs-teleport) is available in Ubuntu 22.04 (and newer) builds.
+  - PipeWire support is available in Ubuntu 22.04 (*and newer*) builds.
+  - [Teleport](https://github.com/fzwoch/obs-teleport) is available in Ubuntu 22.04 (*and newer*) builds.
   - [SRT & RIST Protocol](https://obsproject.com/wiki/Streaming-With-SRT-Or-RIST-Protocols) support is available in 22.10 and newer
   - [WebSockets](https://github.com/obsproject/obs-websocket) 5.0.1 and 4.9.1-compat are included in OBS Studio 28 builds
+    - *OBS Studio 26 builds has 4.9.0 and OBS Studio 27 has 4.9.1*
 
 # Install
 
@@ -49,12 +51,12 @@ FlatPak or Snap installs of OBS Studio.
 
 The install process is simple:
 
-  - Download the tarball (and sha256 hash) of OBS Studio for the version of Ubuntu you're running.
+  - Download the tarball (and sha256 hash) of OBS Studio Portable for the version of Ubuntu you're running.
     - **Builds are specific to an Ubuntu release!**
   - Extract the tarball somewhere.
-  - Run `obs-dependencies`, include in the tarball, to make sure the runtime requirements for OBS Studio are satisfied.
+  - Run `obs-dependencies`, included in the tarball, to make sure the runtime requirements for OBS Studio are satisfied.
   - Run `obs-portable` to launch OBS Studio.
-    - **It is essential you use `obs-portable` to launch OBS Studio** to ensure it finds all the associated libraries and add-ons.
+    - **It is essential you use the `obs-portable` launcher** to ensure OBS Studio finds all the associated libraries and add-ons.
 
 ```bash
 wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r22274/obs-portable-28.0.2-r22274-ubuntu-$(lsb_release -rs).tar.bz2"
@@ -75,33 +77,33 @@ the previous OBS Studio Portable instance.
 
 # Why does this project exist?
 
-If any of the following is true for you, you might find these builds of OBS
+If any of the following are true for you, you might find these builds of OBS
 Studio useful.
 
  - **I want a version of OBS Studio for Ubuntu that has all the features enabled, *by default***
    - I use lots of 3rd party OBS Studio plugins in my stream configuration.
  - **I stream from two different locations using multiple computers**
-   - [Syncthing](https://syncthing.net/) sync my streaming configuration between sites, but I'd like to include OBS Studio itself.
+   - [Syncthing](https://syncthing.net/) syncs my streaming configuration between sites. I'd also like to include OBS Studio itself.
  - **I make changes to my OBS Studio configuration from various computers**
-   - Keeping these changes in sync manually can be cumbersome. But now I can automate that with [Syncthing](https://syncthing.net/) and Portable OBS Studio.
+   - Keeping these changes in sync manually can be cumbersome.
  - **I stream to multiple channels**
    - Having discrete OBS Studio instances is easier to work with than switching between dozens of Profile and Scene Collection combinations.
  - **I don't want to deal with flag day releases of new software**
    - New software is wonderful, but want to control when and how I upgrade each of my streaming configuration instances.
- - **My stream integrations are not (currently) compatible with confined packages of OBS Studio**
-   - I have some funky stream integrations, and will likely create more.
- - **I sometimes stream how to do stuff with OBS Studio**
-   - Being able to run *"demo"* instances of OBS Studio with isolated configurations is great for this.
+ - **My stream integrations are not (currently) compatible with packages of OBS Studio that use confinement**
+   - I have some funky stream integrations, and will likely create more. I don't want to limit my creative options.
+ - **I sometimes stream OBS Studio how-tos and examples**
+   - Being able to run demo instances (at will) of OBS Studio with isolated configurations is great for this.
  - **I want a stable OBS setup and an in-development OBS setup**
    - When developing new features for my stream, I want to freely experiment with new versions of OBS Studio and it's plugins without fear of disrupting my stable setup.
- - **I sometimes need old and new versions of OBS Studio available**
-   - I have some streaming projects that are archived and do not need upgrading, but I do want to reference them from time to time.
+ - **I sometimes need old versions of OBS Studio**
+   - I have some streaming projects that are archived and don't need upgrading. But I do want to reference them from time to time.
 
 # Batteries included
 
-I am extremely thankful to the OBS Studio developers and developers of the
-growing list of excellent plugins. These Portable build of OBS Studio for Ubuntu
-celebrate the best of what's available. Thank you! 🙇
+I'm extremely thankful to the OBS Studio developers and developers of the
+growing list of excellent plugins. These Portable builds of OBS Studio for
+Ubuntu celebrate the best of what's available. Thank you! 🙇
 
 Here are the 3rd party plugins that come bundled with OBS Studio Portable for
 Ubuntu:
@@ -124,7 +126,6 @@ Ubuntu:
   * **[Source Switcher](https://github.com/exeldro/obs-source-switcher)** plugin; to switch between a list of sources.
   * **[Transition Table](https://github.com/exeldro/obs-transition-table)** plugin; customize scene transitions.
   * **[Websockets](https://github.com/Palakis/obs-websocket)** plugin; remote-control OBS Studio through WebSockets.
-    * **Also includes the *4.91 compatibility* version**
 
 ## Effects ✨
 
@@ -150,7 +151,7 @@ Ubuntu:
   * **[Source Record](https://github.com/exeldro/obs-source-record)** plugin; make sources available to record via a filter.
   * **[StreamFX](https://github.com/Xaymar/obs-StreamFX)** plugin; unlocks the full potential of NVENC along with useful composition filters.
   * **[Teleport](https://github.com/fzwoch/obs-teleport)** plugin; open NDI-like replacement. (*not NDI compatible*)
-  * **[VAAPI](https://github.com/exeldro/obs-transition-table)** plugin; GStreamer based VAAPI encoder implementation.
+  * **[VA-API](https://github.com/exeldro/obs-transition-table)** plugin; GStreamer based VA-API encoder implementation.
   * **[Virtual Cam Filter](https://github.com/exeldro/obs-virtual-cam-filter)** plugin; make sources available to the virtual camera via a filter.
 
 ## Tools 🛠
@@ -165,6 +166,19 @@ Ubuntu:
 
   * **[Text Pango](https://github.com/kkartaltepe/obs-text-pango)** plugin; Provides a text source rendered using Pango with multi-language support, emoji support, vertical rendering and RTL support.
   * **[Text PThread](https://github.com/norihiro/obs-text-pthread)** plugin; Rich text source plugin with many advanced features.
+
+### To consider 🤔
+
+Here are some additional plugins that look useful that I might add in the future:
+
+  - <https://git.vrsal.xyz/alex/Durchblick>
+  - <https://github.com/cg2121/obs-decklink-output-filter>
+  - <https://github.com/norihiro/obs-aja-output-filter>
+  - <https://github.com/norihiro/obs-async-audio-filter>
+  - <https://github.com/norihiro/obs-source-record-async>
+  - <https://github.com/norihiro/obs-output-filter>
+  - <https://github.com/norihiro/obs-main-view-source>
+  - <https://github.com/norihiro/obs-vnc>
 
 ### Additional plugins
 
@@ -218,15 +232,24 @@ distributions who want to create their own portable builds of OBS Studio.
 
 ## Release numbers
 
-An OBS Studio Portable for Ubuntu release number will be something like r22271,
+An OBS Studio Portable for Ubuntu release number will be something like r22274,
 and the filename will clearly indicate the version of OBS Studio and which
-Ubuntu is it for:
+Ubuntu release is it for:
 
-> obs-portable-28.0.2-r22271-ubuntu-22.04.tar.bz2
+```text
+                     +-- OBS Portable for Ubuntu revision
+                     |
+                     v
+obs-portable-28.0.2-r22274-ubuntu-22.04.tar.bz2
+              ^                    ^
+              |                    |
+              +-- OBS version      +-- Supported Ubuntu release
+```
 
-The purpose of the release number is to indicate a revision to the composition
-of the portable bundle, most likely due to adding/updating the bundled 3rd party
-plugins.
+The purpose of the release number is to indicate a change to the composition
+of the portable release; most likely due to adding/updating the bundled 3rd
+party plugins.
+
 # References
 
   - https://obsproject.com/wiki/Build-Instructions-For-Linux
