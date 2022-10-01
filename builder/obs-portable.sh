@@ -160,14 +160,18 @@ function clone_source() {
 function stage_01_get_apt() {
     echo -e "\nBuild dependencies\n" >> "${BUILD_DIR}/obs-manifest.txt"
 
-    apt-get -y update
-    apt-get -y upgrade
-
-    if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
-        COMPILERS="gcc g++ golang-go"
-    elif [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
+    if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
+        # Newer cmake, ninja-build, meson for Ubuntu 20.04
+        apt-get -y update
+        apt-get -y install software-properties-common
+        add-apt-repository -y ppa:flexiondotorg/build-tools
         COMPILERS="gcc-10 g++-10 golang-1.16-go"
+    else
+        apt-get -y update
+        COMPILERS="gcc g++ golang-go"
     fi
+
+    apt-get -y upgrade
 
     PKG_TOOLCHAIN="bzip2 clang-format clang-tidy cmake curl ${COMPILERS} file git libarchive-tools libc6-dev make meson ninja-build pkg-config unzip wget"
     echo " - Toolchain   : ${PKG_TOOLCHAIN}" >> "${BUILD_DIR}/obs-manifest.txt"
