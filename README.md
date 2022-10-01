@@ -40,6 +40,7 @@ exactly which versions of plugins and add-ons are included.
   - PipeWire support is available in Ubuntu 22.04 (and newer) builds.
   - [Teleport](https://github.com/fzwoch/obs-teleport) is available in Ubuntu 22.04 (and newer) builds.
   - [SRT & RIST Protocol](https://obsproject.com/wiki/Streaming-With-SRT-Or-RIST-Protocols) support is available in 22.10 and newer
+  - [WebSockets](https://github.com/obsproject/obs-websocket) 5.0.1 and 4.9.1-compat are included in OBS Studio 28 builds
 
 # Install
 
@@ -56,11 +57,11 @@ The install process is simple:
     - **It is essential you use `obs-portable` to launch OBS Studio** to ensure it finds all the associated libraries and add-ons.
 
 ```bash
-wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r22271/obs-portable-28.0.2-r22271-ubuntu-$(lsb_release -rs).tar.bz2"
-wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r22271/obs-portable-28.0.2-r22271-ubuntu-$(lsb_release -rs).tar.bz2.sha256"
-sha256sum -c obs-portable-28.0.2-r22271-ubuntu-$(lsb_release -rs).tar.bz2.sha256
-tar xvf obs-portable-28.0.2-r22271-ubuntu-$(lsb_release -rs).tar.bz2
-cd obs-portable-28.0.2-r22271-ubuntu-$(lsb_release -rs)
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r22274/obs-portable-28.0.2-r22274-ubuntu-$(lsb_release -rs).tar.bz2"
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r22274/obs-portable-28.0.2-r22274-ubuntu-$(lsb_release -rs).tar.bz2.sha256"
+sha256sum -c obs-portable-28.0.2-r22274-ubuntu-$(lsb_release -rs).tar.bz2.sha256
+tar xvf obs-portable-28.0.2-r22274-ubuntu-$(lsb_release -rs).tar.bz2
+cd obs-portable-28.0.2-r22274-ubuntu-$(lsb_release -rs)
 sudo ./obs-dependencies
 ./obs-portable
 ```
