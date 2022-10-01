@@ -144,14 +144,14 @@ function clone_source() {
 
     if [ ! -d "${DIR}/.git" ]; then
         BRANCH_LEN=$(echo -n "${BRANCH}" | wc -m);
-        if [ "${BRANCH_LEN}" -ge 40 ]; then
+        if [ "${BRANCH_LEN}" -eq 40 ]; then
             CWD=$(pwd)
-            git clone "${REPO}" --recurse-submodules "${DIR}"
+            git clone "${REPO}" --filter=tree:0 --recurse-submodules --shallow-submodules "${DIR}"
             cd "${DIR}"
             git checkout "${BRANCH}"
             cd "${CWD}"
         else
-            git clone "${REPO}" --recurse-submodules --branch "${BRANCH}" "${DIR}"
+            git clone "${REPO}" --filter=tree:0 --recurse-submodules --shallow-submodules --branch "${BRANCH}" "${DIR}"
         fi
     fi
     echo " - ${REPO} (${BRANCH})" >> "${BUILD_DIR}/obs-manifest.txt"
