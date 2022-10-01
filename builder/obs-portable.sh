@@ -408,16 +408,14 @@ function stage_06_plugins_in_tree() {
         URL="$(echo "${REPO}" | cut -d'/' -f1-5)"
         PLUGIN="$(echo "${REPO}" | cut -d'/' -f5)"
         BRANCH="$(echo "${REPO}" | cut -d'/' -f6)"
-        DIRECTORY="$(echo "${REPO}" | cut -d':' -f7-)"
+        DIRECTORY="$(echo "${REPO}" | cut -d'/' -f7-)"
         clone_source "${URL}.git" "${BRANCH}" "${SOURCE_DIR}/${DIRECTORY}/${PLUGIN}"
         grep -qxF "add_subdirectory(${PLUGIN})" "${SOURCE_DIR}/${DIRECTORY}/CMakeLists.txt" || echo "add_subdirectory(${PLUGIN})" >> "${SOURCE_DIR}/${DIRECTORY}/CMakeLists.txt"
     done < ./plugins-"${OBS_MAJ_VER}"-in-tree.txt
 
-    # Monkey patch cmake VERSION for Ubuntu 20.04
-    if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
-        if [ "${OBS_MAJ_VER}" -ge 28 ]; then
-            sed -i 's/VERSION 3\.21/VERSION 3\.18/' "${SOURCE_DIR}/UI/frontend-plugins/SceneSwitcher/CMakeLists.txt" || true
-        fi
+    # Adjust cmake VERSION SceneSwitch on Ubuntu 20.04
+    if [ "${DISTRO_CMP_VER}" -eq 2004 ] && [ "${OBS_MAJ_VER}" -ge 28 ]; then
+        sed -i 's/VERSION 3\.21/VERSION 3\.18/' "${SOURCE_DIR}/UI/frontend-plugins/SceneSwitcher/CMakeLists.txt" || true
     fi
 }
 
