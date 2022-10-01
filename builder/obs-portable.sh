@@ -249,10 +249,12 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     #shellcheck disable=SC2086
     apt-get -y install ${PKG_OBS_GSTREAMER}
 
-    PKG_OBS_VKCAPTURE="glslang-dev glslang-tools"
-    echo "   - Game Capture   : ${PKG_OBS_VKCAPTURE}" >> "${BUILD_DIR}/obs-manifest.txt"
-    #shellcheck disable=SC2086
-    apt-get -y install ${PKG_OBS_VKCAPTURE}
+    if [ "${DISTRO_CMP_VER}" -ge 2204 ] && [ "${OBS_MAJ_VER}" -ge 27 ]; then
+        PKG_OBS_VKCAPTURE="glslang-dev glslang-tools"
+        echo "   - Game Capture   : ${PKG_OBS_VKCAPTURE}" >> "${BUILD_DIR}/obs-manifest.txt"
+        #shellcheck disable=SC2086
+        apt-get -y install ${PKG_OBS_VKCAPTURE}
+    fi
 
     if [ "${DISTRO_CMP_VER}" -ge 2204 ] && [ "${OBS_MAJ_VER}" -ge 27 ]; then
         PKG_OBS_STREAMFX="libaom-dev"
