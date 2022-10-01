@@ -36,13 +36,13 @@ exactly which versions of plugins and add-ons are included.
 
 ### Caveats
 
-  - [Game Capture](https://github.com/nowrep/obs-vkcapture) is available in Ubuntu 22.04 (*and newer*) builds.
+  - [Game Capture](https://github.com/nowrep/obs-vkcapture) is available in OBS Studio 27 and 28 builds on Ubuntu 22.04 and newer.
   - [NvFBC Capture](https://gitlab.com/fzwoch/obs-nvfbc) is available in OBS Studio 26 and 27 builds; the required GLX support was removed in OBS Studio 28.
-  - PipeWire support is available in Ubuntu 22.04 (*and newer*) builds.
-  - [Teleport](https://github.com/fzwoch/obs-teleport) is available in Ubuntu 22.04 (*and newer*) builds.
-  - [SRT & RIST Protocol](https://obsproject.com/wiki/Streaming-With-SRT-Or-RIST-Protocols) support is available in 22.10 and newer
+  - PipeWire support is available in Ubuntu 22.04 and newer.
+  - [Teleport](https://github.com/fzwoch/obs-teleport) is available in Ubuntu 22.04 and newer builds.
+  - [SRT & RIST Protocol](https://obsproject.com/wiki/Streaming-With-SRT-Or-RIST-Protocols) support is available in Ubuntu 22.10 and newer.
   - [WebSockets](https://github.com/obsproject/obs-websocket) 5.0.1 and 4.9.1-compat are included in OBS Studio 28 builds
-    - *OBS Studio 26 builds has 4.9.0 and OBS Studio 27 has 4.9.1*
+    - *OBS Studio 26 builds have 4.9.0 and OBS Studio 27 builds have 4.9.1*
 
 # Install
 
