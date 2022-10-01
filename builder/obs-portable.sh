@@ -418,12 +418,8 @@ function stage_06_plugins_in_tree() {
     # Monkey patch cmake VERSION for Ubuntu 20.04
     if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
         if [ "${OBS_MAJ_VER}" -ge 28 ]; then
-            sed -i 's/VERSION 3\.21/VERSION 3\.16/' "${SOURCE_DIR}/UI/frontend-plugins/SceneSwitcher/CMakeLists.txt" || true
+            sed -i 's/VERSION 3\.21/VERSION 3\.18/' "${SOURCE_DIR}/UI/frontend-plugins/SceneSwitcher/CMakeLists.txt" || true
         fi
-        for PLUGIN in obs-device-switcher obs-downstream-keyer obs-scene-notes-dock \
-        obs-scene-collection-manager obs-source-copy obs-transition-table; do
-            sed -i 's/VERSION 3\.18/VERSION 3\.16/' "${SOURCE_DIR}/UI/frontend-plugins/${PLUGIN}/CMakeLists.txt" || true
-        done
     fi
 }
 
