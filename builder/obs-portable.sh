@@ -604,8 +604,14 @@ function stage_09_finalise() {
     done
 
     # Create scripts
-    for SCRIPT in obs-dependencies obs-gamecapture obs-portable; do
-        sed "s|TARGET_CODENAME|${DISTRO_CODENAME}|g" ./${SCRIPT} > "${BASE_DIR}/${INSTALL_DIR}/${SCRIPT}"
+    # Create scripts
+    local SCRIPTS="obs-dependencies obs-portable"
+    if [ "${OBS_MAJ_VER}" -ge 28 ]; then
+        SCRIPTS+=" obs-gamecapture"
+    fi
+
+    for SCRIPT in ${SCRIPTS}; do
+        sed "s|TARGET_CODENAME|${DISTRO_CODENAME}|g" "./${SCRIPT}" > "${BASE_DIR}/${INSTALL_DIR}/${SCRIPT}"
         sed -i "s|TARGET_VERSION|${DISTRO_VERSION}|g" "${BASE_DIR}/${INSTALL_DIR}/${SCRIPT}"
         chmod 755 "${BASE_DIR}/${INSTALL_DIR}/${SCRIPT}"
     done
