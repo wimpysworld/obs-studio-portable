@@ -462,12 +462,15 @@ function stage_07_plugins_out_tree() {
             QT_VER="5"
         fi
 
-        if [ "${PLUGIN}" == "obs-gstreamer" ] || [ "${PLUGIN}" == "obs-vaapi" ]; then
-            meson --buildtype=release --prefix="${BASE_DIR}/${INSTALL_DIR}/" --libdir="${BASE_DIR}/${INSTALL_DIR}/" "${PLUGIN_DIR}/${PLUGIN}" "${PLUGIN_DIR}/${PLUGIN}/build"
+        if [ "${PLUGIN}" == "obs-gstreamer" ]|| [ "${PLUGIN}" == "obs-nvfbc" ] || [ "${PLUGIN}" == "obs-vaapi" ]; then
+            meson --buildtype=release --prefix="${BASE_DIR}/${INSTALL_DIR}" --libdir="${BASE_DIR}/${INSTALL_DIR}" "${PLUGIN_DIR}/${PLUGIN}" "${PLUGIN_DIR}/${PLUGIN}/build"
             ninja -C "${PLUGIN_DIR}/${PLUGIN}/build"
             ninja -C "${PLUGIN_DIR}/${PLUGIN}/build" install
-            mv "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/${PLUGIN}.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/${PLUGIN}.so"
-            chmod 644 "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/${PLUGIN}.so"
+            case "${PLUGIN}" in
+                obs-nvfbc) mv "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/nvfbc.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true;;
+                *) mv "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/${PLUGIN}.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true;;
+            esac
+            chmod 644 "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/"*.so
         elif [ "${PLUGIN}" == "obs-teleport" ] && [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
             # Requires Go 1.17, which is not available in Ubuntu 20.04
             export CGO_CPPFLAGS="${CPPFLAGS}"

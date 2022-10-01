@@ -1,4 +1,5 @@
 https://github.com/fzwoch/obs-gstreamer/v0.3.5
+https://gitlab.com/fzwoch/obs-nvfbc/v0.0.7
 https://github.com/fzwoch/obs-vaapi/0.1.0
 https://github.com/kkartaltepe/obs-text-pango/8f4775d629624ea450474e39a4e7143166d8aeba
 https://github.com/norihiro/obs-audio-pan-filter/0.1.2

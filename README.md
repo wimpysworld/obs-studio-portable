@@ -35,8 +35,10 @@ exactly which versions of plugins and add-ons are included.
 
 ### Caveats
 
-  - PipeWire support is available in 22.04 and newer
-  - [Teleport](https://github.com/fzwoch/obs-teleport) is available in 22.04 and newer
+  - [Game Capture](https://github.com/nowrep/obs-vkcapture) is available in Ubuntu 22.04 (and newer) builds.
+  - [NvFBC Capture](https://gitlab.com/fzwoch/obs-nvfbc) is available in OBS Studio 26 and 27 builds; the required GLX support was removed in OBS Studio 28.
+  - PipeWire support is available in Ubuntu 22.04 (and newer) builds.
+  - [Teleport](https://github.com/fzwoch/obs-teleport) is available in Ubuntu 22.04 (and newer) builds.
   - [SRT & RIST Protocol](https://obsproject.com/wiki/Streaming-With-SRT-Or-RIST-Protocols) support is available in 22.10 and newer
 
 # Install
@@ -141,8 +143,9 @@ Ubuntu:
 
 ## Encoding & Output 🎞
 
-  * **[Game Capture](https://github.com/nowrep/obs-vkcapture)** plugins; Vulkan/OpenGL game capture.
-  * **[GStreamer](https://github.com/fzwoch/obs-gstreamer)** plugins; feed GStreamer launch pipelines into OBS Studio.
+  * **[Game Capture](https://github.com/nowrep/obs-vkcapture)** plugin; Vulkan/OpenGL game capture.
+  * **[GStreamer](https://github.com/fzwoch/obs-gstreamer)** plugin; feed GStreamer launch pipelines into OBS Studio.
+  * **[NvFBC](https://gitlab.com/fzwoch/obs-nvfbc)** plugin; screen capture via NVIDIA FBC API. Requires [NvFBC patches for Nvidia drivers](https://github.com/keylase/nvidia-patch) for consumer grade GPUs.
   * **[Source Record](https://github.com/exeldro/obs-source-record)** plugin; make sources available to record via a filter.
   * **[StreamFX](https://github.com/Xaymar/obs-StreamFX)** plugin; unlocks the full potential of NVENC along with useful composition filters.
   * **[Teleport](https://github.com/fzwoch/obs-teleport)** plugin; open NDI-like replacement. (*not NDI compatible*)
