@@ -27,35 +27,35 @@ SOURCE_DIR="${BASE_DIR}/source"
 TARBALL_DIR="${BASE_DIR}/tarballs"
 
 case ${OBS_MAJ_VER} in
-  clean)
-      rm -rf "${BASE_DIR}/"{build,build_portable,build_system,plugins}
-      rm -rf "${SOURCE_DIR}/ntv2/build/"
-      exit 0;;
-  veryclean)
-      rm -rf "${BASE_DIR}/"{build,build_portable,build_system,plugins,source}
-      rm -rf "${SOURCE_DIR}/ntv2/build/"
-      exit 0;;
-  28)
-      AJA_VER="v16.2-bugfix5"
-      OBS_VER="28.0.2"
-      CEF_VER="5060";;
-  27)
-      AJA_VER="v16.2-bugfix5"
-      OBS_VER="27.2.4"
-      CEF_VER="4638";;
-   26)
-      AJA_VER=""
-      OBS_VER="26.1.2"
-      CEF_VER="4280";;
+    clean)
+        rm -rf "${BASE_DIR}/"{build,build_portable,build_system,plugins}
+        rm -rf "${SOURCE_DIR}/ntv2/build/"
+        exit 0;;
+    veryclean)
+        rm -rf "${BASE_DIR}/"{build,build_portable,build_system,plugins,source}
+        rm -rf "${SOURCE_DIR}/ntv2/build/"
+        exit 0;;
+    28)
+        AJA_VER="v16.2-bugfix5"
+        OBS_VER="28.0.2"
+        CEF_VER="5060";;
+    27)
+        AJA_VER="v16.2-bugfix5"
+        OBS_VER="27.2.4"
+        CEF_VER="4638";;
+    26)
+        AJA_VER=""
+        OBS_VER="26.1.2"
+        CEF_VER="4280";;
     25)
-      AJA_VER=""
-      OBS_VER="25.0.8"
-      CEF_VER="3770"
-      echo "ERROR! Unsupported version: ${OBS_MAJ_VER}"
-      exit 1;;
+        AJA_VER=""
+        OBS_VER="25.0.8"
+        CEF_VER="3770"
+        echo "ERROR! Unsupported version: ${OBS_MAJ_VER}"
+        exit 1;;
   *)
-      echo "ERROR! Unsupported version: ${OBS_MAJ_VER}"
-      exit 1;;
+        echo "ERROR! Unsupported version: ${OBS_MAJ_VER}"
+        exit 1;;
 esac
 
 if [ -e /etc/os-release ] && grep --quiet UBUNTU_CODENAME /etc/os-release; then
