@@ -11,5 +11,6 @@ https://github.com/norihiro/obs-face-tracker/b1452b03f2b625bf46e168c63028da8794c
 https://github.com/norihiro/obs-multisource-effect/0.1.7
 https://github.com/norihiro/obs-mute-filter/0.1.0
 https://github.com/norihiro/obs-text-pthread/1.0.3
-https://github.com/phandasm/waveform/v1.4.1
+https://github.com/nowrep/obs-vkcapture/b2fd16d1122df1064614ea90bf668418d0554c1b
 https://github.com/obsproject/obs-websocket/4.9.1
+https://github.com/phandasm/waveform/v1.4.1

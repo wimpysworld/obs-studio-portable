@@ -439,7 +439,10 @@ function stage_07_plugins_out_tree() {
         # Insufficient Golang and PipeWire support in Ubuntu 20.04
         # obs-midi-ng requires Qt 6 which is not available in Ubuntu 20.04
         if [ "${DISTRO_CMP_VER}" -le 2004 ]; then
-            if [ "${PLUGIN}" == "obs-midi-mg" ] || [ "${PLUGIN}" == "obs-pipewire-audio-capture" ] || [ "${PLUGIN}" == "obs-teleport" ]; then
+            if [ "${PLUGIN}" == "obs-midi-mg" ] || \
+            [ "${PLUGIN}" == "obs-pipewire-audio-capture" ] || \
+            [ "${PLUGIN}" == "obs-teleport" ] || \
+            [ "${PLUGIN}" == "obs-vkcapture" ]; then
                 continue
             fi
         fi
