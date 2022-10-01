@@ -6,6 +6,8 @@ LC_ALL=C
 
 # Plugins to consider:
 # - https://git.vrsal.xyz/alex/Durchblick
+# - https://github.com/cg2121/obs-decklink-output-filter
+# - https://github.com/norihiro/obs-aja-output-filter
 # - https://github.com/norihiro/obs-async-audio-filter
 # - https://github.com/norihiro/obs-source-record-async
 # - https://github.com/norihiro/obs-output-filter
@@ -607,12 +609,12 @@ function stage_09_finalise() {
     done
 
     # Create scripts
-    # Create scripts
     local SCRIPTS="obs-dependencies obs-portable"
     if [ "${OBS_MAJ_VER}" -ge 28 ]; then
         SCRIPTS+=" obs-gamecapture"
     fi
 
+    # Template scripts with correct Ubuntu versions
     for SCRIPT in ${SCRIPTS}; do
         sed "s|TARGET_CODENAME|${DISTRO_CODENAME}|g" "./${SCRIPT}" > "${BASE_DIR}/${INSTALL_DIR}/${SCRIPT}"
         sed -i "s|TARGET_VERSION|${DISTRO_VERSION}|g" "${BASE_DIR}/${INSTALL_DIR}/${SCRIPT}"
@@ -655,9 +657,6 @@ function stage_09_finalise() {
         echo -e '\tqtwayland5 \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
     fi
     echo -e '\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tv4l2loopback-dkms \\\n\tv4l2loopback-utils' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
-
-    tree -A -n "${BASE_DIR}/${INSTALL_DIR}" >> "${BASE_DIR}/${INSTALL_DIR}/manifest.txt"
-    sed -i "s|obs-${OBS_MAJ_VER}/||" "${BASE_DIR}/${INSTALL_DIR}/manifest.txt"
 }
 
 function stage_10_make_tarball() {
