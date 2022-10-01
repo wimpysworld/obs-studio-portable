@@ -399,28 +399,18 @@ function stage_05_build_obs() {
 
 function stage_06_plugins_in_tree() {
     echo -e "\nPlugins (in tree)\n" >> "${BUILD_DIR}/obs-manifest.txt"
-    local AUTHOR=""
     local BRANCH=""
     local DIRECTORY=""
     local PLUGIN=""
+    local URL=""
 
     #shellcheck disable=SC2162
     while read REPO; do
-        AUTHOR="$(echo "${REPO}" | cut -d':' -f1)"
-        PLUGIN="$(echo "${REPO}" | cut -d':' -f2)"
-        BRANCH="$(echo "${REPO}" | cut -d':' -f3)"
-        DIRECTORY="$(echo "${REPO}" | cut -d':' -f4)"
-        case "${PLUGIN}" in
-            obs-StreamFX|SceneSwitcher)
-                clone_source "https://github.com/${AUTHOR}/${PLUGIN}.git" "${BRANCH}" "${SOURCE_DIR}/${DIRECTORY}/${PLUGIN}";;
-            *)
-                BRANCH_LEN=$(echo -n "${BRANCH}" | wc -m);
-                if [ "${BRANCH_LEN}" -ge 40 ]; then
-                    download_tarball "https://github.com/${AUTHOR}/${PLUGIN}/archive/${BRANCH}.zip" "${SOURCE_DIR}/${DIRECTORY}/${PLUGIN}"
-                else
-                    download_tarball "https://github.com/${AUTHOR}/${PLUGIN}/archive/refs/tags/${BRANCH}.zip" "${SOURCE_DIR}/${DIRECTORY}/${PLUGIN}"
-                fi;;
-        esac
+        URL="$(echo "${REPO}" | cut -d'/' -f1-5)"
+        PLUGIN="$(echo "${REPO}" | cut -d'/' -f5)"
+        BRANCH="$(echo "${REPO}" | cut -d'/' -f6)"
+        DIRECTORY="$(echo "${REPO}" | cut -d':' -f7-)"
+        clone_source "${URL}.git" "${BRANCH}" "${SOURCE_DIR}/${DIRECTORY}/${PLUGIN}"
         grep -qxF "add_subdirectory(${PLUGIN})" "${SOURCE_DIR}/${DIRECTORY}/CMakeLists.txt" || echo "add_subdirectory(${PLUGIN})" >> "${SOURCE_DIR}/${DIRECTORY}/CMakeLists.txt"
     done < ./plugins-"${OBS_MAJ_VER}"-in-tree.txt
 
@@ -434,45 +424,38 @@ function stage_06_plugins_in_tree() {
 
 function stage_07_plugins_out_tree() {
     echo -e "\nPlugins (out of tree)\n" >> "${BUILD_DIR}/obs-manifest.txt"
-    local AUTHOR=""
     local BRANCH=""
     local CWD=""
     local DIRECTORY=""
     local PLUGIN=""
+    local URL=""
 
     CWD="$(pwd)"
     #shellcheck disable=SC2162
     while read REPO; do
-        AUTHOR="$(echo "${REPO}" | cut -d':' -f1)"
-        PLUGIN="$(echo "${REPO}" | cut -d':' -f2)"
-        BRANCH="$(echo "${REPO}" | cut -d':' -f3)"
+        URL="$(echo "${REPO}" | cut -d'/' -f1-5)"
+        PLUGIN="$(echo "${REPO}" | cut -d'/' -f5)"
+        BRANCH="$(echo "${REPO}" | cut -d'/' -f6)"
 
         # Insufficient Golang and PipeWire support in Ubuntu 20.04
+        # obs-midi-ng requires Qt 6 which is not available in Ubuntu 20.04
         if [ "${DISTRO_CMP_VER}" -le 2004 ]; then
-            if [ "${PLUGIN}" == "obs-pipewire-audio-capture" ] || [ "${PLUGIN}" == "obs-teleport" ]; then
+            if [ "${PLUGIN}" == "obs-midi-mg" ] || [ "${PLUGIN}" == "obs-pipewire-audio-capture" ] || [ "${PLUGIN}" == "obs-teleport" ]; then
                 continue
             fi
         fi
 
-        case "${PLUGIN}" in
-            obs-midi-mg|obs-face-tracker|obs-websocket|waveform)
-                clone_source "https://github.com/${AUTHOR}/${PLUGIN}.git" "${BRANCH}" "${PLUGIN_DIR}/${PLUGIN}"
-                # Patch obs-websocket 4.9.1 (not the compat release) so it builds against OBS 27.2.4
-                # https://github.com/obsproject/obs-websocket/issues/916#issuecomment-1193399097
-                if [ "${PLUGIN}" == "obs-websocket" ] && [ "${BRANCH}" == "4.9.1" ]; then
-                    sed -r -i 's/OBS(.+?)AutoRelease/OBS\1AutoRelease_OBSWS/g' \
-                    "${PLUGIN_DIR}/${PLUGIN}"/src/*.h \
-                    "${PLUGIN_DIR}/${PLUGIN}"/src/*/*.h \
-                    "${PLUGIN_DIR}/${PLUGIN}"/src/*.cpp \
-                    "${PLUGIN_DIR}/${PLUGIN}"/src/*/*.cpp
-                fi;;
-            *)  BRANCH_LEN=$(echo -n "${BRANCH}" | wc -m);
-                if [ "${BRANCH_LEN}" -ge 40 ]; then
-                    download_tarball "https://github.com/${AUTHOR}/${PLUGIN}/archive/${BRANCH}.zip" "${PLUGIN_DIR}/${PLUGIN}"
-                else
-                    download_tarball "https://github.com/${AUTHOR}/${PLUGIN}/archive/refs/tags/${BRANCH}.zip" "${PLUGIN_DIR}/${PLUGIN}"
-                fi;;
-        esac
+        clone_source "${URL}.git" "${BRANCH}" "${PLUGIN_DIR}/${PLUGIN}"
+
+        # Patch obs-websocket 4.9.1 (not the compat release) so it builds against OBS 27.2.4
+        # https://github.com/obsproject/obs-websocket/issues/916#issuecomment-1193399097
+        if [ "${PLUGIN}" == "obs-websocket" ] && [ "${BRANCH}" == "4.9.1" ]; then
+            sed -r -i 's/OBS(.+?)AutoRelease/OBS\1AutoRelease_OBSWS/g' \
+            "${PLUGIN_DIR}/${PLUGIN}"/src/*.h \
+            "${PLUGIN_DIR}/${PLUGIN}"/src/*/*.h \
+            "${PLUGIN_DIR}/${PLUGIN}"/src/*.cpp \
+            "${PLUGIN_DIR}/${PLUGIN}"/src/*/*.cpp
+        fi
 
         # obs-face-tracker requires that QT_VERSION is set
         local QT_VER="6"
