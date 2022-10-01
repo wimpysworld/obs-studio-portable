@@ -291,7 +291,7 @@ function stage_04_get_aja() {
         -DCMAKE_BUILD_TYPE=Release \
         -DAJA_BUILD_OPENSOURCE=ON \
         -DAJA_BUILD_APPS=OFF \
-        -DAJA_INSTALL_HEADERS=ON
+        -DAJA_INSTALL_HEADERS=ON | tee "${BUILD_DIR}/cmake-aja.log"
         cmake --build "${SOURCE_DIR}/ntv2/build/"
         cmake --install "${SOURCE_DIR}/ntv2/build/" --prefix "${BUILD_DIR}/aja"
     fi
@@ -384,7 +384,7 @@ function stage_05_build_obs() {
       ${YOUTUBE_OPTIONS} \
       ${TWITCH_OPTIONS} \
       ${RESTREAM_OPTIONS} \
-      ${PORTABLE_OPTIONS}
+      ${PORTABLE_OPTIONS} | tee "${BUILD_DIR}/cmake-obs-${TARGET}.log"
 
     cmake --build "${BUILD_TO}/"
     cmake --install "${BUILD_TO}/" --prefix "${INSTALL_TO}"
@@ -502,7 +502,7 @@ function stage_07_plugins_out_tree() {
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
               -DCMAKE_BUILD_TYPE=Release \
               -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
-              -DQT_VERSION="${QT_VER}"
+              -DQT_VERSION="${QT_VER}"  | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
             cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
             cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
         else
@@ -511,7 +511,7 @@ function stage_07_plugins_out_tree() {
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" \
               -DCMAKE_BUILD_TYPE=Release \
               -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
-              -DQT_VERSION="${QT_VER}"
+              -DQT_VERSION="${QT_VER}" | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
             make -C "${PLUGIN_DIR}/${PLUGIN}/build"
             make -C "${PLUGIN_DIR}/${PLUGIN}/build" install
             cd "${CWD}"
