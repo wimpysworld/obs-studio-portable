@@ -18,7 +18,7 @@ esac
 
 case "${2}" in
     26|27|28) OBS_VERS="${2}";;
-    all)      OBS_VERS="26 27 28";;
+    all)      OBS_VERS="28 27 26";;
     *) echo "ERROR! Unsupported OBS Studio version: ${2}"
        exit 1;;
 esac
