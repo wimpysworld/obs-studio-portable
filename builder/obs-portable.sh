@@ -652,7 +652,7 @@ function stage_09_finalise() {
 function stage_10_make_tarball() {
     cd "${BASE_DIR}"
     cp "${BUILD_DIR}/obs-manifest.txt" "${BASE_DIR}/${INSTALL_DIR}/manifest.txt"
-    tar cjf "${INSTALL_DIR}.tar.bz2" --exclude bin --exclude cmake --exclude include --exclude lib/pkgconfig "${INSTALL_DIR}"
+    tar cjf "${INSTALL_DIR}.tar.bz2" --exclude cmake --exclude include --exclude lib/pkgconfig "${INSTALL_DIR}"
     sha256sum "${INSTALL_DIR}.tar.bz2" > "${BASE_DIR}/${INSTALL_DIR}.tar.bz2.sha256"
     sed -i -r "s/ .*\/(.+)/  \1/g" "${BASE_DIR}/${INSTALL_DIR}.tar.bz2.sha256"
     cp "${BUILD_DIR}/obs-manifest.txt" "${BASE_DIR}/${INSTALL_DIR}.txt"
