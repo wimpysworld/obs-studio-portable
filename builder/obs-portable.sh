@@ -8,7 +8,6 @@ LC_ALL=C
 # - https://git.vrsal.xyz/alex/Durchblick
 # - https://github.com/norihiro/obs-async-audio-filter
 # - https://github.com/norihiro/obs-source-record-async
-# - https://github.com/norihiro/obs-color-monitor
 # - https://github.com/norihiro/obs-output-filter
 # - https://github.com/norihiro/obs-main-view-source
 # - https://github.com/norihiro/obs-vnc
