@@ -504,6 +504,7 @@ function stage_07_plugins_out_tree() {
                 rm -rf "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/linux-${NEW_PLUGIN}" || true
                 mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/linux-${NEW_PLUGIN}"
                 mv -v "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins/linux-${NEW_PLUGIN}"/* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/linux-${NEW_PLUGIN}/" || true
+                rm "${BASE_DIR}/${INSTALL_DIR}/bin/"obs-*capture 2>/dev/null || true
                 ;;
             obs-text-pango)
                 mv -v "${BASE_DIR}/${INSTALL_DIR}/bin/libtext-pango.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true;;
