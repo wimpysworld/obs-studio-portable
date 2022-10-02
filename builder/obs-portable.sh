@@ -28,7 +28,7 @@ case ${OBS_MAJ_VER} in
         exit 0;;
     28)
         AJA_VER="v16.2-bugfix5"
-        OBS_VER="28.0.2"
+        OBS_VER="28.0.3"
         CEF_VER="5060";;
     27)
         AJA_VER="v16.2-bugfix5"
