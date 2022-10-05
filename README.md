@@ -12,8 +12,8 @@ Made with 💝 for <img src=".github/ubuntu.png" align="top" width="18" /></p>
 
 **Running OBS Studio in Portable Mode means that all settings (Profiles and Scene
 Collections) are saved within the same directory tree as the OBS Studio
-executables, plugins and. You can copy the whole folder to a another computer
-and just use it.**
+executables, plugins and configuration. You can copy the whole folder to a
+another computer and just use it.**
 
   - Over 40 of the best 3rd Party plugins for OBS Studio are bundled!
   - Chromium Embedded Frameworks (CEF) to enable Browser Sources
