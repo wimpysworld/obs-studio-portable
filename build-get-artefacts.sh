@@ -4,8 +4,10 @@ if [ -z "${SUDO_USER}" ]; then
     echo "ERROR! You must use sudo to run this script: sudo ./$(basename "${0}")"
     exit 1
 else
-    SUDO_HOME=$(getent passwd "${SUDO_USER}" | cut -d: -f6)
+    BUILDS_DIR="$(getent passwd "${SUDO_USER}" | cut -d: -f6)"
 fi
+
+BUILDS_DIR="${OVERRIDE_BUILDS_DIR:-$BUILDS_DIR}"
 
 if [ -z "${1}" ] || [ -z "${2}" ]; then
     echo "Usage: $(basename "${0}") <codename> <obs_ver>"
@@ -25,8 +27,8 @@ esac
 
 case "${OBS_VER}" in
     26|27|28)
-        if [ -d "${SUDO_HOME}/Builds/obs-builder-${DISTRO}/root/obs-${OBS_VER}" ]; then
-            cp -v "${SUDO_HOME}/Builds/obs-builder-${DISTRO}/root/obs-${OBS_VER}"/obs-portable-${OBS_VER}*-ubuntu-${DISTRO_VER}.* artefacts/
+        if [ -d "${BUILDS_DIR}/Builds/obs-builder-${DISTRO}/root/obs-${OBS_VER}" ]; then
+            cp -v "${BUILDS_DIR}/Builds/obs-builder-${DISTRO}/root/obs-${OBS_VER}"/obs-portable-${OBS_VER}*-ubuntu-${DISTRO_VER}.* artefacts/
             chown "${SUDO_USER}":"${SUDO_USER}" "artefacts/obs-portable-${OBS_VER}"*-ubuntu-${DISTRO_VER}.*
         fi;;
     *) echo "ERROR! Unsupported OBS Studio version: ${OBS_VER}"
