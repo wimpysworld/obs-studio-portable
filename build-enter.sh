@@ -4,8 +4,10 @@ if [ -z "${SUDO_USER}" ]; then
     echo "ERROR! You must use sudo to run this script: sudo ./$(basename "${0}")"
     exit 1
 else
-    SUDO_HOME=$(getent passwd "${SUDO_USER}" | cut -d: -f6)
+    BUILDS_DIR="$(getent passwd "${SUDO_USER}" | cut -d: -f6)"
 fi
+
+BUILDS_DIR="${OVERRIDE_BUILDS_DIR:-$BUILDS_DIR}"
 
 if [ -z "${1}" ]; then
     echo "Usage: $(basename "${0}") <codename>"
@@ -28,7 +30,7 @@ else
     exit 1
 fi
 
-R="${SUDO_HOME}/Builds/obs-builder-${DISTRO}"
+R="${BUILDS_DIR}/Builds/obs-builder-${DISTRO}"
 APT_CACHE_IP=$(ip route get 1.1.1.1 | head -n 1 | cut -d' ' -f 7)
 
 if pidof -q apt-cacher-ng && [ -d "${R}/etc/apt/apt.conf.d" ]; then
