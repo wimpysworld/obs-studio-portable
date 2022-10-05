@@ -19,12 +19,14 @@ else
     CMD="/bin/bash"
 fi
 
-case "${DISTRO}" in
-    focal|jammy|kinetic) true;;
-    *) echo "ERROR! Unknown version: ${DISTRO}"
-       exit 1
-       ;;
-esac
+. "$(dirname "$0")/build-config"
+
+if [[ "${TARGETABLE_DISTROS[@]}" =~ "${DISTRO}" ]]; then
+    true
+else
+    echo "ERROR! Unknown version: ${DISTRO}"
+    exit 1
+fi
 
 R="${SUDO_HOME}/Builds/obs-builder-${DISTRO}"
 APT_CACHE_IP=$(ip route get 1.1.1.1 | head -n 1 | cut -d' ' -f 7)

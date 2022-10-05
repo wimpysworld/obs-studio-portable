@@ -12,13 +12,16 @@ if [ -z "${1}" ]; then
     exit 1
 fi
 
+. "$(dirname "$0")/build-config"
+
 DISTRO="${1}"
-case "${DISTRO}" in
-    focal|jammy|kinetic) true;;
-    *) echo "ERROR! Unknown version: ${DISTRO}"
-       exit 1
-      ;;
-esac
+if [[ "${TARGETABLE_DISTROS[@]}" =~ "${DISTRO}" ]]; then
+    true
+else
+    echo "ERROR! Unknown version: ${DISTRO}"
+    exit 1
+fi
+
 R="${SUDO_HOME}/Builds/obs-builder-${DISTRO}"
 
 if [ ! -d "${R}" ]; then
