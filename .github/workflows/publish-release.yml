@@ -1,0 +1,83 @@
+name: 🏗️ Build and 🚀 Publish release
+
+on:
+  push:
+    tags: ['*']
+
+jobs:
+  create-release:
+    name: Create release
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Create release ${{ github.ref }} as a draft
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: gh release create "${{ github.ref }}" --draft --generate-notes
+
+  matrix:
+    name: Generate matrix
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install required packages
+      run: |
+        sudo apt-get update
+        sudo apt-get install -yqq jq
+    - name: Generate matrix
+      id: matrix
+      run: |
+        . build-config
+        echo "::echo::on"
+        echo "::set-output name=distros::$(jq --compact-output --null-input '$ARGS.positional' --args -- "${TARGETABLE_DISTROS[@]}")"
+        echo "::set-output name=versions::$(jq --compact-output --null-input '$ARGS.positional' --args -- "${TARGETABLE_VERSIONS[@]}")"
+
+        EXCLUDE=""
+        for DISTRO in "${TARGETABLE_DISTROS[@]}"; do
+          for OBS_VER in "${TARGETABLE_VERSIONS[@]}"; do
+            ./build-validate.sh "${DISTRO}" "${OBS_VER}" && continue
+            EXCLUDE="${EXCLUDE:+$EXCLUDE,}{\"distro\": \"${DISTRO}\", \"version\": \"${OBS_VER}\"}"
+          done
+        done
+        echo "::set-output name=exclude::[${EXCLUDE}]"
+    outputs:
+      distros: ${{ steps.matrix.outputs.distros }}
+      versions: ${{ steps.matrix.outputs.versions }}
+      exclude: ${{ steps.matrix.outputs.exclude }}
+
+  build:
+    name: Build all packages
+    runs-on: ubuntu-latest
+    needs: [create-release, matrix]
+    strategy:
+      matrix:
+        distro: ${{ fromJson(needs.matrix.outputs.distros) }}
+        version: ${{ fromJson(needs.matrix.outputs.versions) }}
+        exclude: ${{ fromJson(needs.matrix.outputs.exclude) }}
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build OBS ${{ matrix.version }} for ${{ matrix.distro }}
+      run: sudo env OVERRIDE_BUILDS_DIR="$PWD" ./build-auto.sh "${{ matrix.distro }}" "${{ matrix.version }}"
+    - name: Upload OBS ${{ matrix.version }} for ${{ matrix.distro }} artefacts
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        for artefact in "artefacts/obs-portable-${{ matrix.version }}"*; do
+          gh release upload "${{ github.ref }}" "${artefact}" --clobber
+        done
+
+  publish-release:
+    name: Publish release
+    runs-on: ubuntu-latest
+    needs: [create-release, build]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Publish release ${{ github.ref }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        if [ "$(gh release view "${{ github.ref }}" --json assets --template '{{len .assets}}')" -lt 0 ]; then
+          exit 1
+        fi
+        gh release edit "${{ github.ref }}" --draft=false
