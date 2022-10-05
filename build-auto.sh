@@ -10,19 +10,25 @@ if [ -z "${1}" ] || [ -z "${2}" ]; then
     exit 1
 fi
 
-case "${1}" in
-    focal|jammy|kinetic) DISTROS="${1}";;
-    all) DISTROS="kinetic jammy focal";;
-    *) echo "ERROR! Unknown Ubuntu release: ${1}"
-      exit 1;;
-esac
+. "$(dirname "$0")/build-config"
 
-case "${2}" in
-    26|27|28)  OBS_VERS="${2}";;
-    all) OBS_VERS="28 27 26";;
-    *) echo "ERROR! Unsupported OBS Studio version: ${2}"
-       exit 1;;
-esac
+if [ "${1}" = "all" ]; then
+    DISTROS="${TARGETABLE_DISTROS[@]}"
+elif [[ "${TARGETABLE_DISTROS[@]}" =~ "${1}" ]]; then
+    DISTROS="${1}"
+else
+    echo "ERROR! Unknown Ubuntu release: ${1}"
+    exit 1
+fi
+
+if [ "${2}" = "all" ]; then
+    OBS_VERS="${TARGETABLE_VERSIONS[@]}"
+elif [[ "${TARGETABLE_VERSIONS[@]}" =~ "${2}" ]]; then
+    OBS_VERS="${2}"
+else
+    echo "ERROR! Unsupported OBS Studio version: ${2}"
+    exit 1
+fi
 
 for DISTRO in ${DISTROS}; do
     for OBS_VER in ${OBS_VERS}; do
