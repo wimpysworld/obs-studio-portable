@@ -32,10 +32,7 @@ fi
 
 for DISTRO in ${DISTROS}; do
     for OBS_VER in ${OBS_VERS}; do
-        if [ "${DISTRO}" == "kinetic" ] && [ "${OBS_VER}" -le 27 ]; then
-            # Do not try and build old OBS versions on Ubuntu 22.10
-            continue
-        fi
+        ./build-validate.sh "${DISTRO}" "${OBS_VER}" || continue
         ./build-trash.sh "${DISTRO}"
         ./build-bootstrap.sh "${DISTRO}"
         ./build-enter.sh "${DISTRO}" "/root/obs-portable.sh ${OBS_VER}"
