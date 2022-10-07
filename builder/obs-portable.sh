@@ -341,18 +341,19 @@ function stage_05_build_obs() {
     #shellcheck disable=SC1091
     if [ -e ./obs-options.sh ]; then
         source ./obs-options.sh
-        #shellcheck disable=SC2089
-        if [ -n "${RESTREAM_CLIENTID}" ] && [ -n "${RESTREAM_HASH}" ]; then
-            RESTREAM_OPTIONS="-DRESTREAM_CLIENTID='${RESTREAM_CLIENTID}' -DRESTREAM_HASH='${RESTREAM_HASH}'"
-        fi
-        #shellcheck disable=SC2089
-        if [ -n "${TWITCH_CLIENTID}" ] && [ -n "${TWITCH_HASH}" ]; then
-            TWITCH_OPTIONS="-DTWITCH_CLIENTID='${TWITCH_CLIENTID}' -DTWITCH_HASH='${TWITCH_HASH}'"
-        fi
-        #shellcheck disable=SC2089
-        if [ "${OBS_MAJ_VER}" -ge 27 ] && [ -n "${YOUTUBE_CLIENTID}" ] && [ -n "${YOUTUBE_CLIENTID_HASH}" ] && [ -n "${YOUTUBE_SECRET}" ] &&  [ -n "${YOUTUBE_SECRET_HASH}" ]; then
-            YOUTUBE_OPTIONS="-DYOUTUBE_CLIENTID='${YOUTUBE_CLIENTID}' -DYOUTUBE_CLIENTID_HASH='${YOUTUBE_CLIENTID_HASH}' -DYOUTUBE_SECRET='${YOUTUBE_SECRET}' -DYOUTUBE_SECRET_HASH='${YOUTUBE_SECRET_HASH}'"
-        fi
+    fi
+
+    #shellcheck disable=SC2089
+    if [ -n "${RESTREAM_CLIENTID}" ] && [ -n "${RESTREAM_HASH}" ]; then
+        RESTREAM_OPTIONS="-DRESTREAM_CLIENTID='${RESTREAM_CLIENTID}' -DRESTREAM_HASH='${RESTREAM_HASH}'"
+    fi
+    #shellcheck disable=SC2089
+    if [ -n "${TWITCH_CLIENTID}" ] && [ -n "${TWITCH_HASH}" ]; then
+        TWITCH_OPTIONS="-DTWITCH_CLIENTID='${TWITCH_CLIENTID}' -DTWITCH_HASH='${TWITCH_HASH}'"
+    fi
+    #shellcheck disable=SC2089
+    if [ "${OBS_MAJ_VER}" -ge 27 ] && [ -n "${YOUTUBE_CLIENTID}" ] && [ -n "${YOUTUBE_CLIENTID_HASH}" ] && [ -n "${YOUTUBE_SECRET}" ] &&  [ -n "${YOUTUBE_SECRET_HASH}" ]; then
+        YOUTUBE_OPTIONS="-DYOUTUBE_CLIENTID='${YOUTUBE_CLIENTID}' -DYOUTUBE_CLIENTID_HASH='${YOUTUBE_CLIENTID_HASH}' -DYOUTUBE_SECRET='${YOUTUBE_SECRET}' -DYOUTUBE_SECRET_HASH='${YOUTUBE_SECRET_HASH}'"
     fi
 
     #shellcheck disable=SC2086,SC2090
