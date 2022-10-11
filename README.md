@@ -49,6 +49,8 @@ exactly which versions of plugins and add-ons are included.
 You can safely install these OBS Studio Portable builds alongside `.deb`,
 FlatPak or Snap installs of OBS Studio.
 
+## Command Line
+
 The install process is simple:
 
   - **[Download the tarball (and sha256 hash) of OBS Studio Portable](https://github.com/wimpysworld/obs-studio-portable/releases)** for the version of Ubuntu you're running.
@@ -59,14 +61,20 @@ The install process is simple:
     - **It is essential you use the `obs-portable` launcher** to ensure OBS Studio finds all the associated libraries and add-ons.
 
 ```bash
-wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r22280/obs-portable-28.0.3-r22280-ubuntu-$(lsb_release -rs).tar.bz2"
-wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r22280/obs-portable-28.0.3-r22280-ubuntu-$(lsb_release -rs).tar.bz2.sha256"
-sha256sum -c obs-portable-28.0.3-r22280-ubuntu-$(lsb_release -rs).tar.bz2.sha256
-tar xvf obs-portable-28.0.3-r22280-ubuntu-$(lsb_release -rs).tar.bz2
-cd obs-portable-28.0.3-r22280-ubuntu-$(lsb_release -rs)
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r22284/obs-portable-28.0.3-r22284-ubuntu-$(lsb_release -rs).tar.bz2"
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r22284/obs-portable-28.0.3-r22284-ubuntu-$(lsb_release -rs).tar.bz2.sha256"
+sha256sum -c obs-portable-28.0.3-r22284-ubuntu-$(lsb_release -rs).tar.bz2.sha256
+tar xvf obs-portable-28.0.3-r22284-ubuntu-$(lsb_release -rs).tar.bz2
+cd obs-portable-28.0.3-r22284-ubuntu-$(lsb_release -rs)
 ./obs-dependencies
 ./obs-portable
 ```
+
+## Graphical Install
+
+Or if you prefer a graphical interface, you can use
+[**the fabulous QuickOBS**](https://github.com/ymauray/quickobs) ✨ from the always
+wonderful [Yannick Mauray](https://github.com/frenchguych) 💖
 
 ## Upgrades
 
@@ -74,6 +82,9 @@ The upgrade process is the same as an install and you can simply copy the
 `config` folder from your old OBS Studio Portable directory to the new one. If
 anything doesn't correctly when you start the new OBS Studio, just keep using
 the previous OBS Studio Portable instance.
+
+[QuickOBS](https://github.com/ymauray/quickobs) includes a feature to save and
+restore your configurations too.
 
 # Why does this project exist?
 
@@ -232,7 +243,7 @@ distributions who want to create their own portable builds of OBS Studio.
 
 ## Release numbers
 
-An OBS Studio Portable for Ubuntu release number will be something like r22280,
+An OBS Studio Portable for Ubuntu release number will be something like r22284,
 and the filename will clearly indicate the version of OBS Studio and which
 Ubuntu release is it for:
 
@@ -240,7 +251,7 @@ Ubuntu release is it for:
                      +-- OBS Portable for Ubuntu revision
                      |
                      v
-obs-portable-28.0.3-r22280-ubuntu-22.04.tar.bz2
+obs-portable-28.0.3-r22284-ubuntu-22.04.tar.bz2
               ^                    ^
               |                    |
               +-- OBS version      +-- Supported Ubuntu release
