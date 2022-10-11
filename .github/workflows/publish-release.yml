@@ -67,7 +67,16 @@ jobs:
         YOUTUBE_CLIENTID_HASH: ${{ secrets.YOUTUBE_CLIENTID_HASH }}
         YOUTUBE_SECRET: ${{ secrets.YOUTUBE_SECRET }}
         YOUTUBE_SECRET_HASH: ${{ secrets.YOUTUBE_SECRET_HASH }}
-      run: sudo env OVERRIDE_BUILDS_DIR="$PWD" ./build-auto.sh "${{ matrix.distro }}" "${{ matrix.version }}"
+      run: sudo env OVERRIDE_BUILDS_DIR="$PWD" \
+      TWITCH_CLIENT_ID="'"${TWITCH_CLIENTID}"'" \
+      TWITCH_HASH="'"${TWITCH_HASH}"'" \
+      RESTREAM_CLIENTID="'"${RESTREAM_CLIENTID}"'" \
+      RESTREAM_HASH="'"${RESTREAM_HASH}"'" \
+      YOUTUBE_CLIENTID="'"${YOUTUBE_CLIENTID}"'" \
+      YOUTUBE_CLIENTID_HASH="'"${YOUTUBE_CLIENTID_HASH}"'" \
+      YOUTUBE_SECRET="'"${YOUTUBE_SECRET}"'" \
+      YOUTUBE_SECRET_HASH="'"${YOUTUBE_SECRET_HASH}"'" \
+      ./build-auto.sh "${{ matrix.distro }}" "${{ matrix.version }}"
     - name: Upload OBS ${{ matrix.version }} for ${{ matrix.distro }} artefacts
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
