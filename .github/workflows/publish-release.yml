@@ -1,4 +1,4 @@
-name: 🏗️ Build and 🚀 Publish release
+name: Build 🏗️ and Publish 📦 release
 
 on:
   push:
