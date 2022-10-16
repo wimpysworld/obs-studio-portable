@@ -45,6 +45,14 @@ systemd-nspawn \
     --hostname="${DISTRO}" \
     --machine="${DISTRO}" \
     --resolv-conf=off \
+    --setenv=TWITCH_CLIENT_ID \
+    --setenv=TWITCH_HASH \
+    --setenv=RESTREAM_CLIENTID \
+    --setenv=RESTREAM_HASH \
+    --setenv=YOUTUBE_CLIENTID \
+    --setenv=YOUTUBE_CLIENTID_HASH \
+    --setenv=YOUTUBE_SECRET \
+    --setenv=YOUTUBE_SECRET_HASH \
     ${CMD}
 
 if [ -e "${R}/etc/apt/apt.conf.d/90cache" ]; then
