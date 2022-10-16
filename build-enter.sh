@@ -45,7 +45,7 @@ systemd-nspawn \
     --hostname="${DISTRO}" \
     --machine="${DISTRO}" \
     --resolv-conf=off \
-    --setenv=TWITCH_CLIENT_ID \
+    --setenv=TWITCH_CLIENTID \
     --setenv=TWITCH_HASH \
     --setenv=RESTREAM_CLIENTID \
     --setenv=RESTREAM_HASH \
