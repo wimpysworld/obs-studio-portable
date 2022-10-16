@@ -15,13 +15,6 @@ if [ -z "${1}" ] || [ -z "${2}" ]; then
 fi
 
 DISTRO="${1}"
-OBS_VER="${2}"
-
-# Adjust beta build major OBS version
-if [ "${OBS_VER}" == "beta" ]; then
-    OBS_VER="28"
-fi
-
 case "${DISTRO}" in
     focal) DISTRO_VER="20.04";;
     jammy) DISTRO_VER="22.04";;
@@ -30,10 +23,12 @@ case "${DISTRO}" in
       exit 1;;
 esac
 
-case "${OBS_VER}" in
+OBS_VER="${2}"
+OBS_MAJ_VER="${OBS_VER%%.*}"
+case "${OBS_MAJ_VER}" in
     26|27|28)
-        if [ -d "${BUILDS_DIR}/Builds/obs-builder-${DISTRO}/root/obs-${OBS_VER}" ]; then
-            cp -v "${BUILDS_DIR}/Builds/obs-builder-${DISTRO}/root/obs-${OBS_VER}"/obs-portable-${OBS_VER}*-ubuntu-${DISTRO_VER}.* artefacts/
+        if [ -d "${BUILDS_DIR}/Builds/obs-builder-${DISTRO}/root/obs-${OBS_MAJ_VER}" ]; then
+            cp -v "${BUILDS_DIR}/Builds/obs-builder-${DISTRO}/root/obs-${OBS_MAJ_VER}/obs-portable-${OBS_VER}"*-ubuntu-${DISTRO_VER}.* artefacts/
             chown "${SUDO_USER}":"${SUDO_USER}" "artefacts/obs-portable-${OBS_VER}"*-ubuntu-${DISTRO_VER}.*
         fi;;
     *) echo "ERROR! Unsupported OBS Studio version: ${OBS_VER}"
