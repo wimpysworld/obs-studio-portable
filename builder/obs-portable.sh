@@ -338,11 +338,6 @@ function stage_05_build_obs() {
         fi;;
     esac
 
-    #shellcheck disable=SC1091
-    if [ -e ./obs-options.sh ]; then
-        source ./obs-options.sh
-    fi
-
     #shellcheck disable=SC2089
     if [ -n "${RESTREAM_CLIENTID}" ] && [ -n "${RESTREAM_HASH}" ]; then
         RESTREAM_OPTIONS="-DRESTREAM_CLIENTID='${RESTREAM_CLIENTID}' -DRESTREAM_HASH='${RESTREAM_HASH}'"
