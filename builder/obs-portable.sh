@@ -4,9 +4,11 @@ LC_ALL=C
 
 # https://obsproject.com/wiki/Build-Instructions-For-Linux
 
-OBS_MAJ_VER=""
+
+OBS_VER=""
 if [ -n "${1}" ]; then
-    OBS_MAJ_VER="${1}"
+    OBS_VER="${1}"
+    OBS_MAJ_VER="${OBS_VER%%.*}"
 fi
 
 BASE_DIR="${HOME}/obs-${OBS_MAJ_VER}"
@@ -26,22 +28,14 @@ case ${OBS_MAJ_VER} in
         rm -rf "${BASE_DIR}/"{build,build_portable,build_system,plugins,source}
         rm -rf "${SOURCE_DIR}/ntv2/build/"
         exit 0;;
-    beta)
-        AJA_VER="v16.2-bugfix5"
-        OBS_VER="28.1.0-beta1"
-        CEF_VER="5060"
-        OBS_MAJ_VER="${OBS_VER%%.*}";;
     28)
         AJA_VER="v16.2-bugfix5"
-        OBS_VER="28.0.3"
         CEF_VER="5060";;
     27)
         AJA_VER="v16.2-bugfix5"
-        OBS_VER="27.2.4"
         CEF_VER="4638";;
     26)
         AJA_VER=""
-        OBS_VER="26.1.2"
         CEF_VER="4280";;
     25)
         AJA_VER=""
