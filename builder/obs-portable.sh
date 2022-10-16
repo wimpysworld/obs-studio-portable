@@ -26,6 +26,11 @@ case ${OBS_MAJ_VER} in
         rm -rf "${BASE_DIR}/"{build,build_portable,build_system,plugins,source}
         rm -rf "${SOURCE_DIR}/ntv2/build/"
         exit 0;;
+    beta)
+        OBS_MAJ_VER="28"
+        AJA_VER="v16.2-bugfix5"
+        OBS_VER="28.1.0-beta1"
+        CEF_VER="5060";;
     28)
         AJA_VER="v16.2-bugfix5"
         OBS_VER="28.0.3"

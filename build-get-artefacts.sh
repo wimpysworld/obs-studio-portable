@@ -17,6 +17,11 @@ fi
 DISTRO="${1}"
 OBS_VER="${2}"
 
+# Adjust beta build major OBS version
+if [ "${OBS_VER}" == "beta" ]; then
+    OBS_VER="28"
+fi
+
 case "${DISTRO}" in
     focal) DISTRO_VER="20.04";;
     jammy) DISTRO_VER="22.04";;
