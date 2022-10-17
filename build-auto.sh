@@ -41,7 +41,7 @@ for DISTRO in ${DISTROS}; do
             source builder/obs-options.sh
         fi
 
-        ./build-enter.sh "${DISTRO}" "/root/obs-portable.sh ${OBS_VER}"
+        ./build-enter.sh "${DISTRO}" "/root/obs-build.sh ${OBS_VER}"
         ./build-get-artefacts.sh "${DISTRO}" "${OBS_VER}"
     done
 done
