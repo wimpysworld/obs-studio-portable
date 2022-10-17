@@ -45,14 +45,14 @@ systemd-nspawn \
     --hostname="${DISTRO}" \
     --machine="${DISTRO}" \
     --resolv-conf=off \
-    --setenv=TWITCH_CLIENTID="${TWITCH_CLIENTID}" \
-    --setenv=TWITCH_HASH="${TWITCH_HASH}" \
-    --setenv=RESTREAM_CLIENTID="${RESTREAM_CLIENTID}" \
-    --setenv=RESTREAM_HASH="${RESTREAM_HASH}" \
-    --setenv=YOUTUBE_CLIENTID="${YOUTUBE_CLIENTID}" \
-    --setenv=YOUTUBE_CLIENTID_HASH="${YOUTUBE_CLIENTID_HASH}" \
-    --setenv=YOUTUBE_SECRET="${YOUTUBE_SECRET}" \
-    --setenv=YOUTUBE_SECRET_HASH="${YOUTUBE_SECRET_HASH}" \
+    --setenv=TWITCH_CLIENTID=${TWITCH_CLIENTID} \
+    --setenv=TWITCH_HASH=${TWITCH_HASH} \
+    --setenv=RESTREAM_CLIENTID=${RESTREAM_CLIENTID} \
+    --setenv=RESTREAM_HASH=${RESTREAM_HASH} \
+    --setenv=YOUTUBE_CLIENTID=${YOUTUBE_CLIENTID} \
+    --setenv=YOUTUBE_CLIENTID_HASH=${YOUTUBE_CLIENTID_HASH} \
+    --setenv=YOUTUBE_SECRET=${YOUTUBE_SECRET} \
+    --setenv=YOUTUBE_SECRET_HASH=${YOUTUBE_SECRET_HASH} \
     ${CMD}
 
 if [ -e "${R}/etc/apt/apt.conf.d/90cache" ]; then
