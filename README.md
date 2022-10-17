@@ -236,7 +236,7 @@ hastily thrown together, *"build scripts"* are included in this repository.
 The `build-*.sh` scripts are wrappers to help automate things, with
 [`build-auto.sh`](./build-auto.sh) being the main entry point.
 
-The actual build script, [`obs-portable.sh`](builder/obs-portable.sh), gets
+The actual build script, [`obs-build.sh`](builder/obs-build.sh), gets
 injected into the new container and is responsible for actually building OBS
 Studio. Perhaps it might also serve as a reference for users of other Linux
 distributions who want to create their own portable builds of OBS Studio.
