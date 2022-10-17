@@ -337,17 +337,21 @@ function stage_05_build_obs() {
         fi;;
     esac
 
-    #shellcheck disable=SC2089
-    if [ -n "${RESTREAM_CLIENTID}" ] && [ -n "${RESTREAM_HASH}" ]; then
-        RESTREAM_OPTIONS="-DRESTREAM_CLIENTID='${RESTREAM_CLIENTID}' -DRESTREAM_HASH='${RESTREAM_HASH}'"
+    if [ -z "${RESTREAM_CLIENTID}" ] || [ -z "${RESTREAM_HASH}" ]; then
+        RESTREAM_CLIENTID=""
+        RESTREAM_HASH="0"
     fi
-    #shellcheck disable=SC2089
-    if [ -n "${TWITCH_CLIENTID}" ] && [ -n "${TWITCH_HASH}" ]; then
-        TWITCH_OPTIONS="-DTWITCH_CLIENTID='${TWITCH_CLIENTID}' -DTWITCH_HASH='${TWITCH_HASH}'"
+
+    if [ -z "${TWITCH_CLIENTID}" ] || [ -z "${TWITCH_HASH}" ]; then
+        TWITCH_CLIENTID=""
+        TWITCH_HASH="0"
     fi
-    #shellcheck disable=SC2089
-    if [ "${OBS_MAJ_VER}" -ge 27 ] && [ -n "${YOUTUBE_CLIENTID}" ] && [ -n "${YOUTUBE_CLIENTID_HASH}" ] && [ -n "${YOUTUBE_SECRET}" ] &&  [ -n "${YOUTUBE_SECRET_HASH}" ]; then
-        YOUTUBE_OPTIONS="-DYOUTUBE_CLIENTID='${YOUTUBE_CLIENTID}' -DYOUTUBE_CLIENTID_HASH='${YOUTUBE_CLIENTID_HASH}' -DYOUTUBE_SECRET='${YOUTUBE_SECRET}' -DYOUTUBE_SECRET_HASH='${YOUTUBE_SECRET_HASH}'"
+
+    if [ -z "${YOUTUBE_CLIENTID}" ] || [ -z "${YOUTUBE_CLIENTID_HASH}" ] || [ -z "${YOUTUBE_SECRET}" ] || [ -z "${YOUTUBE_SECRET_HASH}" ]; then
+        YOUTUBE_CLIENTID=""
+        YOUTUBE_CLIENTID_HASH="0"
+        YOUTUBE_SECRET=""
+        YOUTUBE_SECRET_HASH="0"
     fi
 
     #shellcheck disable=SC2086,SC2090
@@ -369,9 +373,14 @@ function stage_05_build_obs() {
       -DENABLE_WAYLAND=ON \
       ${RTMPS_OPTIONS} \
       ${STREAMFX_OPTIONS} \
-      ${YOUTUBE_OPTIONS} \
-      ${TWITCH_OPTIONS} \
-      ${RESTREAM_OPTIONS} \
+      -DRESTREAM_CLIENTID=${RESTREAM_CLIENTID} \
+      -DRESTREAM_HASH=${RESTREAM_HASH} \
+      -DTWITCH_CLIENTID=${TWITCH_CLIENTID} \
+      -DTWITCH_HASH=${TWITCH_HASH} \
+      -DYOUTUBE_CLIENTID=${YOUTUBE_CLIENTID} \
+      -DYOUTUBE_CLIENTID_HASH=${YOUTUBE_CLIENTID_HASH} \
+      -DYOUTUBE_SECRET=${YOUTUBE_SECRET} \
+      -DYOUTUBE_SECRET_HASH=${YOUTUBE_SECRET_HASH} \
       ${PORTABLE_OPTIONS} | tee "${BUILD_DIR}/cmake-obs-${TARGET}.log"
 
     cmake --build "${BUILD_TO}/"
