@@ -27,12 +27,12 @@ another computer and just use it.**
 Each tarball of OBS Studio Portable includes a `manifest.txt` that describes
 exactly which versions of plugins and add-ons are included.
 
-|              | OBS Studio 26 | OBS Studio 27 | OBS Studio 28 |
-| ------------ | ------------- | ------------- | ------------- |
-| Ubuntu 20.04 | 26.1.2 (Qt 5) | 27.2.4 (Qt 5) | 28.0.3 (Qt 5) |
-| Ubuntu 22.04 | 26.1.2 (Qt 5) | 27.2.4 (Qt 5) | 28.0.3 (Qt 6) |
-| Ubuntu 22.10 |               |               | 28.0.3 (Qt 6) |
-| Plugins      | 29            | 40            | 42            |
+|              | OBS Studio 26 | OBS Studio 27 | OBS Studio 28 | OBS Studio Beta     |
+| ------------ | ------------- | ------------- | ------------- | ------------------- |
+| Ubuntu 20.04 | 26.1.2 (Qt 5) | 27.2.4 (Qt 5) | 28.0.3 (Qt 5) | 28.1.0-beta1 (Qt 5) |
+| Ubuntu 22.04 | 26.1.2 (Qt 5) | 27.2.4 (Qt 5) | 28.0.3 (Qt 6) | 28.1.0-beta1 (Qt 6) |
+| Ubuntu 22.10 |               |               | 28.0.3 (Qt 6) | 28.1.0-beta1 (Qt 6) |
+| Plugins      | 28            | 42            | 44            | 44                  |
 
 ### Caveats
 
@@ -160,6 +160,7 @@ Ubuntu:
   * **[Game Capture](https://github.com/nowrep/obs-vkcapture)** plugin; Vulkan/OpenGL game capture.
   * **[GStreamer](https://github.com/fzwoch/obs-gstreamer)** plugin; feed GStreamer launch pipelines into OBS Studio.
   * **[NvFBC](https://gitlab.com/fzwoch/obs-nvfbc)** plugin; screen capture via NVIDIA FBC API. Requires [NvFBC patches for Nvidia drivers](https://github.com/keylase/nvidia-patch) for consumer grade GPUs.
+  * **[RTSP Server](https://github.com/iamscottxu/obs-rtspserver/)** plugin; RTSP server
   * **[Source Record](https://github.com/exeldro/obs-source-record)** plugin; make sources available to record via a filter.
   * **[StreamFX](https://github.com/Xaymar/obs-StreamFX)** plugin; unlocks the full potential of NVENC along with useful composition filters.
   * **[Teleport](https://github.com/fzwoch/obs-teleport)** plugin; open NDI-like replacement. (*not NDI compatible*)
