@@ -29,9 +29,9 @@ exactly which versions of plugins and add-ons are included.
 
 |              | OBS Studio 26 | OBS Studio 27 | OBS Studio 28 | OBS Studio Beta     |
 | ------------ | ------------- | ------------- | ------------- | ------------------- |
-| Ubuntu 20.04 | 26.1.2 (Qt 5) | 27.2.4 (Qt 5) | 28.0.3 (Qt 5) | 28.1.0-beta1 (Qt 5) |
-| Ubuntu 22.04 | 26.1.2 (Qt 5) | 27.2.4 (Qt 5) | 28.0.3 (Qt 6) | 28.1.0-beta1 (Qt 6) |
-| Ubuntu 22.10 |               |               | 28.0.3 (Qt 6) | 28.1.0-beta1 (Qt 6) |
+| Ubuntu 20.04 | 26.1.2 (Qt 5) | 27.2.4 (Qt 5) | 28.0.3 (Qt 5) | 28.1.0-rc1 (Qt 5) |
+| Ubuntu 22.04 | 26.1.2 (Qt 5) | 27.2.4 (Qt 5) | 28.0.3 (Qt 6) | 28.1.0-rc1 (Qt 6) |
+| Ubuntu 22.10 |               |               | 28.0.3 (Qt 6) | 28.1.0-rc1 (Qt 6) |
 | Plugins      | 28            | 42            | 44            | 44                  |
 
 ### Caveats
