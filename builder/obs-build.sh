@@ -407,6 +407,10 @@ function stage_06_plugins_in_tree() {
         PLUGIN="$(echo "${REPO}" | cut -d'/' -f5)"
         BRANCH="$(echo "${REPO}" | cut -d'/' -f6)"
         DIRECTORY="$(echo "${REPO}" | cut -d'/' -f7-)"
+        if [ "${PLUGIN}" == "obs-rtspserver" ] && [ "${DISTRO_CMP_VER}" -le 2004 ]; then
+            echo "Skipping ${PLUGIN} (not supported on ${DISTRO} ${DISTRO_VER})"
+            continue
+        fi
         clone_source "${URL}.git" "${BRANCH}" "${SOURCE_DIR}/${DIRECTORY}/${PLUGIN}"
         grep -qxF "add_subdirectory(${PLUGIN})" "${SOURCE_DIR}/${DIRECTORY}/CMakeLists.txt" || echo "add_subdirectory(${PLUGIN})" >> "${SOURCE_DIR}/${DIRECTORY}/CMakeLists.txt"
     done < ./plugins-"${OBS_MAJ_VER}"-in-tree.txt
@@ -637,7 +641,7 @@ function stage_09_finalise() {
     #shellcheck disable=SC2162
     while read LIB; do
         #shellcheck disable=SC2005
-        echo "$(dpkg -S "${LIB}" | grep -Fv -e 'i386' -e '-dev' | cut -d ':' -f1 | sort -u)" >> obs-pkgs.txt
+        echo "$(dpkg -S "${LIB}" 2>/dev/null | cut -d ':' -f1 | grep -Fv -e 'i386' -e '-dev' -e 'pulseaudio' | sort -u)" >> obs-pkgs.txt
     done < <(sort -u obs-libs.txt)
 
     # Add the packages to the dependencies file
