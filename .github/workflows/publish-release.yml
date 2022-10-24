@@ -29,8 +29,8 @@ jobs:
       run: |
         . build-config
         echo "::echo::on"
-        echo "::set-output name=distros::$(jq --compact-output --null-input '$ARGS.positional' --args -- "${TARGETABLE_DISTROS[@]}")"
-        echo "::set-output name=versions::$(jq --compact-output --null-input '$ARGS.positional' --args -- "${TARGETABLE_VERSIONS[@]}")"
+        echo "name=distros::$(jq --compact-output --null-input '$ARGS.positional' --args -- "${TARGETABLE_DISTROS[@]}")" >> $GITHUB_OUTPUT
+        echo "name=versions::$(jq --compact-output --null-input '$ARGS.positional' --args -- "${TARGETABLE_VERSIONS[@]}")" >> $GITHUB_OUTPUT
 
         EXCLUDE=""
         for DISTRO in "${TARGETABLE_DISTROS[@]}"; do
@@ -39,7 +39,7 @@ jobs:
             EXCLUDE="${EXCLUDE:+$EXCLUDE,}{\"distro\": \"${DISTRO}\", \"version\": \"${OBS_VER}\"}"
           done
         done
-        echo "::set-output name=exclude::[${EXCLUDE}]"
+        echo "name=exclude::[${EXCLUDE}]" >> $GITHUB_OUTPUT
     outputs:
       distros: ${{ steps.matrix.outputs.distros }}
       versions: ${{ steps.matrix.outputs.versions }}
