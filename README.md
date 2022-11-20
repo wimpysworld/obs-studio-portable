@@ -29,9 +29,9 @@ exactly which versions of plugins and add-ons are included.
 
 |              | OBS Studio 26 | OBS Studio 27 | OBS Studio 28 |
 | ------------ | ------------- | ------------- | ------------- |
-| Ubuntu 20.04 | 26.1.2 (Qt 5) | 27.2.4 (Qt 5) | 28.1.0 (Qt 5) |
-| Ubuntu 22.04 | 26.1.2 (Qt 5) | 27.2.4 (Qt 5) | 28.1.0 (Qt 6) |
-| Ubuntu 22.10 |               |               | 28.1.0 (Qt 6) |
+| Ubuntu 20.04 | 26.1.2 (Qt 5) | 27.2.4 (Qt 5) | 28.1.2 (Qt 5) |
+| Ubuntu 22.04 | 26.1.2 (Qt 5) | 27.2.4 (Qt 5) | 28.1.2 (Qt 6) |
+| Ubuntu 22.10 |               |               | 28.1.2 (Qt 6) |
 | Plugins      | 28            | 42            | 44            |
 
 ### Caveats
@@ -61,11 +61,11 @@ The install process is simple:
     - **It is essential you use the `obs-portable` launcher** to ensure OBS Studio finds all the associated libraries and add-ons.
 
 ```bash
-wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r22310/obs-portable-28.0.3-r22310-ubuntu-$(lsb_release -rs).tar.bz2"
-wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r22310/obs-portable-28.0.3-r22310-ubuntu-$(lsb_release -rs).tar.bz2.sha256"
-sha256sum -c obs-portable-28.0.3-r22310-ubuntu-$(lsb_release -rs).tar.bz2.sha256
-tar xvf obs-portable-28.0.3-r22310-ubuntu-$(lsb_release -rs).tar.bz2
-cd obs-portable-28.0.3-r22310-ubuntu-$(lsb_release -rs)
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r22324/obs-portable-28.0.3-r22324-ubuntu-$(lsb_release -rs).tar.bz2"
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r22324/obs-portable-28.0.3-r22324-ubuntu-$(lsb_release -rs).tar.bz2.sha256"
+sha256sum -c obs-portable-28.0.3-r22324-ubuntu-$(lsb_release -rs).tar.bz2.sha256
+tar xvf obs-portable-28.0.3-r22324-ubuntu-$(lsb_release -rs).tar.bz2
+cd obs-portable-28.0.3-r22324-ubuntu-$(lsb_release -rs)
 ./obs-dependencies
 ./obs-portable
 ```
@@ -245,7 +245,7 @@ distributions who want to create their own portable builds of OBS Studio.
 
 ## Release numbers
 
-An OBS Studio Portable for Ubuntu release number will be something like r22310,
+An OBS Studio Portable for Ubuntu release number will be something like r22324,
 and the filename will clearly indicate the version of OBS Studio and which
 Ubuntu release is it for:
 
@@ -253,7 +253,7 @@ Ubuntu release is it for:
                      +-- OBS Portable for Ubuntu revision
                      |
                      v
-obs-portable-28.0.3-r22310-ubuntu-22.04.tar.bz2
+obs-portable-28.0.3-r22324-ubuntu-22.04.tar.bz2
               ^                    ^
               |                    |
               +-- OBS version      +-- Supported Ubuntu release
