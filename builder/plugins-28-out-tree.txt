@@ -11,7 +11,7 @@ https://github.com/norihiro/obs-color-monitor/0.4.3
 https://github.com/norihiro/obs-command-source/0.3.1
 https://github.com/norihiro/obs-face-tracker/0.6.4
 https://github.com/norihiro/obs-multisource-effect/0.2.1
-https://github.com/norihiro/obs-mute-filter/0.2.1
+https://github.com/norihiro/obs-mute-filter/0.2.2
 https://github.com/norihiro/obs-text-pthread/2.0.2
 https://github.com/nowrep/obs-vkcapture/b2fd16d1122df1064614ea90bf668418d0554c1b
 https://github.com/obsproject/obs-websocket/4.9.1-compat
