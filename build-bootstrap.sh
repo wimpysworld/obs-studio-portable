@@ -27,6 +27,7 @@ fi
 R="${BUILDS_DIR}/Builds/obs-builder-${DISTRO}"
 
 if [ ! -d "${R}" ]; then
+    apt-get -y update
     apt-get -y install debootstrap systemd-container debian-archive-keyring ubuntu-keyring
 
     if pidof apt-cacher-ng; then
