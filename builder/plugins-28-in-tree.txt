@@ -1,6 +1,6 @@
 https://github.com/exeldro/obs-device-switcher/d8f2c590a9c3da91ff5125d9f01b6797568b02e4/UI/frontend-plugins
 https://github.com/exeldro/obs-dir-watch-media/270d9137c650cb419d7a57aa9e81a8e0433217df/plugins
-https://github.com/exeldro/obs-downstream-keyer/0.2.5/UI/frontend-plugins
+https://github.com/exeldro/obs-downstream-keyer/efcf880223f126c1a4879aeb5d5ebce8e00f0691/UI/frontend-plugins
 https://github.com/exeldro/obs-dynamic-delay/33456a177f830fe63f3bc618ed606465920d072c/plugins
 https://github.com/exeldro/obs-freeze-filter/e1a8400b9f55f27e00dd9fe2ff8274ee00b39abf/plugins
 https://github.com/exeldro/obs-gradient-source/ff6c915204d31a45f576f1f43875bfef18c71f04/plugins
