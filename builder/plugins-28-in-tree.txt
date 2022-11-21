@@ -14,7 +14,7 @@ https://github.com/exeldro/obs-setting-docks/388fb92d253968b797c80d0a5544f49c1d2
 https://github.com/exeldro/obs-shaderfilter/1.21.2/plugins
 https://github.com/exeldro/obs-source-copy/c88b3c997439247749a5bffc70a69eee8929742a/UI/frontend-plugins
 https://github.com/exeldro/obs-source-dock/0.3.3/UI/frontend-plugins
-https://github.com/exeldro/obs-source-record/10a9b15c6fd83ba56ffd0e2f5e44b6fba23d772c/plugins
+https://github.com/exeldro/obs-source-record/4a543d3577d56a27f5f2b9aa541a466b37dafde0/plugins
 https://github.com/exeldro/obs-source-switcher/c83d7d2a497a4c7629e47508309a399a8b83aa06/plugins
 https://github.com/exeldro/obs-time-shift/6c93ecf1cf74647214f078e6da9178663c45bf3b/plugins
 https://github.com/exeldro/obs-time-warp-scan/630637ea3a5768e99dd43c772fb0e6766406717b/plugins
