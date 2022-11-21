@@ -22,5 +22,5 @@ https://github.com/exeldro/obs-transition-table/0.2.5/UI/frontend-plugins
 https://github.com/exeldro/obs-virtual-cam-filter/4af4d50d25cb6afa18b29b84a6b1f795e486f4a1/plugins
 https://github.com/iamscottxu/obs-rtspserver/v3.0.0-beta3/plugins
 https://github.com/Qufyy/obs-scale-to-sound/1.2.2/plugins
-https://github.com/WarmUpTill/SceneSwitcher/1.19.1/UI/frontend-plugins
+https://github.com/WarmUpTill/SceneSwitcher/1.19.2/UI/frontend-plugins
 https://github.com/Xaymar/obs-StreamFX/0.12.0a151/UI/frontend-plugins
