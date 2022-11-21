@@ -4,7 +4,7 @@ https://github.com/fzwoch/obs-gstreamer/v0.3.5
 https://github.com/fzwoch/obs-teleport/0.6.1
 https://github.com/fzwoch/obs-vaapi/0.1.0
 https://github.com/kkartaltepe/obs-text-pango/8f4775d629624ea450474e39a4e7143166d8aeba
-https://github.com/nhielost/obs-midi-mg/v1.4.2
+https://github.com/nhielost/obs-midi-mg/v2.1.1
 https://github.com/norihiro/obs-async-source-duplication/0.4.1
 https://github.com/norihiro/obs-audio-pan-filter/0.2.2
 https://github.com/norihiro/obs-color-monitor/0.4.3
