@@ -61,12 +61,12 @@ The install process is simple:
     - **It is essential you use the `obs-portable` launcher** to ensure OBS Studio finds all the associated libraries and add-ons.
 
 ```bash
-wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r22325/obs-portable-28.0.3-r22325-ubuntu-$(lsb_release -rs).tar.bz2"
-wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r22325/obs-portable-28.0.3-r22325-ubuntu-$(lsb_release -rs).tar.bz2.sha256"
-sha256sum -c obs-portable-28.0.3-r22325-ubuntu-$(lsb_release -rs).tar.bz2.sha256
-tar xvf obs-portable-28.0.3-r22325-ubuntu-$(lsb_release -rs).tar.bz2
-cd obs-portable-28.0.3-r22325-ubuntu-$(lsb_release -rs)
-./obs-dependencies
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23012/obs-portable-29.0.0-r23012-ubuntu-$(lsb_release -rs).tar.bz2"
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23012/obs-portable-29.0.0-r23012-ubuntu-$(lsb_release -rs).tar.bz2.sha256"
+sha256sum -c obs-portable-29.0.0-r23012-ubuntu-$(lsb_release -rs).tar.bz2.sha256
+tar xvf obs-portable-29.0.0-r23012-ubuntu-$(lsb_release -rs).tar.bz2
+cd obs-portable-29.0.0-r23012-ubuntu-$(lsb_release -rs)
+sudo ./obs-dependencies
 ./obs-portable
 ```
 
@@ -172,6 +172,7 @@ Ubuntu:
   * **[Color Monitor](https://github.com/norihiro/obs-color-monitor)** plugin; vectorscope, waveform, and histogram.
   * **[Scene Collection Manager](https://github.com/exeldro/obs-scene-collection-manager)** plugin; filter, backup and restore Scene Collections.
   * **[Scene Notes Dock](https://github.com/exeldro/obs-scene-notes-dock)** plugin; create a Dock for showing and editing notes for the current active scene.
+  * **[Source Clone](https://github.com/exeldro/obs-source-clone)** plugin; add source cloning
   * **[Source Copy](https://github.com/exeldro/obs-source-copy)** plugin; adds copy and paste options to the tools menu.
   * **[Source Dock](https://github.com/exeldro/obs-source-dock)** plugin; create a Dock for a source, which lets you see audio levels, change volume and control media.
 
@@ -245,7 +246,7 @@ distributions who want to create their own portable builds of OBS Studio.
 
 ## Release numbers
 
-An OBS Studio Portable for Ubuntu release number will be something like r22325,
+An OBS Studio Portable for Ubuntu release number will be something like r23012,
 and the filename will clearly indicate the version of OBS Studio and which
 Ubuntu release is it for:
 
@@ -253,7 +254,7 @@ Ubuntu release is it for:
                      +-- OBS Portable for Ubuntu revision
                      |
                      v
-obs-portable-28.0.3-r22325-ubuntu-22.04.tar.bz2
+obs-portable-29.0.0-r23012-ubuntu-22.04.tar.bz2
               ^                    ^
               |                    |
               +-- OBS version      +-- Supported Ubuntu release
