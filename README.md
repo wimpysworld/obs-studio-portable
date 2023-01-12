@@ -24,25 +24,25 @@ another computer and just use it.**
 
 ## Supported Software
 
-Each tarball of OBS Studio Portable includes a `manifest.txt` that describes
+The tarball of OBS Studio Portable includes a `manifest.txt` that describes
 exactly which versions of plugins and add-ons are included.
 
-|              | OBS Studio 26 | OBS Studio 27 | OBS Studio 28 |
-| ------------ | ------------- | ------------- | ------------- |
-| Ubuntu 20.04 | 26.1.2 (Qt 5) | 27.2.4 (Qt 5) | 28.1.2 (Qt 5) |
-| Ubuntu 22.04 | 26.1.2 (Qt 5) | 27.2.4 (Qt 5) | 28.1.2 (Qt 6) |
-| Ubuntu 22.10 |               |               | 28.1.2 (Qt 6) |
-| Plugins      | 28            | 42            | 44            |
+|              | OBS Studio 29 |
+| ------------ | ------------- |
+| Ubuntu 20.04 | 29.0.0 (Qt 5) |
+| Ubuntu 22.04 | 29.0.0 (Qt 6) |
+| Ubuntu 22.10 | 29.0.0 (Qt 6) |
+| Plugins      | 45            |
 
 ### Caveats
 
-  - [Game Capture](https://github.com/nowrep/obs-vkcapture) is available in OBS Studio 27 and 28 builds on Ubuntu 22.04 and newer.
-  - [NvFBC Capture](https://gitlab.com/fzwoch/obs-nvfbc) is available in OBS Studio 26 and 27 builds; the required GLX support was removed in OBS Studio 28.
+  - [Game Capture](https://github.com/nowrep/obs-vkcapture) is available on Ubuntu 22.04 and newer.
+  - [NvFBC Capture](https://gitlab.com/fzwoch/obs-nvfbc) is available in legacy build of OBS Studio 26 and 27 builds; the required GLX support was removed in OBS Studio 28.
   - PipeWire support is available in Ubuntu 22.04 and newer.
-  - [Teleport](https://github.com/fzwoch/obs-teleport) is available in Ubuntu 22.04 and newer builds.
-  - [SRT & RIST Protocol](https://obsproject.com/wiki/Streaming-With-SRT-Or-RIST-Protocols) support is available in Ubuntu 22.10 and newer.
-  - [WebSockets](https://github.com/obsproject/obs-websocket) 5.0.1 and 4.9.1-compat are included in OBS Studio 28 builds
-    - *OBS Studio 26 builds have 4.9.0 and OBS Studio 27 builds have 4.9.1*
+  - [Teleport](https://github.com/fzwoch/obs-teleport) is available on Ubuntu 22.04 and newer.
+  - [SRT & RIST Protocol](https://obsproject.com/wiki/Streaming-With-SRT-Or-RIST-Protocols) support is available on Ubuntu 22.10 and newer.
+  - [WebSockets](https://github.com/obsproject/obs-websocket) 5.0.1 and 4.9.1-compat are included in OBS Studio 28 and newer.
+    - *Legacys build of OBS Studio 26 have 4.9.0 and OBS Studio 27 builds have 4.9.1*
 
 # Install
 
