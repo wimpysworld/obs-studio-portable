@@ -1,2 +1,2 @@
 TARGETABLE_DISTROS=("kinetic" "jammy" "focal")
-TARGETABLE_VERSIONS=("28.1.2" "27.2.4" "26.1.2")
+TARGETABLE_VERSIONS=("29.0.0")
