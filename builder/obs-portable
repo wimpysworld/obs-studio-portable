@@ -16,9 +16,10 @@ fi
 PORTABLE_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 export LD_LIBRARY_PATH="${PORTABLE_DIR}/bin/64bit":"${PORTABLE_DIR}/obs-plugins/64bit":"${PORTABLE_DIR}/data/obs-scripting/64bit":"${PORTABLE_DIR}/cef":"${PORTABLE_DIR}/lib"${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
 
-if cd "${PORTABLE_DIR}/bin/64bit"; then
-    exec ./obs --portable "${@}"
-else
-    echo "ERROR! Could not change directory to ${PORTABLE_DIR}/bin/64bit."
+if [ ! -d "${PORTABLE_DIR}/bin/64bit" ]; then
+    echo "ERROR! Could not find ${PORTABLE_DIR}/bin/64bit."
     exit 1
 fi
+
+cd "${PORTABLE_DIR}/bin/64bit"
+exec ./obs --portable "${@}"
