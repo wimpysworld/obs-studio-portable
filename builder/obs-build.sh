@@ -256,9 +256,9 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     fi
 
     if [ "${DISTRO_CMP_VER}" -ge 2204 ] && [ "${OBS_MAJ_VER}" -ge 27 ]; then
-        PKG_OBS_STREAMFX="libaom-dev"
-        echo "   - StreamFX       : ${PKG_OBS_STREAMFX}" >> "${BUILD_DIR}/obs-manifest.txt"
-        apt-get -y install ${PKG_OBS_STREAMFX}
+        PKG_OBS_AV1="libaom-dev"
+        echo "   - AV1            : ${PKG_OBS_AV1}" >> "${BUILD_DIR}/obs-manifest.txt"
+        apt-get -y install ${PKG_OBS_AV1}
     fi
 }
 
