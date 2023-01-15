@@ -325,7 +325,9 @@ function stage_05_build_obs() {
         else
           PORTABLE_OPTIONS="-DUNIX_STRUCTURE=OFF"
         fi
-        STREAMFX_OPTIONS="-DStreamFX_ENABLE_CLANG=OFF -DStreamFX_ENABLE_FRONTEND=OFF -DStreamFX_ENABLE_UPDATER=OFF"
+        # Disable some StreamFX features that are not required or deprecated
+        # https://github.com/Xaymar/obs-StreamFX/blob/root/CMakeLists.txt#L313
+        STREAMFX_OPTIONS="-DStreamFX_ENABLE_ENCODER_FFMPEG_AMF=OFF -DStreamFX_ENABLE_ENCODER_AOM_AV1=OFF -DStreamFX_ENABLE_FILTER_DISPLACEMENT=OFF -DStreamFX_ENABLE_FILTER_SHADER=OFF -DStreamFX_ENABLE_SOURCE_SHADER=OFF -DStreamFX_ENABLE_TRANSITION_SHADER=OFF -DStreamFX_ENABLE_CLANG=OFF -DStreamFX_ENABLE_FRONTEND=OFF -DStreamFX_ENABLE_UPDATER=OFF"
         ;;
       system)
         BUILD_TO="${BUILD_SYSTEM}"
