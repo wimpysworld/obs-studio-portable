@@ -579,17 +579,6 @@ function stage_09_finalise() {
         rm -f "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/"${CEF_FILE} || true
     done
 
-    # The StreamFX log entries show it tries to load libaom.so from data/obs-plugins/StreamFX
-    #09:20:39.424: [StreamFX] <encoder::aom::av1> Loading of '../../data/obs-plugins/StreamFX/libaom.so' failed.
-    #09:20:39.424: [StreamFX] <encoder::aom::av1> Loading of 'libaom' failed.
-    if [ -d "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/StreamFX" ]; then
-        case "${DISTRO_CMP_VER}" in
-            2204) AOM_VER="3.3.0";;
-            2210) AOM_VER="3.4.0";;
-        esac
-        cp /usr/lib/x86_64-linux-gnu/libaom.so."${AOM_VER}" "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/StreamFX/libaom.so" || true
-    fi
-
     # Remove empty directories
     find "${BASE_DIR}/${INSTALL_DIR}" -type d -empty -delete
 
