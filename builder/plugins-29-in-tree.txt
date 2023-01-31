@@ -23,5 +23,5 @@ https://github.com/exeldro/obs-time-warp-scan/f955f8e3baa362efa88ee9a49e30a80bbd
 https://github.com/exeldro/obs-transition-table/7a7ae9e5bfe4f3b48883d901e90fd4ffb4608e6d/UI/frontend-plugins
 https://github.com/exeldro/obs-virtual-cam-filter/4af4d50d25cb6afa18b29b84a6b1f795e486f4a1/plugins
 https://github.com/iamscottxu/obs-rtspserver/v3.0.0-beta3/plugins
-https://github.com/WarmUpTill/SceneSwitcher/1.20.2/UI/frontend-plugins
+https://github.com/WarmUpTill/SceneSwitcher/1.20.3/UI/frontend-plugins
 https://github.com/Xaymar/obs-StreamFX/0.12.0a170/plugins
