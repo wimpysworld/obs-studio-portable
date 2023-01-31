@@ -1,7 +1,7 @@
 https://github.com/cg2121/obs-soundboard/1.1.1
 https://github.com/dimtpap/obs-pipewire-audio-capture/multiple-apps-per-source
 https://github.com/fzwoch/obs-gstreamer/v0.4.0
-https://github.com/fzwoch/obs-teleport/0.6.1
+https://github.com/fzwoch/obs-teleport/0.6.5
 https://github.com/fzwoch/obs-vaapi/0.1.0
 https://github.com/kkartaltepe/obs-text-pango/bc9af01217ad9baa0bdb17ecec1f15424fbdc4f8
 https://github.com/nhielost/obs-midi-mg/v2.2.0

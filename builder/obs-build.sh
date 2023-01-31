@@ -433,6 +433,7 @@ function stage_06_plugins_in_tree() {
             echo "Skipping ${PLUGIN} (not supported on ${DISTRO} ${DISTRO_VER})"
             continue
         elif [ "${PLUGIN}" == "SceneSwitcher" ] && [ "${DISTRO_CMP_VER}" -le 2004 ] && [ ${OBS_MAJ_VER} -ge 29 ]; then
+            # SceneSwitcher 1.20 FTBFS on Ubuntu 20.04
             BRANCH="1.19.2"
         fi
         clone_source "${URL}.git" "${BRANCH}" "${SOURCE_DIR}/${DIRECTORY}/${PLUGIN}"
