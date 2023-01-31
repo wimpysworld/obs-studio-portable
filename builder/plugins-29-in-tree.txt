@@ -14,7 +14,6 @@ https://github.com/exeldro/obs-scene-collection-manager/0.0.8/UI/frontend-plugin
 https://github.com/exeldro/obs-shaderfilter/1.21.2/plugins
 https://github.com/exeldro/obs-source-copy/2a325813e969f6c62b1d413195a1340c4a2a40e4/UI/frontend-plugins
 https://github.com/exeldro/obs-source-clone/ec7c5749f7b6e05f5be42c7d573052a1dea4cb0e/plugins
-#https://github.com/exeldro/obs-source-dock/e99736fb63c1dfb317d07e69e9aa6b60d775c19e/UI/frontend-plugins
 https://github.com/exeldro/obs-source-record/4e27c040031831f9e9959f4947a6904ebe0fa23a/plugins
 https://github.com/exeldro/obs-source-switcher/041e8f6549a1eca9468ce4fbb134fbf80bf41844/plugins
 https://github.com/exeldro/obs-time-shift/6c93ecf1cf74647214f078e6da9178663c45bf3b/plugins
