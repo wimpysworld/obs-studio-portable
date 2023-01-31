@@ -264,8 +264,22 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
 }
 
 function stage_02_get_obs() {
+    local DIFF=""
     echo -e "\nOBS Studio\n" >> "${BUILD_DIR}/obs-manifest.txt"
     clone_source "https://github.com/obsproject/obs-studio.git" "${OBS_VER}" "${SOURCE_DIR}"
+
+    #shellcheck disable=SC2162
+    while read PATCH; do
+        DIFF=$(echo "${PATCH}" | cut -d '/' -f8)
+        if [ ! -e "${SOURCE_DIR}/${DIFF}" ]; then
+            echo "   - Cherrypick   : ${PATCH}" >> "${BUILD_DIR}/obs-manifest.txt"
+            wget --quiet --show-progress --progress=bar:force:noscroll "${PATCH}" -O "${SOURCE_DIR}/${DIFF}"
+            CWD=$(pwd)
+            cd "${SOURCE_DIR}"
+            patch -p1 < "${DIFF}"
+            cd "${CWD}"
+        fi
+    done < ./cherrypick-"${OBS_MAJ_VER}".txt
 }
 
 function stage_03_get_cef() {
