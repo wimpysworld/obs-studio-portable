@@ -437,6 +437,18 @@ function stage_06_plugins_in_tree() {
         fi
         clone_source "${URL}.git" "${BRANCH}" "${SOURCE_DIR}/${DIRECTORY}/${PLUGIN}"
 
+        # Dirty workaround incoming!
+        #  - Revert StreamFX commit which prevents OBS Studio cleanly exitting.
+        #  - https://github.com/Xaymar/obs-StreamFX/issues/1017
+        if [ "${PLUGIN}" == "obs-StreamFX" ]; then
+            CWD=$(pwd)
+            cd "${SOURCE_DIR}/${DIRECTORY}/${PLUGIN}"
+            git config user.email "reverty@mcrevertface.com"
+            git config user.name "Reverty McRevertface"
+            git revert 7e234c6c4bf649de455eeeb34794fa9928eea1cd
+            cd "${CWD}"
+        fi
+
         grep -qxF "add_subdirectory(${PLUGIN})" "${SOURCE_DIR}/${DIRECTORY}/CMakeLists.txt" || echo "add_subdirectory(${PLUGIN})" >> "${SOURCE_DIR}/${DIRECTORY}/CMakeLists.txt"
     done < ./plugins-"${OBS_MAJ_VER}"-in-tree.txt
 
