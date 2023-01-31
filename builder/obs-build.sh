@@ -15,6 +15,7 @@ BASE_DIR="${HOME}/obs-${OBS_MAJ_VER}"
 BUILD_DIR="${BASE_DIR}/build"
 BUILD_PORTABLE="${BASE_DIR}/build_portable"
 BUILD_SYSTEM="${BASE_DIR}/build_system"
+BUILD_TYPE="Release"
 PLUGIN_DIR="${BASE_DIR}/plugins"
 SOURCE_DIR="${BASE_DIR}/source"
 TARBALL_DIR="${BASE_DIR}/tarballs"
@@ -280,7 +281,7 @@ function stage_04_get_aja() {
     if [ "${OBS_MAJ_VER}" -ge 27 ]; then
         download_tarball "https://github.com/aja-video/ntv2/archive/refs/tags/${AJA_VER}.tar.gz" "${SOURCE_DIR}/ntv2"
         cmake -S "${SOURCE_DIR}/ntv2/" -B "${SOURCE_DIR}/ntv2/build/" -G Ninja \
-        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
         -DAJA_BUILD_OPENSOURCE=ON \
         -DAJA_BUILD_APPS=OFF \
         -DAJA_INSTALL_HEADERS=ON | tee "${BUILD_DIR}/cmake-aja.log"
@@ -358,7 +359,7 @@ function stage_05_build_obs() {
 
     #shellcheck disable=SC2086,SC2090
     cmake -S "${SOURCE_DIR}/" -B "${BUILD_TO}/" -G Ninja \
-      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
       -DCMAKE_INSTALL_PREFIX="${INSTALL_TO}" \
       -DENABLE_AJA=ON \
       -DAJA_LIBRARIES_INCLUDE_DIR="${BUILD_DIR}"/aja/include/ \
@@ -483,7 +484,7 @@ function stage_07_plugins_out_tree() {
         fi
 
         if [ "${PLUGIN}" == "obs-gstreamer" ]|| [ "${PLUGIN}" == "obs-nvfbc" ] || [ "${PLUGIN}" == "obs-vaapi" ]; then
-            meson --buildtype=release --prefix="${BASE_DIR}/${INSTALL_DIR}" --libdir="${BASE_DIR}/${INSTALL_DIR}" "${PLUGIN_DIR}/${PLUGIN}" "${PLUGIN_DIR}/${PLUGIN}/build"
+            meson --buildtype=${BUILD_TYPE,,} --prefix="${BASE_DIR}/${INSTALL_DIR}" --libdir="${BASE_DIR}/${INSTALL_DIR}" "${PLUGIN_DIR}/${PLUGIN}" "${PLUGIN_DIR}/${PLUGIN}/build"
             ninja -C "${PLUGIN_DIR}/${PLUGIN}/build"
             ninja -C "${PLUGIN_DIR}/${PLUGIN}/build" install
             case "${PLUGIN}" in
@@ -510,7 +511,7 @@ function stage_07_plugins_out_tree() {
         elif [ "${OBS_MAJ_VER}" -ge 28 ] || [ "${PLUGIN}" == "obs-soundboard" ]; then
             # Build process of OBS Studio 28
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
-              -DCMAKE_BUILD_TYPE=Release \
+              -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
               -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
               -DQT_VERSION="${QT_VER}"  | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
             cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
@@ -519,7 +520,7 @@ function stage_07_plugins_out_tree() {
             # Build process for OBS Studio 27 and older
             cd "${PLUGIN_DIR}/${PLUGIN}"
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" \
-              -DCMAKE_BUILD_TYPE=Release \
+              -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
               -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
               -DQT_VERSION="${QT_VER}" | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
             make -C "${PLUGIN_DIR}/${PLUGIN}/build"
