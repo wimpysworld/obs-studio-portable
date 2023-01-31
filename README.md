@@ -32,7 +32,7 @@ exactly which versions of plugins and add-ons are included.
 | Ubuntu 20.04 | 29.0.0 (Qt 5) |
 | Ubuntu 22.04 | 29.0.0 (Qt 6) |
 | Ubuntu 22.10 | 29.0.0 (Qt 6) |
-| Plugins      | 45            |
+| Plugins      | 43            |
 
 ### Caveats
 
@@ -174,7 +174,6 @@ Ubuntu:
   * **[Scene Notes Dock](https://github.com/exeldro/obs-scene-notes-dock)** plugin; create a Dock for showing and editing notes for the current active scene.
   * **[Source Clone](https://github.com/exeldro/obs-source-clone)** plugin; add source cloning
   * **[Source Copy](https://github.com/exeldro/obs-source-copy)** plugin; adds copy and paste options to the tools menu.
-  * **[Source Dock](https://github.com/exeldro/obs-source-dock)** plugin; create a Dock for a source, which lets you see audio levels, change volume and control media.
 
 ## Text 📝
 
