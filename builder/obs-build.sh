@@ -625,25 +625,27 @@ function stage_09_finalise() {
     find "${BASE_DIR}/${INSTALL_DIR}" -type d -empty -delete
 
     # Strip binaries and correct permissions
-    for DIR in "${BASE_DIR}/${INSTALL_DIR}/cef" \
-        "${BASE_DIR}/${INSTALL_DIR}/bin/64bit" \
-        "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit" \
-        "${BASE_DIR}/${INSTALL_DIR}/data/obs-scripting/64bit" \
-        "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/StreamFX/" \
-        "${BASE_DIR}/${INSTALL_DIR}/lib"; do
-        #shellcheck disable=SC2162
-        while read FILE; do
-            TYPE=$(file "${FILE}" | cut -d':' -f2 | awk '{print $1}')
-            if [ "${TYPE}" == "ELF" ]; then
-                strip --strip-unneeded "${FILE}" || true
-                if [[ "${FILE}" == *.so* ]]; then
-                  chmod 644 "${FILE}"
+    if [ "${BUILD_TYPE}" == "Release" ]; then
+        for DIR in "${BASE_DIR}/${INSTALL_DIR}/cef" \
+            "${BASE_DIR}/${INSTALL_DIR}/bin/64bit" \
+            "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit" \
+            "${BASE_DIR}/${INSTALL_DIR}/data/obs-scripting/64bit" \
+            "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/StreamFX/" \
+            "${BASE_DIR}/${INSTALL_DIR}/lib"; do
+            #shellcheck disable=SC2162
+            while read FILE; do
+                TYPE=$(file "${FILE}" | cut -d':' -f2 | awk '{print $1}')
+                if [ "${TYPE}" == "ELF" ]; then
+                    strip --strip-unneeded "${FILE}" || true
+                    if [[ "${FILE}" == *.so* ]]; then
+                    chmod 644 "${FILE}"
+                    fi
+                else
+                    chmod 644 "${FILE}"
                 fi
-            else
-                chmod 644 "${FILE}"
-            fi
-        done < <(find "${DIR}" -type f)
-    done
+            done < <(find "${DIR}" -type f)
+        done
+    fi
 
     # Create scripts
     local SCRIPTS="obs-dependencies obs-portable"
