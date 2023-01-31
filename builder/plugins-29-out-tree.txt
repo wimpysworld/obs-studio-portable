@@ -1,5 +1,5 @@
 https://github.com/cg2121/obs-soundboard/1.1.1
-https://github.com/dimtpap/obs-pipewire-audio-capture/multiple-apps-per-source
+https://github.com/dimtpap/obs-pipewire-audio-capture/32889fc1a0af5e31bd2eb5f1ab45a9c5368ddd4e
 https://github.com/fzwoch/obs-gstreamer/v0.4.0
 https://github.com/fzwoch/obs-teleport/0.6.5
 https://github.com/fzwoch/obs-vaapi/0.1.0
