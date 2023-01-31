@@ -400,12 +400,17 @@ function stage_05_build_obs() {
 function stage_06_plugins_in_tree() {
     echo -e "\nPlugins (in tree)\n" >> "${BUILD_DIR}/obs-manifest.txt"
     local BRANCH=""
+    local CHAR1=""
     local DIRECTORY=""
     local PLUGIN=""
     local URL=""
 
     #shellcheck disable=SC2162
     while read REPO; do
+        CHAR1=$(echo "${REPO}" | sed 's/ *$//g' | cut -c1)
+        if [ ${CHAR1} == "#" ]; then
+            continue
+        fi
         URL="$(echo "${REPO}" | cut -d'/' -f1-5)"
         PLUGIN="$(echo "${REPO}" | cut -d'/' -f5)"
         BRANCH="$(echo "${REPO}" | cut -d'/' -f6)"
@@ -442,6 +447,7 @@ function stage_06_plugins_in_tree() {
 function stage_07_plugins_out_tree() {
     echo -e "\nPlugins (out of tree)\n" >> "${BUILD_DIR}/obs-manifest.txt"
     local BRANCH=""
+    local CHAR1=""
     local CWD=""
     local DIRECTORY=""
     local PLUGIN=""
@@ -450,6 +456,10 @@ function stage_07_plugins_out_tree() {
     CWD="$(pwd)"
     #shellcheck disable=SC2162
     while read REPO; do
+        CHAR1=$(echo "${REPO}" | sed 's/ *$//g' | cut -c1)
+        if [ ${CHAR1} == "#" ]; then
+            continue
+        fi
         URL="$(echo "${REPO}" | cut -d'/' -f1-5)"
         PLUGIN="$(echo "${REPO}" | cut -d'/' -f5)"
         BRANCH="$(echo "${REPO}" | cut -d'/' -f6)"
