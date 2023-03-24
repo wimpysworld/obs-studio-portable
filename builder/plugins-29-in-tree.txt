@@ -12,7 +12,7 @@ https://github.com/exeldro/obs-replay-source/1.6.11/plugins
 https://github.com/exeldro/obs-scene-notes-dock/0.1.1/UI/frontend-plugins
 https://github.com/exeldro/obs-scene-collection-manager/0.0.8/UI/frontend-plugins
 https://github.com/exeldro/obs-shaderfilter/1.21.3/plugins
-https://github.com/exeldro/obs-source-copy/2a325813e969f6c62b1d413195a1340c4a2a40e4/UI/frontend-plugins
+https://github.com/exeldro/obs-source-copy/0.2.2/UI/frontend-plugins
 https://github.com/exeldro/obs-source-clone/0.1.2/plugins
 https://github.com/exeldro/obs-source-dock/0.3.5/UI/frontend-plugins
 https://github.com/exeldro/obs-source-record/4e27c040031831f9e9959f4947a6904ebe0fa23a/plugins
