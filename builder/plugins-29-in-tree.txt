@@ -4,7 +4,7 @@ https://github.com/exeldro/obs-dir-watch-media/270d9137c650cb419d7a57aa9e81a8e04
 https://github.com/exeldro/obs-downstream-keyer/0.2.6/UI/frontend-plugins
 https://github.com/exeldro/obs-dynamic-delay/c6d4fbb7b7f30fb37c1e19738b37d4615df3f77a/plugins
 https://github.com/exeldro/obs-freeze-filter/be6770fa822a6cf45d9537ad2801e093b751a5ff/plugins
-https://github.com/exeldro/obs-gradient-source/1753aa860102f44dfd440c708f8ca5f4ebd90640/plugins
+https://github.com/exeldro/obs-gradient-source/0.3.1/plugins
 https://github.com/exeldro/obs-media-controls/b37f7ab24dcf40701e1f538c14f608a5a0db868b/UI/frontend-plugins
 https://github.com/exeldro/obs-move-transition/2.8.1/plugins
 https://github.com/exeldro/obs-recursion-effect/60964d6281eacdf07bcfd3fbd449f6f912f0f90b/plugins
