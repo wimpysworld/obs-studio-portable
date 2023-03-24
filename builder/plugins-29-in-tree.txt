@@ -1,5 +1,6 @@
 https://github.com/dimtpap/obs-scale-to-sound/1.2.2/plugins
-https://github.com/exeldro/obs-device-switcher/7f5022cb03b85a498ecb164cee77487f58b0584f/UI/frontend-plugins
+https://github.com/exeldro/obs-3d-effect/0.0.2/plugins
+https://github.com/exeldro/obs-device-switcher/add32e3b28fa8d1b3a1b91de926a65c56e8b179e/UI/frontend-plugins
 https://github.com/exeldro/obs-dir-watch-media/270d9137c650cb419d7a57aa9e81a8e0433217df/plugins
 https://github.com/exeldro/obs-downstream-keyer/0.2.6/UI/frontend-plugins
 https://github.com/exeldro/obs-dynamic-delay/c6d4fbb7b7f30fb37c1e19738b37d4615df3f77a/plugins
