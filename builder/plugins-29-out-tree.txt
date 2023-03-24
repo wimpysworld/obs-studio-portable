@@ -15,4 +15,4 @@ https://github.com/norihiro/obs-mute-filter/0.2.2
 https://github.com/norihiro/obs-text-pthread/2.0.2
 https://github.com/nowrep/obs-vkcapture/v1.2.2
 https://github.com/obsproject/obs-websocket/4.9.1-compat
-https://github.com/phandasm/waveform/v1.6.0-beta3
+https://github.com/phandasm/waveform/v1.6.1
