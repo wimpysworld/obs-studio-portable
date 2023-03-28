@@ -10,12 +10,9 @@ Made with 💝 for <img src=".github/ubuntu.png" align="top" width="18" /></p>
 
 # OBS Studio Portable for Ubuntu
 
-**Running OBS Studio in Portable Mode means that all settings (Profiles and Scene
-Collections) are saved within the same directory tree as the OBS Studio
-executables, plugins and configuration. You can copy the whole folder to
-another computer and just use it.**
+**Running OBS Studio in Portable Mode means that all settings (Profiles and Scene Collections) are saved within the same directory tree as the OBS Studio executables, plugins and configuration. You can copy the whole folder to another computer and just use it.**
 
-  - Over 40 of the best 3rd Party plugins for OBS Studio are bundled!
+  - Over 45 of the best 3rd Party plugins for OBS Studio are bundled!
   - Chromium Embedded Frameworks (CEF) to enable Browser Sources
   - NVENC (NVIDIA) and VA-API (AMD & Intel) accelerated video encoding
   - Fraunhofer FDK AAC Codec
@@ -24,25 +21,24 @@ another computer and just use it.**
 
 ## Supported Software
 
-The tarball of OBS Studio Portable includes a `manifest.txt` that describes
-exactly which versions of plugins and add-ons are included.
+The tarball of OBS Studio Portable includes a `manifest.txt` that describes exactly which versions of plugins and add-ons are included.
 
 |              | OBS Studio 29 |
 | ------------ | ------------- |
-| Ubuntu 20.04 | 29.0.0 (Qt 5) |
-| Ubuntu 22.04 | 29.0.0 (Qt 6) |
-| Ubuntu 22.10 | 29.0.0 (Qt 6) |
+| Ubuntu 20.04 | 29.0.2 (Qt 5) |
+| Ubuntu 22.04 | 29.0.2 (Qt 6) |
+| Ubuntu 22.10 | 29.0.2 (Qt 6) |
 | Plugins      | 43            |
 
 ### Caveats
 
   - [Game Capture](https://github.com/nowrep/obs-vkcapture) is available on Ubuntu 22.04 and newer.
-  - [NvFBC Capture](https://gitlab.com/fzwoch/obs-nvfbc) is available in legacy build of OBS Studio 26 and 27 builds; the required GLX support was removed in OBS Studio 28.
+  - [NvFBC Capture](https://gitlab.com/fzwoch/obs-nvfbc) is available in legacy builds of OBS Studio 26 and 27 builds; the required GLX support was removed in OBS Studio 28.
   - PipeWire support is available in Ubuntu 22.04 and newer.
   - [Teleport](https://github.com/fzwoch/obs-teleport) is available on Ubuntu 22.04 and newer.
   - [SRT & RIST Protocol](https://obsproject.com/wiki/Streaming-With-SRT-Or-RIST-Protocols) support is available on Ubuntu 22.10 and newer.
   - [WebSockets](https://github.com/obsproject/obs-websocket) 5.0.1 and 4.9.1-compat are included in OBS Studio 28 and newer.
-    - *Legacys build of OBS Studio 26 have 4.9.0 and OBS Studio 27 builds have 4.9.1*
+    - *Legacy builds of OBS Studio 26 have 4.9.0 and OBS Studio 27 builds have 4.9.1*
 
 # Install
 
@@ -58,38 +54,31 @@ The install process is simple:
   - Extract the tarball somewhere.
   - Run `obs-dependencies`, included in the tarball, to make sure the runtime requirements for OBS Studio are satisfied.
   - Run `obs-portable` to launch OBS Studio.
-    - **It is essential you use the `obs-portable` launcher** to ensure OBS Studio finds all the associated libraries and add-ons.
+    - **You use the `obs-portable` launcher** to ensure OBS Studio finds all the associated libraries and add-ons.
 
 ```bash
-wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23031/obs-portable-29.0.0-r23031-ubuntu-$(lsb_release -rs).tar.bz2"
-wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23031/obs-portable-29.0.0-r23031-ubuntu-$(lsb_release -rs).tar.bz2.sha256"
-sha256sum -c obs-portable-29.0.0-r23031-ubuntu-$(lsb_release -rs).tar.bz2.sha256
-tar xvf obs-portable-29.0.0-r23031-ubuntu-$(lsb_release -rs).tar.bz2
-cd obs-portable-29.0.0-r23031-ubuntu-$(lsb_release -rs)
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23087/obs-portable-29.0.2-r23087-ubuntu-$(lsb_release -rs).tar.bz2"
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23087/obs-portable-29.0.2-r23087-ubuntu-$(lsb_release -rs).tar.bz2.sha256"
+sha256sum -c obs-portable-29.0.2-r23087-ubuntu-$(lsb_release -rs).tar.bz2.sha256
+tar xvf obs-portable-29.0.2-r23087-ubuntu-$(lsb_release -rs).tar.bz2
+cd obs-portable-29.0.2-r23087-ubuntu-$(lsb_release -rs)
 sudo ./obs-dependencies
 ./obs-portable
 ```
 
 ## Graphical Install
 
-Or if you prefer a graphical interface, you can use
-[**the fabulous QuickOBS**](https://github.com/ymauray/quickobs) ✨ from the always
-wonderful [Yannick Mauray](https://github.com/frenchguych) 💖
+Or if you prefer a graphical interface, you can use [**the fabulous QuickOBS**](https://github.com/ymauray/quickobs) ✨ from the always wonderful [Yannick Mauray](https://github.com/frenchguych) 💖
 
 ## Upgrades
 
-The upgrade process is the same as an install and you can simply copy the
-`config` folder from your old OBS Studio Portable directory to the new one. If
-anything doesn't correctly when you start the new OBS Studio, just keep using
-the previous OBS Studio Portable instance.
+The upgrade process is the same as an install and you can simply copy the `config` folder from your old OBS Studio Portable directory to the new one. If anything doesn't correctly when you start the new OBS Studio, just keep using the previous OBS Studio Portable instance.
 
-[QuickOBS](https://github.com/ymauray/quickobs) includes a feature to save and
-restore your configurations too.
+[QuickOBS](https://github.com/ymauray/quickobs) includes a feature to save and restore your configurations too.
 
 # Why does this project exist?
 
-If any of the following are true for you, you might find these builds of OBS
-Studio useful.
+If any of the following are true for you, you might find these builds of OBS Studio useful.
 
  - **I want a version of OBS Studio for Ubuntu that has all the features enabled, *by default***
    - I use lots of 3rd party OBS Studio plugins in my stream configuration.
@@ -106,24 +95,21 @@ Studio useful.
  - **I sometimes stream OBS Studio how-tos and examples**
    - Being able to run demo instances (at will) of OBS Studio with isolated configurations is great for this.
  - **I want a stable OBS setup and an in-development OBS setup**
-   - When developing new features for my stream, I want to freely experiment with new versions of OBS Studio and it's plugins without fear of disrupting my stable setup.
+   - When developing new features for my stream, I want to freely experiment with new versions of OBS Studio and its plugins without fear of disrupting my stable setup.
  - **I sometimes need old versions of OBS Studio**
    - I have some streaming projects that are archived and don't need upgrading. But I do want to reference them from time to time.
 
 # Batteries included
 
-I'm extremely thankful to the OBS Studio developers and developers of the
-growing list of excellent plugins. These Portable builds of OBS Studio for
-Ubuntu celebrate the best of what's available. Thank you! 🙇
+I'm extremely thankful to the OBS Studio developers and developers of the growing list of excellent plugins. These Portable builds of OBS Studio for Ubuntu celebrate the best of what's available. Thank you! 🙇
 
-Here are the 3rd party plugins that come bundled with OBS Studio Portable for
-Ubuntu:
+Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ubuntu:
 
 ## Audio 🔉
 
-  * **[Audio Pan](https://github.com/norihiro/obs-audio-pan-filter)** plugin; control stereo pan of audio source.
+  * **[Audio Pan](https://github.com/norihiro/obs-audio-pan-filter)** plugin; control stereo pan of audio sources.
   * **[MIDI](https://github.com/nhielost/obs-midi-mg)** plugins; allows MIDI devices to interact with OBS Studio.
-  * **[Mute Filter](https://github.com/norihiro/obs-mute-filter)** plugin; to mute audio of a source.
+  * **[Mute Filter](https://github.com/norihiro/obs-mute-filter)** plugin; to mute audio from a source.
   * **[PipeWire Audio Capture](https://github.com/dimtpap/obs-pipewire-audio-capture)** plugin; capture application audio from PipeWire.
   * **[Scale to Sound](https://github.com/Qufyy/obs-scale-to-sound)** plugin; adds a filter which makes a source scale based on the audio levels of any audio source you choose
   * **[Soundboard](https://github.com/cg2121/obs-soundboard)** plugin; adds a soundboard dock.
@@ -132,21 +118,22 @@ Ubuntu:
 ## Automation 🎛
 
   * **[Advanced Scene Switcher](https://github.com/WarmUpTill/SceneSwitcher)** plugin; an automated scene switcher.
-  * **[Directory Watch Media](https://github.com/exeldro/obs-dir-watch-media)** plugin; filter you can add to media source to load the oldest or newest file in a directory.
-  * **[Dummy Source](https://github.com/norihiro/obs-command-source)** plugin; provides a dummy source to execute arbitrary commands when scene is switched.
+  * **[Directory Watch Media](https://github.com/exeldro/obs-dir-watch-media)** plugin; filter you can add to a media source to load the oldest or newest file in a directory.
+  * **[Dummy Source](https://github.com/norihiro/obs-command-source)** plugin; provides a dummy source to execute arbitrary commands when a scene is switched.
   * **[Source Switcher](https://github.com/exeldro/obs-source-switcher)** plugin; to switch between a list of sources.
   * **[Transition Table](https://github.com/exeldro/obs-transition-table)** plugin; customize scene transitions.
   * **[Websockets](https://github.com/Palakis/obs-websocket)** plugin; remote-control OBS Studio through WebSockets.
 
 ## Effects ✨
 
+  * **[3D Effect](https://github.com/exeldro/obs-3d-effect)** plugin; 3D effect filter.
   * **[DVD Screensaver](https://github.com/univrsal/dvds3)** plugin; a DVD screen saver source type.
   * **[Downstream Keyer](https://github.com/exeldro/obs-downstream-keyer)** plugin; add a Downstream Keyer dock.
   * **[Dynamic Delay](https://github.com/exeldro/obs-dynamic-delay)** plugin; filter for dynamic delaying a video source.
   * **[Face Tracker](https://github.com/norihiro/obs-face-tracker)** plugin; face tracking plugin
   * **[Freeze Filter](https://github.com/exeldro/obs-freeze-filter)** plugin; freeze a source using a filter.
   * **[Gradient Source](https://github.com/exeldro/obs-gradient-source)** plugin; adding gradients as a Source.
-  * **[Move Transition](https://github.com/exeldro/obs-move-transition)** plugin; move source to a new position during scene transition.
+  * **[Move Transition](https://github.com/exeldro/obs-move-transition)** plugin; move source to a new position during a scene transition.
   * **[Multi Source Effect](https://github.com/norihiro/obs-multisource-effect)** plugin; provides a custom effect to render multiple sources.
   * **[Recursion Effect](https://github.com/exeldro/obs-recursion-effect)** plugin; recursion effect filter.
   * **[Replay Source](https://github.com/exeldro/obs-replay-source)** plugin; slow motion replay async sources from memory.
@@ -164,7 +151,7 @@ Ubuntu:
   * **[Source Record](https://github.com/exeldro/obs-source-record)** plugin; make sources available to record via a filter.
   * **[StreamFX](https://github.com/Xaymar/obs-StreamFX)** plugin; unlocks the full potential of NVENC along with useful composition filters.
   * **[Teleport](https://github.com/fzwoch/obs-teleport)** plugin; open NDI-like replacement. (*not NDI compatible*)
-  * **[VA-API](https://github.com/exeldro/obs-transition-table)** plugin; GStreamer based VA-API encoder implementation.
+  * **[VA-API](https://github.com/exeldro/obs-transition-table)** plugin; GStreamer-based VA-API encoder implementation.
   * **[Vertical Canvas](https://github.com/Aitum/obs-vertical-canvas)** plugin; make content for TikTok, YouTube Shorts, Instagram Live, and more without the fuss.
   * **[Virtual Cam Filter](https://github.com/exeldro/obs-virtual-cam-filter)** plugin; make sources available to the virtual camera via a filter.
 
@@ -172,9 +159,10 @@ Ubuntu:
 
   * **[Color Monitor](https://github.com/norihiro/obs-color-monitor)** plugin; vectorscope, waveform, and histogram.
   * **[Scene Collection Manager](https://github.com/exeldro/obs-scene-collection-manager)** plugin; filter, backup and restore Scene Collections.
-  * **[Scene Notes Dock](https://github.com/exeldro/obs-scene-notes-dock)** plugin; create a Dock for showing and editing notes for the current active scene.
+  * **[Scene Notes Dock](https://github.com/exeldro/obs-scene-notes-dock)** plugin; create a Dock for showing and editing notes for the currently active scene.
   * **[Source Clone](https://github.com/exeldro/obs-source-clone)** plugin; add source cloning
-  * **[Source Copy](https://github.com/exeldro/obs-source-copy)** plugin; adds copy and paste options to the tools menu.
+  * **[Source Copy](https://github.com/exeldro/obs-source-copy)** plugin; adds copy-and-paste options to the tools menu.
+  * **[Source Dock](https://github.com/exeldro/obs-source-dock)** plugin; adds browser sources as custom docks.
 
 ## Text 📝
 
@@ -196,17 +184,14 @@ Here are some additional plugins that look useful that I might add in the future
 
 ### Additional plugins
 
-If the builds of OBS Studio offered here don't include a plugin that you use,
-you can download a pre-compiled version and add it to the portable folder:
+If the builds of OBS Studio offered here don't include a plugin that you use, you can download a pre-compiled version and add it to the portable folder:
 
   - Put any `.so` files in `obs-plugins/64bit`
   - Put any data files associated with the plugin in `data/obs-plugins/<plugin name>/`
 
 ## OBS Virtual Camera
 
-OBS Studio Virtual Camera support is integrated. The `Start Virtual Camera`
-button is located in the Controls pane, just below `Start Recording`. Here's how
-to install and configure `v4l2loopback` which OBS uses:
+OBS Studio Virtual Camera support is integrated. The `Start Virtual Camera` button is located in the Controls pane, just below `Start Recording`. Here's how to install and configure `v4l2loopback` which OBS uses:
 
 ```bash
 echo 'options v4l2loopback devices=1 video_nr=13 card_label="OBS Virtual Camera" exclusive_caps=1' | sudo tee /etc/modprobe.d/v4l2loopback.conf
@@ -219,13 +204,9 @@ sudo modprobe v4l2loopback devices=1 video_nr=13 card_label="OBS Virtual Camera"
 
 # Wayland
 
-Browser docks and streaming service integrations are currently disabled on
-Wayland due to Chromium Embedded Framework (CEF) issues. If you need browser
-docks or stream service integrations, click on the cog icon when logging into
-Ubuntu and select "ubuntu on xorg".
+Browser docks and streaming service integrations are currently disabled on Wayland due to Chromium Embedded Framework (CEF) issues. If you need browser docks or stream service integrations, click on the cog icon when logging into Ubuntu and select "ubuntu on xorg".
 
-Alternatively you can coerce OBS Studio to run via Xwayland without changing the
-desktop session:
+Alternatively, you can coerce OBS Studio to run via Xwayland without changing the desktop session:
 
 ```bash
 env QT_QPA_PLATFORM=xcb ./obs-portable
@@ -233,36 +214,27 @@ env QT_QPA_PLATFORM=xcb ./obs-portable
 
 # Build process 🏗
 
-Each build is compiled in a freshly provisioned systemd container. The, somewhat
-hastily thrown together, *"build scripts"* are included in this repository.
+Each build is compiled in a freshly provisioned systemd container. The, somewhat hastily thrown-together, *"build scripts"* are included in this repository.
 
-The `build-*.sh` scripts are wrappers to help automate things, with
-[`build-auto.sh`](./build-auto.sh) being the main entry point.
+The `build-*.sh` scripts are wrappers to help automate things, with [`build-auto.sh`](./build-auto.sh) being the main entry point.
 
-The actual build script, [`obs-build.sh`](builder/obs-build.sh), gets
-injected into the new container and is responsible for actually building OBS
-Studio. Perhaps it might also serve as a reference for users of other Linux
-distributions who want to create their own portable builds of OBS Studio.
+The actual build script, [`obs-build.sh`](builder/obs-build.sh), gets injected into the new container and is responsible for actually building OBS Studio. Perhaps it might also serve as a reference for users of other Linux distributions who want to create their portable builds of OBS Studio.
 
 ## Release numbers
 
-An OBS Studio Portable for Ubuntu release number will be something like r23031,
-and the filename will clearly indicate the version of OBS Studio and which
-Ubuntu release is it for:
+An OBS Studio Portable for Ubuntu release number will be something like r23087, and the filename will clearly indicate the version of OBS Studio and which Ubuntu release is it for:
 
 ```text
                      +-- OBS Portable for Ubuntu revision
                      |
                      v
-obs-portable-29.0.0-r23031-ubuntu-22.04.tar.bz2
+obs-portable-29.0.2-r23087-ubuntu-22.04.tar.bz2
               ^                    ^
               |                    |
               +-- OBS version      +-- Supported Ubuntu release
 ```
 
-The purpose of the release number is to indicate a change to the composition
-of the portable release; most likely due to adding/updating the bundled 3rd
-party plugins.
+The purpose of the release number is to indicate a change to the composition of the portable release; most likely due to adding/updating the bundled 3rd party plugins.
 
 # References
 
