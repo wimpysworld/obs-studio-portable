@@ -1,1 +1,2 @@
 https://patch-diff.githubusercontent.com/raw/obsproject/obs-studio/pull/8251.diff
+https://patch-diff.githubusercontent.com/raw/obsproject/obs-studio/pull/8303.diff
