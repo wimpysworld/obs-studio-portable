@@ -4,8 +4,10 @@ DISTRO="${1}"
 OBS_VER="${2}"
 OBS_MAJ_VER="${OBS_VER%%.*}"
 
-if [ "${DISTRO}" == "kinetic" ] && [ "${OBS_MAJ_VER}" -le 27 ]; then
-    # Do not try and build old OBS versions on Ubuntu 22.10
+# Do not try and build old OBS versions on Ubuntu 22.10 or newer
+if [ "${DISTRO}" == "lunar" ] && [ "${OBS_MAJ_VER}" -le 27 ]; then
+    exit 1
+elif [ "${DISTRO}" == "kinetic" ] && [ "${OBS_MAJ_VER}" -le 27 ]; then
     exit 1
 fi
 
