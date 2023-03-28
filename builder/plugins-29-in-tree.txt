@@ -1,3 +1,4 @@
+https://github.com/Aitum/obs-vertical-canvas/1.2.0/UI/frontend-plugins
 https://github.com/dimtpap/obs-scale-to-sound/1.2.2/plugins
 https://github.com/exeldro/obs-3d-effect/0.0.2/plugins
 https://github.com/exeldro/obs-device-switcher/add32e3b28fa8d1b3a1b91de926a65c56e8b179e/UI/frontend-plugins
