@@ -420,7 +420,7 @@ function stage_05_build_obs() {
     # Required by some out of tree plugins for OBS 26
     if [ "${OBS_MAJ_VER}" -eq 26 ] && [ "${TARGET}" == "system" ]; then
       mkdir -p /usr/include/caption/ || true
-      cp "${SOURCE_DIR}/deps/libcaption/caption/"*.h "${SNAPCRAFT_STAGE}/usr/include/caption/"
+      cp "${SOURCE_DIR}/deps/libcaption/caption/"*.h "/usr/include/caption/"
     fi
 }
 
