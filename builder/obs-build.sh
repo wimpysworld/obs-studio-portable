@@ -270,9 +270,14 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
 
 function stage_02_get_obs() {
     local DIFF=""
-    local APPLY_PATCHES=1
+    local APPLY_PATCHES=0
     echo -e "\nOBS Studio\n" >> "${BUILD_DIR}/obs-manifest.txt"
     clone_source "https://github.com/obsproject/obs-studio.git" "${OBS_VER}" "${SOURCE_DIR}"
+
+    case "${OBS_VER}" in
+        29.0.2) APPLY_PATCHES=1;;
+        *) APPLY_PATCHES=0;;
+    esac
 
     #shellcheck disable=SC2162
     if [ ${APPLY_PATCHES} -eq 1 ]; then
