@@ -195,6 +195,14 @@ python3-dev swig"
     if [ "${OBS_MAJ_VER}" -ge 28 ] && [ "${DISTRO_CMP_VER}" -ge 2210 ]; then
         PKG_OBS_CORE+=" librist-dev libsrt-openssl-dev"
     fi
+
+    # For OBS Studio 29.1.0 and newer, mostly OBS Websocket 5.2 support related
+    # - https://github.com/obsproject/obs-studio/pull/8194
+    if [ "${OBS_MAJ_VER}" -ge 29 ]; then
+        PKG_OBS_CORE+=" libasio-dev libwebsocketpp-dev nlohmann-json3-dev"
+        #uthash-dev
+    fi
+
     echo " - OBS Core    : ${PKG_OBS_CORE}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
     apt-get -y install ${PKG_OBS_CORE}
