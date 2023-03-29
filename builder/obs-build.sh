@@ -361,9 +361,32 @@ function stage_05_build_obs() {
         else
           PORTABLE_OPTIONS="-DUNIX_STRUCTURE=OFF"
         fi
-        # Disable some StreamFX features that are not required or deprecated
+        # Disable some StreamFX features that are not required, deprecated or unsupported in Linux.
+        # What remains of the StreamFX suite is:
+        #  - Nvidia NVENC (via FFmpeg)  [ Used by Wimpy ]
+        #  - Avid DNxHR (via FFmpeg)
+        #  - Apple ProRes (via FFmpeg)
+        #  - Blur                       [ Used by Wimpy ]
+        #  - Color Grading
+        #  - Dynamic Mask               [ Used by Wimpy ]
+        # Other capabilities are replaced by other plugins:
+        #  - 3D Transform is replaced by 3D Effects (exeldro)
+        #  - Shaders are replaced by Shader Filter (exeldro)
+        #  - Source Mirror is replaced by Source Clone (exeldro)
         # https://github.com/Xaymar/obs-StreamFX/blob/root/CMakeLists.txt#L313
-        STREAMFX_OPTIONS="-DStreamFX_ENABLE_ENCODER_FFMPEG_AMF=OFF -DStreamFX_ENABLE_ENCODER_AOM_AV1=OFF -DStreamFX_ENABLE_FILTER_DISPLACEMENT=OFF -DStreamFX_ENABLE_FILTER_SHADER=OFF -DStreamFX_ENABLE_SOURCE_SHADER=OFF -DStreamFX_ENABLE_TRANSITION_SHADER=OFF -DStreamFX_ENABLE_CLANG=OFF -DStreamFX_ENABLE_FRONTEND=OFF -DStreamFX_ENABLE_UPDATER=OFF"
+        STREAMFX_OPTIONS="-DStreamFX_ENABLE_FILTER_AUTOFRAMING=OFF -DStreamFX_ENABLE_FILTER_AUTOFRAMING_NVIDIA=OFF \
+        -DStreamFX_ENABLE_FILTER_DENOISING=OFF -DStreamFX_ENABLE_FILTER_DENOISING_NVIDIA=OFF \
+        -DStreamFX_ENABLE_FILTER_UPSCALING=OFF -DStreamFX_ENABLE_FILTER_UPSCALING_NVIDIA=OFF \
+        -DStreamFX_ENABLE_FILTER_VIRTUAL_GREENSCREEN=OFF -DStreamFX_ENABLE_FILTER_VIRTUAL_GREENSCREEN_NVIDIA=OFF \
+        -DStreamFX_ENABLE_ENCODER_FFMPEG_AMF=OFF \
+        -DStreamFX_ENABLE_ENCODER_AOM_AV1=OFF \
+        -DStreamFX_ENABLE_FILTER_DISPLACEMENT=OFF \
+        -DStreamFX_ENABLE_FILTER_TRANSFORM=OFF \
+        -DStreamFX_ENABLE_FILTER_SDF_EFFECTS=OFF \
+        -DStreamFX_ENABLE_FILTER_SHADER=OFF \
+        -DStreamFX_ENABLE_SOURCE_SHADER=OFF \
+        -DStreamFX_ENABLE_TRANSITION_SHADER=OFF \
+        -DStreamFX_ENABLE_CLANG=OFF -DStreamFX_ENABLE_FRONTEND=OFF -DStreamFX_ENABLE_UPDATER=OFF"
         ;;
       system)
         BUILD_TO="${BUILD_SYSTEM}"
