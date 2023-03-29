@@ -430,6 +430,11 @@ function stage_05_build_obs() {
       mkdir -p /usr/include/caption/ || true
       cp "${SOURCE_DIR}/deps/libcaption/caption/"*.h "/usr/include/caption/"
     fi
+
+    if [ "${OBS_VER}" == "29.1.0-beta1" ] && [ "${TARGET}" == "system" ]; then
+      mkdir -p /usr/include/uthash/ || true
+      cp "${SOURCE_DIR}/deps/uthash/uthash/"*.h "/usr/include/uthash/"
+    fi
 }
 
 function stage_06_plugins_in_tree() {
