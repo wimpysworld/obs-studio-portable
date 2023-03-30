@@ -164,10 +164,10 @@ function stage_01_get_apt() {
 
     apt-get -y upgrade
 
-    PKG_TOOLCHAIN="bzip2 clang-format clang-tidy cmake curl ${COMPILERS} file git libarchive-tools libc6-dev make meson ninja-build pkg-config tree unzip wget"
+    PKG_TOOLCHAIN="bzip2 clang-format clang-tidy cmake curl ${COMPILERS} file git libarchive-tools libc6-dev make meson ninja-build patch pkg-config tree unzip wget"
     echo " - Toolchain   : ${PKG_TOOLCHAIN}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
-    apt-get -y install ${PKG_TOOLCHAIN}
+    apt-get -y install --no-install-recommends ${PKG_TOOLCHAIN}
 
     if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
         update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 800 --slave /usr/bin/g++ g++ /usr/bin/g++-10
@@ -181,7 +181,7 @@ function stage_01_get_apt() {
     fi
     echo " - Qt          : ${PKG_OBS_QT}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
-    apt-get -y install ${PKG_OBS_QT}
+    apt-get -y install --no-install-recommends ${PKG_OBS_QT}
 
     PKG_OBS_CORE="libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev \
 libavutil-dev libswresample-dev libswscale-dev libcmocka-dev libcurl4-openssl-dev \
@@ -200,12 +200,11 @@ python3-dev swig"
     # - https://github.com/obsproject/obs-studio/pull/8194
     if [ "${OBS_MAJ_VER}" -ge 29 ]; then
         PKG_OBS_CORE+=" libasio-dev libwebsocketpp-dev nlohmann-json3-dev"
-        #uthash-dev
     fi
 
     echo " - OBS Core    : ${PKG_OBS_CORE}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
-    apt-get -y install ${PKG_OBS_CORE}
+    apt-get -y install --no-install-recommends ${PKG_OBS_CORE}
 
     PKG_OBS_PLUGINS="libasound2-dev libdrm-dev libfdk-aac-dev libfontconfig-dev \
 libfreetype6-dev libjack-jackd2-dev libpulse-dev libspeexdsp-dev \
@@ -222,7 +221,7 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
 
     echo " - OBS Plugins : ${PKG_OBS_PLUGINS}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
-    apt-get -y install ${PKG_OBS_PLUGINS}
+    apt-get -y install --no-install-recommends ${PKG_OBS_PLUGINS}
 
     echo " - 3rd Party Plugins" >> "${BUILD_DIR}/obs-manifest.txt"
     # 3rd party plugin dependencies:
@@ -237,11 +236,11 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     fi
     echo "   - SceneSwitcher  : ${PKG_OBS_SCENESWITCHER}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
-    apt-get -y install ${PKG_OBS_SCENESWITCHER}
+    apt-get -y install --no-install-recommends ${PKG_OBS_SCENESWITCHER}
 
     PKG_OBS_WAVEFORM="libfftw3-dev"
     echo "   - Waveform       : ${PKG_OBS_WAVEFORM}" >> "${BUILD_DIR}/obs-manifest.txt"
-    apt-get -y install ${PKG_OBS_WAVEFORM}
+    apt-get -y install --no-install-recommends ${PKG_OBS_WAVEFORM}
 
     PKG_OBS_FACETRACKER="liblapack-dev libopenblas-dev"
     case "${DISTRO_CMP_VER}" in
@@ -250,29 +249,29 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     esac
     echo "   - Face Tracker   : ${PKG_OBS_FACETRACKER}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
-    apt-get -y install ${PKG_OBS_FACETRACKER}
+    apt-get -y install --no-install-recommends ${PKG_OBS_FACETRACKER}
 
     PKG_OBS_TEXT="libcairo2-dev libpango1.0-dev libpng-dev"
     echo "   - Pango/PThread  : ${PKG_OBS_TEXT}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
-    apt-get -y install ${PKG_OBS_TEXT}
+    apt-get -y install --no-install-recommends ${PKG_OBS_TEXT}
 
     PKG_OBS_GSTREAMER="libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-good1.0-dev"
     echo "   - GStreamer      : ${PKG_OBS_GSTREAMER}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
-    apt-get -y install ${PKG_OBS_GSTREAMER}
+    apt-get -y install --no-install-recommends ${PKG_OBS_GSTREAMER}
 
     if [ "${DISTRO_CMP_VER}" -ge 2204 ] && [ "${OBS_MAJ_VER}" -ge 27 ]; then
         PKG_OBS_VKCAPTURE="glslang-dev glslang-tools"
         echo "   - Game Capture   : ${PKG_OBS_VKCAPTURE}" >> "${BUILD_DIR}/obs-manifest.txt"
         #shellcheck disable=SC2086
-        apt-get -y install ${PKG_OBS_VKCAPTURE}
+        apt-get -y install --no-install-recommends ${PKG_OBS_VKCAPTURE}
     fi
 
     if [ "${DISTRO_CMP_VER}" -ge 2204 ] && [ "${OBS_MAJ_VER}" -ge 27 ]; then
         PKG_OBS_AV1="libaom-dev"
         echo "   - AV1            : ${PKG_OBS_AV1}" >> "${BUILD_DIR}/obs-manifest.txt"
-        apt-get -y install ${PKG_OBS_AV1}
+        apt-get -y install --no-install-recommends ${PKG_OBS_AV1}
     fi
 }
 
