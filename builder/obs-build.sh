@@ -374,19 +374,23 @@ function stage_05_build_obs() {
         #  - Shaders are replaced by Shader Filter (exeldro)
         #  - Source Mirror is replaced by Source Clone (exeldro)
         # https://github.com/Xaymar/obs-StreamFX/blob/root/CMakeLists.txt#L313
-        STREAMFX_OPTIONS="-DStreamFX_ENABLE_FILTER_AUTOFRAMING=OFF -DStreamFX_ENABLE_FILTER_AUTOFRAMING_NVIDIA=OFF \
-        -DStreamFX_ENABLE_FILTER_DENOISING=OFF -DStreamFX_ENABLE_FILTER_DENOISING_NVIDIA=OFF \
-        -DStreamFX_ENABLE_FILTER_UPSCALING=OFF -DStreamFX_ENABLE_FILTER_UPSCALING_NVIDIA=OFF \
-        -DStreamFX_ENABLE_FILTER_VIRTUAL_GREENSCREEN=OFF -DStreamFX_ENABLE_FILTER_VIRTUAL_GREENSCREEN_NVIDIA=OFF \
-        -DStreamFX_ENABLE_ENCODER_FFMPEG_AMF=OFF \
-        -DStreamFX_ENABLE_ENCODER_AOM_AV1=OFF \
-        -DStreamFX_ENABLE_FILTER_DISPLACEMENT=OFF \
-        -DStreamFX_ENABLE_FILTER_TRANSFORM=OFF \
-        -DStreamFX_ENABLE_FILTER_SDF_EFFECTS=OFF \
-        -DStreamFX_ENABLE_FILTER_SHADER=OFF \
-        -DStreamFX_ENABLE_SOURCE_SHADER=OFF \
-        -DStreamFX_ENABLE_TRANSITION_SHADER=OFF \
-        -DStreamFX_ENABLE_CLANG=OFF -DStreamFX_ENABLE_FRONTEND=OFF -DStreamFX_ENABLE_UPDATER=OFF"
+        if [ "${OBS_MAJ_VER}" -le 28 ]; then
+            STREAMFX_OPTIONS="-DStreamFX_ENABLE_FILTER_AUTOFRAMING=OFF -DStreamFX_ENABLE_FILTER_AUTOFRAMING_NVIDIA=OFF \
+            -DStreamFX_ENABLE_FILTER_DENOISING=OFF -DStreamFX_ENABLE_FILTER_DENOISING_NVIDIA=OFF \
+            -DStreamFX_ENABLE_FILTER_UPSCALING=OFF -DStreamFX_ENABLE_FILTER_UPSCALING_NVIDIA=OFF \
+            -DStreamFX_ENABLE_FILTER_VIRTUAL_GREENSCREEN=OFF -DStreamFX_ENABLE_FILTER_VIRTUAL_GREENSCREEN_NVIDIA=OFF \
+            -DStreamFX_ENABLE_ENCODER_FFMPEG_AMF=OFF \
+            -DStreamFX_ENABLE_ENCODER_AOM_AV1=OFF \
+            -DStreamFX_ENABLE_FILTER_DISPLACEMENT=OFF \
+            -DStreamFX_ENABLE_FILTER_TRANSFORM=OFF \
+            -DStreamFX_ENABLE_FILTER_SDF_EFFECTS=OFF \
+            -DStreamFX_ENABLE_FILTER_SHADER=OFF \
+            -DStreamFX_ENABLE_SOURCE_SHADER=OFF \
+            -DStreamFX_ENABLE_TRANSITION_SHADER=OFF \
+            -DStreamFX_ENABLE_CLANG=OFF -DStreamFX_ENABLE_FRONTEND=OFF -DStreamFX_ENABLE_UPDATER=OFF"
+        else
+            STREAMFX_OPTIONS=""
+        fi
         ;;
       system)
         BUILD_TO="${BUILD_SYSTEM}"
@@ -549,7 +553,72 @@ function stage_07_plugins_out_tree() {
             QT_VER="5"
         fi
 
-        if [ "${PLUGIN}" == "obs-gstreamer" ]|| [ "${PLUGIN}" == "obs-nvfbc" ] || [ "${PLUGIN}" == "obs-vaapi" ]; then
+        if [ "${AUTHOR}" == "exeldro" ] || [ "${AUTHOR}" == "Aitum" ]; then
+            # Build process of plugins from Exeldro that support standalone builds
+            # -Wno-error=switch is only really required for source-dock
+            cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
+                -DBUILD_OUT_OF_TREE=ON \
+                -DCMAKE_CXX_FLAGS="-Wno-error=switch" \
+                -DCMAKE_C_FLAGS="-Wno-error=switch" \
+                -DOBS_SOURCE_DIR="${SOURCE_DIR}" \
+                -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+                -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
+            cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
+            cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
+            rm -rfv "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins"
+        elif [ "${PLUGIN}" == "obs-StreamFX" ]; then
+            # Disable some StreamFX features that are not required, deprecated or unsupported in Linux.
+            # What remains of the StreamFX suite is:
+            #  - Nvidia NVENC (via FFmpeg)  [ Used by Wimpy ]
+            #  - Avid DNxHR (via FFmpeg)
+            #  - Apple ProRes (via FFmpeg)
+            #  - Blur                       [ Used by Wimpy ]
+            #  - Color Grading
+            #  - Dynamic Mask               [ Used by Wimpy ]
+            # Other capabilities are replaced by other plugins:
+            #  - 3D Transform is replaced by 3D Effects (exeldro)
+            #  - Shaders are replaced by Shader Filter (exeldro)
+            #  - Source Mirror is replaced by Source Clone (exeldro)
+            # https://github.com/Xaymar/obs-StreamFX/blob/root/CMakeLists.txt#L313
+            cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" \
+              -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+              -DENABLE_FILTER_AUTOFRAMING=OFF -DENABLE_FILTER_AUTOFRAMING_NVIDIA=OFF \
+              -DENABLE_FILTER_DENOISING=OFF -DENABLE_FILTER_DENOISING_NVIDIA=OFF \
+              -DENABLE_FILTER_UPSCALING=OFF -DENABLE_FILTER_UPSCALING_NVIDIA=OFF \
+              -DENABLE_FILTER_VIRTUAL_GREENSCREEN=OFF -DENABLE_FILTER_VIRTUAL_GREENSCREEN_NVIDIA=OFF \
+              -DENABLE_ENCODER_FFMPEG_AMF=OFF \
+              -DENABLE_ENCODER_AOM_AV1=OFF \
+              -DENABLE_FILTER_DISPLACEMENT=OFF \
+              -DENABLE_FILTER_TRANSFORM=OFF \
+              -DENABLE_FILTER_SDF_EFFECTS=OFF \
+              -DENABLE_SOURCE_MIRROR=OFF \
+              -DENABLE_FILTER_SHADER=OFF \
+              -DENABLE_SOURCE_SHADER=OFF \
+              -DENABLE_TRANSITION_SHADER=OFF \
+              -DENABLE_CLANG=OFF \
+              -DENABLE_LTO=ON \
+              -DENABLE_FRONTEND=OFF \
+              -DENABLE_UPDATER=OFF \
+              -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
+            cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
+            cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
+            # Reorganise the StreamFX plugin files to match the OBS plugin directory structure
+            mv "${BASE_DIR}/${INSTALL_DIR}/plugins/StreamFX/bin/64bit/"* "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true
+            mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/StreamFX"
+            cp -a "${BASE_DIR}/${INSTALL_DIR}/plugins/StreamFX/data/"* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/StreamFX/" || true
+            rm -rf "${BASE_DIR}/${INSTALL_DIR}/plugins"
+        elif [ "${PLUGIN}" == "obs-teleport" ] && [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
+            # Requires Go 1.17, which is not available in Ubuntu 20.04
+            export CGO_CPPFLAGS="${CPPFLAGS}"
+            export CGO_CFLAGS="${CFLAGS} -I/usr/include/obs"
+            export CGO_CXXFLAGS="${CXXFLAGS}"
+            export CGO_LDFLAGS="${LDFLAGS} -ljpeg -lobs -lobs-frontend-api"
+            export GOFLAGS="-buildmode=c-shared -trimpath -mod=readonly -modcacherw"
+            cd "${PLUGIN_DIR}/${PLUGIN}"
+            go build -ldflags "-linkmode external -X main.version=${BRANCH}" -v -o "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/${PLUGIN}.so" .
+            mv "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/${PLUGIN}.h" "${BASE_DIR}/${INSTALL_DIR}/include/" || true
+            cd "${CWD}"
+        elif [ "${PLUGIN}" == "obs-gstreamer" ]|| [ "${PLUGIN}" == "obs-nvfbc" ] || [ "${PLUGIN}" == "obs-vaapi" ]; then
             meson --buildtype=${BUILD_TYPE,,} --prefix="${BASE_DIR}/${INSTALL_DIR}" --libdir="${BASE_DIR}/${INSTALL_DIR}" "${PLUGIN_DIR}/${PLUGIN}" "${PLUGIN_DIR}/${PLUGIN}/build"
             ninja -C "${PLUGIN_DIR}/${PLUGIN}/build"
             ninja -C "${PLUGIN_DIR}/${PLUGIN}/build" install
@@ -563,19 +632,8 @@ function stage_07_plugins_out_tree() {
                    ;;
             esac
             chmod 644 "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/"*.so
-        elif [ "${PLUGIN}" == "obs-teleport" ] && [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
-            # Requires Go 1.17, which is not available in Ubuntu 20.04
-            export CGO_CPPFLAGS="${CPPFLAGS}"
-            export CGO_CFLAGS="${CFLAGS} -I/usr/include/obs"
-            export CGO_CXXFLAGS="${CXXFLAGS}"
-            export CGO_LDFLAGS="${LDFLAGS} -ljpeg -lobs -lobs-frontend-api"
-            export GOFLAGS="-buildmode=c-shared -trimpath -mod=readonly -modcacherw"
-            cd "${PLUGIN_DIR}/${PLUGIN}"
-            go build -ldflags "-linkmode external -X main.version=${BRANCH}" -v -o "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/${PLUGIN}.so" .
-            mv "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/${PLUGIN}.h" "${BASE_DIR}/${INSTALL_DIR}/include/" || true
-            cd "${CWD}"
-        elif [ "${OBS_MAJ_VER}" -ge 28 ] || [ "${PLUGIN}" == "obs-soundboard" ]; then
-            # Build process of OBS Studio 28
+        elif [ "${OBS_MAJ_VER}" -ge 28 ]; then
+            # Build process for OBS Studio 28 and newer
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
               -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
