@@ -447,14 +447,14 @@ function stage_05_build_obs() {
     cmake --build "${BUILD_TO}/"
     cmake --install "${BUILD_TO}/" --prefix "${INSTALL_TO}"
 
-    # Make sure the libcaption headers are discoverable
-    # Required by some out of tree plugins for OBS 26
-    if [ "${OBS_MAJ_VER}" -eq 26 ] && [ "${TARGET}" == "system" ]; then
+    # Make sure the libcaption headers are discoverable for 3rd party out-of-tree plugins
+    if [ "${TARGET}" == "system" ] && [ -d "${SOURCE_DIR}/deps/libcaption/caption" ]; then
       mkdir -p /usr/include/caption/ || true
       cp "${SOURCE_DIR}/deps/libcaption/caption/"*.h "/usr/include/caption/"
     fi
 
-    if [ "${OBS_VER}" == "29.1.0-beta1" ] && [ "${TARGET}" == "system" ]; then
+    # Make sure the uthash headers are discoverable for 3rd party out-of-tree plugins
+    if [ "${TARGET}" == "system" ] && [ -d "${SOURCE_DIR}/deps/uthash/uthash" ]; then
       mkdir -p /usr/include/uthash/ || true
       cp "${SOURCE_DIR}/deps/uthash/uthash/"*.h "/usr/include/uthash/"
     fi
