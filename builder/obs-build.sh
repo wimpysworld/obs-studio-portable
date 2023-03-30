@@ -252,7 +252,7 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     apt-get -y install --no-install-recommends ${PKG_OBS_FACETRACKER}
 
     PKG_OBS_TEXT="libcairo2-dev libpango1.0-dev libpng-dev"
-    echo "   - Pango/PThread  : ${PKG_OBS_TEXT}" >> "${BUILD_DIR}/obs-manifest.txt"
+    echo "   - PThread  : ${PKG_OBS_TEXT}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_OBS_TEXT}
 
@@ -703,8 +703,6 @@ function stage_07_plugins_out_tree() {
                 mv -v "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins/linux-${NEW_PLUGIN}"/* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/linux-${NEW_PLUGIN}/" || true
                 rm "${BASE_DIR}/${INSTALL_DIR}/bin/"obs-*capture 2>/dev/null || true
                 ;;
-            obs-text-pango)
-                mv -v "${BASE_DIR}/${INSTALL_DIR}/bin/libtext-pango.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true;;
             waveform)
                 mv -v "${BASE_DIR}/${INSTALL_DIR}"/waveform/bin/64bit/*waveform.so "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true
                 rm -rf "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/waveform"
