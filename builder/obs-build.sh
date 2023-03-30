@@ -564,7 +564,6 @@ function stage_07_plugins_out_tree() {
                 -DBUILD_OUT_OF_TREE=ON \
                 -DCMAKE_CXX_FLAGS="-Wno-error=switch" \
                 -DCMAKE_C_FLAGS="-Wno-error=switch" \
-                -DOBS_SOURCE_DIR="${SOURCE_DIR}" \
                 -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
                 -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
             cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
