@@ -188,8 +188,8 @@ libavutil-dev libswresample-dev libswscale-dev libcmocka-dev libcurl4-openssl-de
 libgl1-mesa-dev libgles2-mesa-dev libglvnd-dev libjansson-dev libluajit-5.1-dev \
 libmbedtls-dev libpci-dev libvulkan-dev libwayland-dev libx11-dev libx11-xcb-dev \
 libx264-dev libxcb-composite0-dev libxcb-randr0-dev libxcb-shm0-dev libxcb-xfixes0-dev \
-libxcb-xinerama0-dev libxcb1-dev libxcomposite-dev libxinerama-dev libxss-dev \
-python3-dev swig"
+libxcb-xinerama0-dev libxcb1-dev libxcomposite-dev libxdamage-dev libxinerama-dev \
+libxss-dev python3-dev swig"
 
     # SRT & RIST Protocol Support
     if [ "${OBS_MAJ_VER}" -ge 28 ] && [ "${DISTRO_CMP_VER}" -ge 2210 ]; then
