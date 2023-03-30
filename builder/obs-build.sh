@@ -485,9 +485,6 @@ function stage_06_plugins_in_tree() {
         if [ "${PLUGIN}" == "obs-rtspserver" ] && [ "${DISTRO_CMP_VER}" -le 2004 ]; then
             echo "Skipping ${PLUGIN} (not supported on ${DISTRO} ${DISTRO_VER})"
             continue
-        elif [ "${PLUGIN}" == "obs-vertical-canvas" ] && [ "${DISTRO_CMP_VER}" -le 2004 ]; then
-            echo "Skipping ${PLUGIN} (not supported on ${DISTRO} ${DISTRO_VER})"
-            continue
         elif [ "${PLUGIN}" == "SceneSwitcher" ] && [ "${DISTRO_CMP_VER}" -le 2004 ] && [ "${OBS_MAJ_VER}" -ge 29 ]; then
             # SceneSwitcher 1.20 FTBFS on Ubuntu 20.04
             BRANCH="1.19.2"
@@ -524,15 +521,23 @@ function stage_07_plugins_out_tree() {
         PLUGIN="$(echo "${REPO}" | cut -d'/' -f5)"
         BRANCH="$(echo "${REPO}" | cut -d'/' -f6)"
 
-        # Insufficient Golang and PipeWire support in Ubuntu 20.04
-        # obs-midi-ng requires Qt 6 which is not available in Ubuntu 20.04
+        # Insufficient Golang or PipeWire or Qt support in Ubuntu 20.04 to build these plugins
         if [ "${DISTRO_CMP_VER}" -le 2004 ]; then
             if [ "${PLUGIN}" == "obs-midi-mg" ] || \
                [ "${PLUGIN}" == "obs-pipewire-audio-capture" ] || \
                [ "${PLUGIN}" == "obs-teleport" ] || \
+               [ "${PLUGIN}" == "obs-vertical-canvas" ] || \
                [ "${PLUGIN}" == "obs-vkcapture" ]; then
                  continue
             fi
+        fi
+
+        if [ "${PLUGIN}" == "obs-rtspserver" ] && [ "${DISTRO_CMP_VER}" -le 2004 ]; then
+            echo "Skipping ${PLUGIN} (not supported on ${DISTRO} ${DISTRO_VER})"
+            continue
+        elif [ "${PLUGIN}" == "SceneSwitcher" ] && [ "${DISTRO_CMP_VER}" -le 2004 ] && [ "${OBS_MAJ_VER}" -ge 29 ]; then
+            # SceneSwitcher 1.20 FTBFS on Ubuntu 20.04
+            BRANCH="1.19.2"
         fi
 
         clone_source "${URL}.git" "${BRANCH}" "${PLUGIN_DIR}/${PLUGIN}"
