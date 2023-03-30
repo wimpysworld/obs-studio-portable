@@ -635,6 +635,24 @@ function stage_07_plugins_out_tree() {
                    ;;
             esac
             chmod 644 "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/"*.so
+        elif [ "${PLUGIN}" == "obs-rgb-levels-filter" ]; then
+            if [ "${OBS_MAJ_VER}" -ge 28 ]; then
+              # Monkey patch to use the new find_package format introduced in OBS 28
+              sed -i 's/include(external/#include(external/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
+              sed -i 's/LibObs REQUIRED/libobs REQUIRED/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
+            fi
+            cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
+              -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+              -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
+              -DOBS_SRC_DIR="${SOURCE_DIR}" \
+              -DLIBOBS_LIB="${BUILD_SYSTEM}/libobs/libobs.so" | tee "${BUILD_DIR}/cmake-${PLUGIN}.log" || true
+            cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
+            cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
+            mv -v "${BASE_DIR}/${INSTALL_DIR}/lib/obs-plugins/obs-rgb-levels-filter.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true
+            mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-rgb-levels-filter"
+            cp -a "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins/obs-rgb-levels-filter/"* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-rgb-levels-filter" || true
+            rm -rf "${BASE_DIR}/${INSTALL_DIR}/lib/obs-plugins"
+            rm -rf "${BASE_DIR}/${INSTALL_DIR}/share/obs-plugins"
         elif [ "${OBS_MAJ_VER}" -ge 28 ]; then
             # Build process for OBS Studio 28 and newer
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
@@ -693,9 +711,6 @@ function stage_08_plugins_prebuilt() {
     #shellcheck disable=SC2162
     while read URL; do
         ZIP="${URL##*/}"
-        if [ "${ZIP}" == "download" ]; then
-            ZIP="rgb-levels.zip"
-        fi
         echo " - ${URL}" >> "${BUILD_DIR}/obs-manifest.txt"
         wget --quiet --show-progress --progress=bar:force:noscroll "${URL}" -O "${TARBALL_DIR}/${ZIP}"
         unzip -o -qq "${TARBALL_DIR}/${ZIP}" -d "${PLUGIN_DIR}/$(basename "${ZIP}" .zip)"
@@ -706,10 +721,6 @@ function stage_08_plugins_prebuilt() {
     rm -rf "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/dvd-screensaver"
     mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/dvd-screensaver"
     mv -v "${PLUGIN_DIR}/dvd-screensaver.v1.1.linux.x64/dvd-screensaver/data/"* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/dvd-screensaver/"
-
-    mv -v "${PLUGIN_DIR}/rgb-levels/usr/lib/obs-plugins/obs-rgb-levels-filter.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/"
-    mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-rgb-levels-filter/"
-    mv -v "${PLUGIN_DIR}/rgb-levels/usr/share/obs/obs-plugins/obs-rgb-levels-filter/"*.effect "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-rgb-levels-filter/"
 }
 
 function stage_09_finalise() {

@@ -9,4 +9,5 @@ https://github.com/norihiro/obs-multisource-effect/0.1.7
 https://github.com/norihiro/obs-mute-filter/0.1.0
 https://github.com/norihiro/obs-text-pthread/1.0.3
 https://github.com/obsproject/obs-websocket/4.9.0
+https://github.com/petrifiedpenguin/obs-rgb-levels-filter/eaada12ebdf3bba08658eb69221ddf38f44a4728
 https://github.com/phandasm/waveform/v1.4.1
