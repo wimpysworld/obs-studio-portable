@@ -516,6 +516,7 @@ function stage_07_plugins_out_tree() {
             continue
         fi
         URL="$(echo "${REPO}" | cut -d'/' -f1-5)"
+        AUTHOR="$(echo "${REPO}" | cut -d'/' -f4)"
         PLUGIN="$(echo "${REPO}" | cut -d'/' -f5)"
         BRANCH="$(echo "${REPO}" | cut -d'/' -f6)"
 
