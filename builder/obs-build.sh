@@ -512,7 +512,7 @@ function stage_07_plugins_out_tree() {
     #shellcheck disable=SC2162
     while read REPO; do
         CHAR1=$(echo "${REPO}" | sed 's/ *$//g' | cut -c1)
-        if [ ${CHAR1} == "#" ]; then
+        if [ "${CHAR1}" == "#" ]; then
             continue
         fi
         URL="$(echo "${REPO}" | cut -d'/' -f1-5)"
