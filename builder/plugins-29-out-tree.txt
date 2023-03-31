@@ -39,5 +39,6 @@ https://github.com/nowrep/obs-vkcapture/v1.3.0
 https://github.com/obsproject/obs-websocket/4.9.1-compat
 https://github.com/petrifiedpenguin/obs-rgb-levels-filter/eaada12ebdf3bba08658eb69221ddf38f44a4728
 https://github.com/phandasm/waveform/v1.6.1
+#https://github.com/univrsal/dvds3/b5237556e7a8e6aa03a01a51d80f0ae4554a4c21
 https://github.com/WarmUpTill/SceneSwitcher/1.20.5
 https://github.com/Xaymar/obs-StreamFX/0.12.0b191

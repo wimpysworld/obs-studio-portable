@@ -636,8 +636,10 @@ function stage_07_plugins_out_tree() {
             esac
             chmod 644 "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/"*.so
         elif [ "${PLUGIN}" == "dvds3" ]; then
-            # TODO: Fails to link against libobs
-            continue
+            # TODO: Fails to link against libobs on OBS 28 and newer
+            if [ "${OBS_MAJ_VER}" -ge 28 ]; then
+                continue
+            fi
 
             # Apply patch to fix build errors
             wget -q "https://patch-diff.githubusercontent.com/raw/univrsal/dvds3/pull/3.diff" -O "${PLUGIN_DIR}/${PLUGIN}/3.diff"
@@ -654,6 +656,10 @@ function stage_07_plugins_out_tree() {
               -DGLOBAL_INSTALLATION=ON | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
             cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
             cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
+            cp "${PLUGIN_DIR}/${PLUGIN}/build/dvd-screensaver.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true
+            mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/dvd-screensaver"
+            cp -a "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins/dvd-screensaver/"* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/dvd-screensaver" || true
+            rm -rf "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins"
         elif [ "${PLUGIN}" == "obs-rgb-levels-filter" ]; then
             if [ "${OBS_MAJ_VER}" -ge 28 ]; then
               # Monkey patch to use the new find_package format introduced in OBS 28
@@ -721,6 +727,11 @@ function stage_07_plugins_out_tree() {
 }
 
 function stage_08_plugins_prebuilt() {
+    # Pre-built plugins are not required in OBS Studio 27 or older.
+    if [ "${OBS_MAJ_VER}" -le 27 ]; then
+        return
+    fi
+
     echo -e "\nPlugins (pre-built)\n" >> "${BUILD_DIR}/obs-manifest.txt"
     local URL=""
     local ZIP=""
