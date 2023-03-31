@@ -4,7 +4,7 @@
   OBS Studio <i>Portable</i> for Ubuntu
 </h1>
 
-<p align="center"><b>Portable builds of OBS Studio for Ubuntu that come pre-loaded with extra features and plugins for live streaming and screen recording</b>
+<p align="center"><b>Portable builds of OBS Studio for Ubuntu, pre-loaded with extra features and plugins for live streaming and screen recording</b>
 <br />
 Made with 💝 for <img src=".github/ubuntu.png" align="top" width="18" /></p>
 
@@ -28,7 +28,8 @@ The tarball of OBS Studio Portable includes a `manifest.txt` that describes exac
 | Ubuntu 20.04 | 29.0.2 (Qt 5) |
 | Ubuntu 22.04 | 29.0.2 (Qt 6) |
 | Ubuntu 22.10 | 29.0.2 (Qt 6) |
-| Plugins      | 43            |
+| Ubuntu 23.04 | 29.0.2 (Qt 6) |
+| Plugins      | 46            |
 
 ### Caveats
 
