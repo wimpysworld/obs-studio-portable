@@ -541,6 +541,11 @@ function stage_07_plugins_out_tree() {
 
         clone_source "${URL}.git" "${BRANCH}" "${PLUGIN_DIR}/${PLUGIN}"
 
+        # Adjust cmake VERSION SceneSwitch on Ubuntu 20.04
+        if [ "${DISTRO_CMP_VER}" -eq 2004 ] && [ "${OBS_MAJ_VER}" -ge 28 ]; then
+            sed -i 's/VERSION 3\.21/VERSION 3\.18/' "${SOURCE_DIR}/UI/frontend-plugins/SceneSwitcher/CMakeLists.txt" || true
+        fi
+
         # Patch obs-websocket 4.9.1 (not the compat release) so it builds against OBS 27.2.4
         # https://github.com/obsproject/obs-websocket/issues/916#issuecomment-1193399097
         if [ "${PLUGIN}" == "obs-websocket" ] && [ "${BRANCH}" == "4.9.1" ]; then
