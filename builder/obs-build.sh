@@ -282,6 +282,12 @@ function stage_02_get_obs() {
     clone_source "https://github.com/obsproject/obs-studio.git" "${OBS_VER}" "${SOURCE_DIR}"
 
     case "${OBS_VER}" in
+        29.1.0-beta1)
+          # Disable erroring on some warnings as several 3rd party plugins FTBFS otherwise
+          # - https://github.com/obsproject/obs-studio/commit/189c6939d11ad16a92cbb76c9132c0de3e0eb140
+          sed -i 's/-Werror/#-Werror/' "${SOURCE_DIR}/cmake/Modules/CompilerConfig.cmake"
+          sed -i 's/-Wunused-parameter/#-Wunused-parameter/' "${SOURCE_DIR}/cmake/Modules/CompilerConfig.cmake"
+          ;;
         29.0.2) APPLY_PATCHES=1;;
         *) APPLY_PATCHES=0;;
     esac
@@ -420,6 +426,7 @@ function stage_05_build_obs() {
 
     #shellcheck disable=SC2086,SC2090
     cmake -S "${SOURCE_DIR}/" -B "${BUILD_TO}/" -G Ninja \
+      -DCALM_DEPRECATION=ON \
       -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
       -DCMAKE_INSTALL_PREFIX="${INSTALL_TO}" \
       -DENABLE_AJA=ON \
@@ -445,6 +452,7 @@ function stage_05_build_obs() {
       -DYOUTUBE_CLIENTID_HASH=${YOUTUBE_CLIENTID_HASH} \
       -DYOUTUBE_SECRET=${YOUTUBE_SECRET} \
       -DYOUTUBE_SECRET_HASH=${YOUTUBE_SECRET_HASH} \
+      -Wno-dev \
       ${PORTABLE_OPTIONS} | tee "${BUILD_DIR}/cmake-obs-${TARGET}.log"
 
     cmake --build "${BUILD_TO}/"
