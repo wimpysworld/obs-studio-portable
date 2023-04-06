@@ -3,6 +3,7 @@ https://github.com/cg2121/obs-vintage-filter/1.0.0
 https://github.com/dimtpap/obs-pipewire-audio-capture/1.1.0
 https://github.com/exeldro/obs-3d-effect/0.0.2
 https://github.com/exeldro/obs-device-switcher/add32e3b28fa8d1b3a1b91de926a65c56e8b179e
+https://github.com/exeldro/obs-dir-watch-media/be0c880d3fcd30a651b82eec4fbe74c096642ae6
 https://github.com/exeldro/obs-downstream-keyer/0.2.6
 https://github.com/exeldro/obs-dynamic-delay/c6d4fbb7b7f30fb37c1e19738b37d4615df3f77a
 https://github.com/exeldro/obs-freeze-filter/be6770fa822a6cf45d9537ad2801e093b751a5ff

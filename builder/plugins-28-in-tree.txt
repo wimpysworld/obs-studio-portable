@@ -1,2 +1,1 @@
 https://github.com/dimtpap/obs-scale-to-sound/1.2.2/plugins
-https://github.com/exeldro/obs-dir-watch-media/1487bd2aadadccbe751faa2e36f16b73aafdf2fd/plugins
