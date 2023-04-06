@@ -43,4 +43,4 @@ https://github.com/petrifiedpenguin/obs-rgb-levels-filter/eaada12ebdf3bba08658eb
 https://github.com/phandasm/waveform/v1.6.1
 #https://github.com/univrsal/dvds3/b5237556e7a8e6aa03a01a51d80f0ae4554a4c21
 https://github.com/WarmUpTill/SceneSwitcher/1.21.0
-https://github.com/Xaymar/obs-StreamFX/0.12.0b191
+https://github.com/Xaymar/obs-StreamFX/0.12.0b202
