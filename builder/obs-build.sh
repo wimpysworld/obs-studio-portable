@@ -570,7 +570,7 @@ function stage_07_plugins_out_tree() {
             QT_VER="5"
         fi
 
-        if [ "${AUTHOR}" == "exeldro" ] || [ "${AUTHOR}" == "Aitum" ]; then
+        if [ "${AUTHOR}" == "exeldro" ] || [ "${AUTHOR}" == "Aitum" ] || [ "${AUTHOR}" == "andilippi" ]; then
             # Build process of plugins from Exeldro that support standalone builds
             # -Wno-error=switch is only really required for source-dock
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \

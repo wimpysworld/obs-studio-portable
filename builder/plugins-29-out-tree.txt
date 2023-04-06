@@ -1,4 +1,5 @@
 https://github.com/Aitum/obs-vertical-canvas/1.2.0
+https://github.com/andilippi/obs-scene-as-transition/v1.0.2
 https://github.com/cg2121/obs-soundboard/1.1.1
 https://github.com/cg2121/obs-vintage-filter/1.0.0
 https://github.com/dimtpap/obs-pipewire-audio-capture/1.1.0
