@@ -1,2 +1,1 @@
 https://github.com/dimtpap/obs-scale-to-sound/1.2.2/plugins
-https://github.com/exeldro/obs-virtual-cam-filter/8eb39373cb8249a50115d8945979b6ae6fc65ce1/plugins
