@@ -149,14 +149,13 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ub
 
   * **[Game Capture](https://github.com/nowrep/obs-vkcapture)** plugin; Vulkan/OpenGL game capture.
   * **[GStreamer](https://github.com/fzwoch/obs-gstreamer)** plugin; feed GStreamer launch pipelines into OBS Studio.
-  * **[NvFBC](https://gitlab.com/fzwoch/obs-nvfbc)** plugin; screen capture via NVIDIA FBC API. Requires [NvFBC patches for Nvidia drivers](https://github.com/keylase/nvidia-patch) for consumer grade GPUs.
+  * **[NvFBC](https://gitlab.com/fzwoch/obs-nvfbc)** plugin; screen capture via NVIDIA FBC API. Requires [NvFBC patches for Nvidia [drivers](https://github.com/keylase/nvidia-patch) for consumer-grade GPUs.
   * **[RTSP Server](https://github.com/iamscottxu/obs-rtspserver/)** plugin; RTSP server
   * **[Source Record](https://github.com/exeldro/obs-source-record)** plugin; make sources available to record via a filter.
   * **[StreamFX](https://github.com/Xaymar/obs-StreamFX)** plugin; unlocks the full potential of NVENC along with useful composition filters.
   * **[Teleport](https://github.com/fzwoch/obs-teleport)** plugin; open NDI-like replacement. (*not NDI compatible*)
   * **[VA-API](https://github.com/exeldro/obs-transition-table)** plugin; GStreamer-based VA-API encoder implementation.
   * **[Vertical Canvas](https://github.com/Aitum/obs-vertical-canvas)** plugin; make content for TikTok, YouTube Shorts, Instagram Live, and more without the fuss.
-  * **[Virtual Cam Filter](https://github.com/exeldro/obs-virtual-cam-filter)** plugin; make sources available to the virtual camera via a filter.
 
 ## Tools 🛠
 
@@ -183,6 +182,7 @@ Here are some additional plugins that look useful that I might add in the future
   - <https://github.com/norihiro/obs-output-filter>
   - <https://github.com/norihiro/obs-main-view-source>
   - <https://github.com/norihiro/obs-vnc>
+  - [Virtual Cam Filter](https://github.com/exeldro/obs-virtual-cam-filter) plugin; make sources available to the virtual camera via a filter.
 
 ### Additional plugins
 
