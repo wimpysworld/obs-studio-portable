@@ -276,36 +276,8 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
 }
 
 function stage_02_get_obs() {
-    local DIFF=""
-    local APPLY_PATCHES=0
     echo -e "\nOBS Studio\n" >> "${BUILD_DIR}/obs-manifest.txt"
     clone_source "https://github.com/obsproject/obs-studio.git" "${OBS_VER}" "${SOURCE_DIR}"
-
-    case "${OBS_VER}" in
-        #29.1.2)
-          # Disable erroring on some warnings as several 3rd party plugins FTBFS otherwise
-          # - https://github.com/obsproject/obs-studio/commit/189c6939d11ad16a92cbb76c9132c0de3e0eb140
-        #  sed -i 's/-Werror/#-Werror/' "${SOURCE_DIR}/cmake/Modules/CompilerConfig.cmake"
-        #  sed -i 's/-Wunused-parameter/#-Wunused-parameter/' "${SOURCE_DIR}/cmake/Modules/CompilerConfig.cmake"
-        #  ;;
-        29.0.2) APPLY_PATCHES=1;;
-        *) APPLY_PATCHES=0;;
-    esac
-
-    #shellcheck disable=SC2162
-    if [ ${APPLY_PATCHES} -eq 1 ]; then
-        while read PATCH; do
-            DIFF=$(echo "${PATCH}" | cut -d '/' -f8)
-            if [ ! -e "${SOURCE_DIR}/${DIFF}" ]; then
-                echo "   - Cherrypick   : ${PATCH}" >> "${BUILD_DIR}/obs-manifest.txt"
-                wget --quiet --show-progress --progress=bar:force:noscroll "${PATCH}" -O "${SOURCE_DIR}/${DIFF}"
-                CWD=$(pwd)
-                cd "${SOURCE_DIR}"
-                patch -p1 < "${DIFF}"
-                cd "${CWD}"
-            fi
-        done < ./cherrypick-"${OBS_MAJ_VER}".txt
-    fi
 }
 
 function stage_03_get_cef() {
