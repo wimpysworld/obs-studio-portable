@@ -472,6 +472,10 @@ function stage_05_build_obs() {
 }
 
 function stage_06_plugins_in_tree() {
+    if [ "${OBS_MAJ_VER}" -ge 29 ]; then
+        return
+    fi
+
     echo -e "\nPlugins (in tree)\n" >> "${BUILD_DIR}/obs-manifest.txt"
     local BRANCH=""
     local CHAR1=""
