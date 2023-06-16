@@ -282,12 +282,12 @@ function stage_02_get_obs() {
     clone_source "https://github.com/obsproject/obs-studio.git" "${OBS_VER}" "${SOURCE_DIR}"
 
     case "${OBS_VER}" in
-        29.1.0-beta1)
+        #29.1.2)
           # Disable erroring on some warnings as several 3rd party plugins FTBFS otherwise
           # - https://github.com/obsproject/obs-studio/commit/189c6939d11ad16a92cbb76c9132c0de3e0eb140
-          sed -i 's/-Werror/#-Werror/' "${SOURCE_DIR}/cmake/Modules/CompilerConfig.cmake"
-          sed -i 's/-Wunused-parameter/#-Wunused-parameter/' "${SOURCE_DIR}/cmake/Modules/CompilerConfig.cmake"
-          ;;
+        #  sed -i 's/-Werror/#-Werror/' "${SOURCE_DIR}/cmake/Modules/CompilerConfig.cmake"
+        #  sed -i 's/-Wunused-parameter/#-Wunused-parameter/' "${SOURCE_DIR}/cmake/Modules/CompilerConfig.cmake"
+        #  ;;
         29.0.2) APPLY_PATCHES=1;;
         *) APPLY_PATCHES=0;;
     esac
