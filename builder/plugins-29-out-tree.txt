@@ -13,7 +13,7 @@ https://github.com/exeldro/obs-gradient-source/0.3.1
 https://github.com/exeldro/obs-media-controls/aaa7240d65f996f5d60b15d359f0bda976d3b3fa
 https://github.com/exeldro/obs-move-transition/2.9.1
 https://github.com/exeldro/obs-recursion-effect/0.0.5
-https://github.com/exeldro/obs-replay-source/1.6.11
+https://github.com/exeldro/obs-replay-source/1.6.12
 https://github.com/exeldro/obs-scene-collection-manager/0.0.8
 https://github.com/exeldro/obs-scene-notes-dock/0.1.1
 https://github.com/exeldro/obs-shaderfilter/1e0cd0736715afbbcfc4cf3b7fa969d544a33b1d
