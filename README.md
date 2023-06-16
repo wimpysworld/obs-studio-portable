@@ -25,11 +25,12 @@ The tarball of OBS Studio Portable includes a `manifest.txt` that describes exac
 
 |              | OBS Studio 29 |
 | ------------ | ------------- |
-| Ubuntu 20.04 | 29.0.2 (Qt 5) |
-| Ubuntu 22.04 | 29.0.2 (Qt 6) |
-| Ubuntu 22.10 | 29.0.2 (Qt 6) |
-| Ubuntu 23.04 | 29.0.2 (Qt 6) |
-| Plugins      | 46            |
+| Ubuntu 20.04 | 29.1.2 (Qt 5) |
+| Ubuntu 22.04 | 29.1.2 (Qt 6) |
+| Ubuntu 22.10 | 29.1.2 (Qt 6) |
+| Ubuntu 23.04 | 29.1.2 (Qt 6) |
+| Ubuntu 23.10 | 29.1.2 (Qt 6) |
+| Plugins      | 47            |
 
 ### Caveats
 
