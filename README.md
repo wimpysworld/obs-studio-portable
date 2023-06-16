@@ -174,6 +174,7 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ub
 
 Here are some additional plugins that look useful that I might add in the future:
 
+  - <https://github.com/prgmitchell/blur-filter>
   - <https://git.vrsal.xyz/alex/Durchblick>
   - <https://github.com/cg2121/obs-decklink-output-filter>
   - <https://github.com/norihiro/obs-aja-output-filter>
