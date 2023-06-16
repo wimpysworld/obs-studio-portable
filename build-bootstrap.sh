@@ -51,9 +51,9 @@ if [ ! -d "${R}" ]; then
     echo "LANG=C.UTF-8" > "${R}/etc/default/locale"
 
     echo "
-deb http://gb.archive.ubuntu.com/ubuntu/ ${DISTRO} main restricted universe multiverse
-deb http://gb.archive.ubuntu.com/ubuntu/ ${DISTRO}-updates main restricted universe multiverse
-deb http://gb.archive.ubuntu.com/ubuntu/ ${DISTRO}-backports main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu/ ${DISTRO} main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu/ ${DISTRO}-updates main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu/ ${DISTRO}-backports main restricted universe multiverse
 deb http://security.ubuntu.com/ubuntu ${DISTRO}-security main restricted universe multiverse" > "${R}/etc/apt/sources.list"
 else
     echo "WARNING! ${R} already exists!"
