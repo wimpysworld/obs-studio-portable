@@ -32,15 +32,11 @@ The tarball of OBS Studio Portable includes a `manifest.txt` that describes exac
 | Ubuntu 23.10 | 29.1.2 (Qt 6) |
 | Plugins      | 47            |
 
-### Caveats
-
   - [Game Capture](https://github.com/nowrep/obs-vkcapture) is available on Ubuntu 22.04 and newer.
-  - [NvFBC Capture](https://gitlab.com/fzwoch/obs-nvfbc) is available in legacy builds of OBS Studio 26 and 27 builds; the required GLX support was removed in OBS Studio 28.
   - PipeWire support is available in Ubuntu 22.04 and newer.
   - [Teleport](https://github.com/fzwoch/obs-teleport) is available on Ubuntu 22.04 and newer.
   - [SRT & RIST Protocol](https://obsproject.com/wiki/Streaming-With-SRT-Or-RIST-Protocols) support is available on Ubuntu 22.10 and newer.
-  - [WebSockets](https://github.com/obsproject/obs-websocket) 5.0.1 and 4.9.1-compat are included in OBS Studio 28 and newer.
-    - *Legacy builds of OBS Studio 26 have 4.9.0 and OBS Studio 27 builds have 4.9.1*
+  - [WebSockets](https://github.com/obsproject/obs-websocket) 5.0.1 and 4.9.1-compat are both included
 
 # Install
 
