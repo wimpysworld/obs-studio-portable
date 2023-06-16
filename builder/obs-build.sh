@@ -32,18 +32,6 @@ case ${OBS_MAJ_VER} in
     28|29)
         AJA_VER="v16.2-bugfix5"
         CEF_VER="5060";;
-    27)
-        AJA_VER="v16.2-bugfix5"
-        CEF_VER="4638";;
-    26)
-        AJA_VER=""
-        CEF_VER="4280";;
-    25)
-        AJA_VER=""
-        OBS_VER="25.0.8"
-        CEF_VER="3770"
-        echo "ERROR! Unsupported version: ${OBS_MAJ_VER}"
-        exit 1;;
   *)
         echo "ERROR! Unsupported version: ${OBS_MAJ_VER}"
         exit 1;;
@@ -231,7 +219,7 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
         *)    PKG_OBS_SCENESWITCHER+=" libprocps-dev";;
     esac
 
-    if [ "${OBS_MAJ_VER}" -ge 27 ]; then
+    if [ "${OBS_MAJ_VER}" -ge 28 ]; then
         PKG_OBS_SCENESWITCHER+=" libopencv-dev"
     fi
     echo "   - SceneSwitcher  : ${PKG_OBS_SCENESWITCHER}" >> "${BUILD_DIR}/obs-manifest.txt"
@@ -261,14 +249,12 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_OBS_GSTREAMER}
 
-    if [ "${DISTRO_CMP_VER}" -ge 2204 ] && [ "${OBS_MAJ_VER}" -ge 27 ]; then
+    if [ "${DISTRO_CMP_VER}" -ge 2204 ] && [ "${OBS_MAJ_VER}" -ge 28 ]; then
         PKG_OBS_VKCAPTURE="glslang-dev glslang-tools"
         echo "   - Game Capture   : ${PKG_OBS_VKCAPTURE}" >> "${BUILD_DIR}/obs-manifest.txt"
         #shellcheck disable=SC2086
         apt-get -y install --no-install-recommends ${PKG_OBS_VKCAPTURE}
-    fi
 
-    if [ "${DISTRO_CMP_VER}" -ge 2204 ] && [ "${OBS_MAJ_VER}" -ge 27 ]; then
         PKG_OBS_AV1="libaom-dev"
         echo "   - AV1            : ${PKG_OBS_AV1}" >> "${BUILD_DIR}/obs-manifest.txt"
         apt-get -y install --no-install-recommends ${PKG_OBS_AV1}
@@ -290,7 +276,7 @@ function stage_03_get_cef() {
 }
 
 function stage_04_get_aja() {
-    if [ "${OBS_MAJ_VER}" -ge 27 ]; then
+    if [ "${OBS_MAJ_VER}" -ge 28 ]; then
         download_tarball "https://github.com/aja-video/ntv2/archive/refs/tags/${AJA_VER}.tar.gz" "${SOURCE_DIR}/ntv2"
         cmake -S "${SOURCE_DIR}/ntv2/" -B "${SOURCE_DIR}/ntv2/build/" -G Ninja \
         -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
@@ -530,16 +516,6 @@ function stage_07_plugins_out_tree() {
             sed -i 's/VERSION 3\.21/VERSION 3\.18/' "${SOURCE_DIR}/UI/frontend-plugins/SceneSwitcher/CMakeLists.txt" || true
         fi
 
-        # Patch obs-websocket 4.9.1 (not the compat release) so it builds against OBS 27.2.4
-        # https://github.com/obsproject/obs-websocket/issues/916#issuecomment-1193399097
-        if [ "${PLUGIN}" == "obs-websocket" ] && [ "${BRANCH}" == "4.9.1" ]; then
-            sed -r -i 's/OBS(.+?)AutoRelease/OBS\1AutoRelease_OBSWS/g' \
-            "${PLUGIN_DIR}/${PLUGIN}"/src/*.h \
-            "${PLUGIN_DIR}/${PLUGIN}"/src/*/*.h \
-            "${PLUGIN_DIR}/${PLUGIN}"/src/*.cpp \
-            "${PLUGIN_DIR}/${PLUGIN}"/src/*/*.cpp
-        fi
-
         # Monkey patch the needlessly exagerated and inconsistent cmake version requirements        
         if [ "${PLUGIN}" == "obs-StreamFX" ] && [ "${OBS_MAJ_VER}" -ge 29 ]; then
             sed -i 's/VERSION 3\.26/VERSION 3\.18/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt" || true
@@ -548,7 +524,7 @@ function stage_07_plugins_out_tree() {
 
         # obs-face-tracker requires that QT_VERSION is set
         local QT_VER="6"
-        if [ "${OBS_MAJ_VER}" -le 27 ] || [ "${DISTRO_CMP_VER}" -le 2004 ] ; then
+        if [ "${DISTRO_CMP_VER}" -le 2004 ] ; then
             QT_VER="5"
         fi
 
