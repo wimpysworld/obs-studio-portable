@@ -499,12 +499,12 @@ function stage_07_plugins_out_tree() {
         elif [ "${PLUGIN}" == "obs-StreamFX" ]; then
             # Disable some StreamFX features that are not required, deprecated or unsupported in Linux.
             # What remains of the StreamFX suite is:
-            #  - Nvidia NVENC (via FFmpeg)  [ Used by Wimpy ]
+            #  - Nvidia NVENC (via FFmpeg)
             #  - Avid DNxHR (via FFmpeg)
             #  - Apple ProRes (via FFmpeg)
-            #  - Blur                       [ Used by Wimpy ]
+            #  - Blur
             #  - Color Grading
-            #  - Dynamic Mask               [ Used by Wimpy ]
+            #  - Dynamic Mask
             # Other capabilities are replaced by other plugins:
             #  - 3D Transform is replaced by 3D Effects (exeldro)
             #  - Shaders are replaced by Shader Filter (exeldro)
