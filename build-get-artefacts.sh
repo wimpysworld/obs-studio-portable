@@ -20,6 +20,7 @@ case "${DISTRO}" in
     jammy) DISTRO_VER="22.04";;
     kinetic) DISTRO_VER="22.10";;
     lunar) DISTRO_VER="23.04";;
+    mantic) DISTRO_VER="23.10";;
     *) echo "ERROR! Unknown Ubuntu release: ${DISTRO}"
       exit 1;;
 esac

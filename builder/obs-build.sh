@@ -215,7 +215,7 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     # 3rd party plugin dependencies:
     PKG_OBS_SCENESWITCHER="libxss-dev libxtst-dev"
     case "${DISTRO_CMP_VER}" in
-        2304) PKG_OBS_SCENESWITCHER+=" libproc2-dev";;
+        2304|2310) PKG_OBS_SCENESWITCHER+=" libproc2-dev";;
         *)    PKG_OBS_SCENESWITCHER+=" libprocps-dev";;
     esac
 
@@ -230,7 +230,7 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
 
     PKG_OBS_FACETRACKER="liblapack-dev libopenblas-dev"
     case "${DISTRO_CMP_VER}" in
-        2204|2210|2304) PKG_OBS_FACETRACKER+=" libcublas11";;
+        2204|2210|2304|2310) PKG_OBS_FACETRACKER+=" libcublas11";;
         2004)           PKG_OBS_FACETRACKER+=" libcublas10";;
     esac
     echo "   - Face Tracker   : ${PKG_OBS_FACETRACKER}" >> "${BUILD_DIR}/obs-manifest.txt"
