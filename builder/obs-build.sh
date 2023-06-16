@@ -568,6 +568,12 @@ function stage_07_plugins_out_tree() {
             "${PLUGIN_DIR}/${PLUGIN}"/src/*/*.cpp
         fi
 
+        # Monkey patch the needlessly exagerated and inconsistent cmake version requirements        
+        if [ "${PLUGIN}" == "obs-StreamFX" ] && [ "${OBS_MAJ_VER}" -ge 29 ]; then
+            sed -i 's/VERSION 3\.26/VERSION 3\.18/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt" || true
+            sed -i 's/VERSION 3\.20/VERSION 3\.18/' "${PLUGIN_DIR}/${PLUGIN}/cmake/clang/Clang.cmake" || true
+        fi
+
         # obs-face-tracker requires that QT_VERSION is set
         local QT_VER="6"
         if [ "${OBS_MAJ_VER}" -le 27 ] || [ "${DISTRO_CMP_VER}" -le 2004 ] ; then
