@@ -162,7 +162,7 @@ function stage_01_get_apt() {
         update-alternatives --install /usr/bin/go go /usr/lib/go-1.16/bin/go 10
     fi
 
-    if [ "${OBS_MAJ_VER}" -ge 28 ] && [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
+    if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
         PKG_OBS_QT="qt6-base-dev qt6-base-private-dev qt6-wayland libqt6svg6-dev"
     else
         PKG_OBS_QT="qtbase5-dev qtbase5-private-dev qtwayland5 libqt5svg5-dev libqt5x11extras5-dev"
@@ -180,7 +180,7 @@ libxcb-xinerama0-dev libxcb1-dev libxcomposite-dev libxdamage-dev libxinerama-de
 libxss-dev python3-dev swig"
 
     # SRT & RIST Protocol Support
-    if [ "${OBS_MAJ_VER}" -ge 28 ] && [ "${DISTRO_CMP_VER}" -ge 2210 ]; then
+    if [ "${DISTRO_CMP_VER}" -ge 2210 ]; then
         PKG_OBS_CORE+=" librist-dev libsrt-openssl-dev"
     fi
 
@@ -219,9 +219,7 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
         *)    PKG_OBS_SCENESWITCHER+=" libprocps-dev";;
     esac
 
-    if [ "${OBS_MAJ_VER}" -ge 28 ]; then
-        PKG_OBS_SCENESWITCHER+=" libopencv-dev"
-    fi
+    PKG_OBS_SCENESWITCHER+=" libopencv-dev"
     echo "   - SceneSwitcher  : ${PKG_OBS_SCENESWITCHER}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_OBS_SCENESWITCHER}
@@ -249,7 +247,7 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_OBS_GSTREAMER}
 
-    if [ "${DISTRO_CMP_VER}" -ge 2204 ] && [ "${OBS_MAJ_VER}" -ge 28 ]; then
+    if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
         PKG_OBS_VKCAPTURE="glslang-dev glslang-tools"
         echo "   - Game Capture   : ${PKG_OBS_VKCAPTURE}" >> "${BUILD_DIR}/obs-manifest.txt"
         #shellcheck disable=SC2086
@@ -276,16 +274,14 @@ function stage_03_get_cef() {
 }
 
 function stage_04_get_aja() {
-    if [ "${OBS_MAJ_VER}" -ge 28 ]; then
-        download_tarball "https://github.com/aja-video/ntv2/archive/refs/tags/${AJA_VER}.tar.gz" "${SOURCE_DIR}/ntv2"
-        cmake -S "${SOURCE_DIR}/ntv2/" -B "${SOURCE_DIR}/ntv2/build/" -G Ninja \
-        -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
-        -DAJA_BUILD_OPENSOURCE=ON \
-        -DAJA_BUILD_APPS=OFF \
-        -DAJA_INSTALL_HEADERS=ON | tee "${BUILD_DIR}/cmake-aja.log"
-        cmake --build "${SOURCE_DIR}/ntv2/build/"
-        cmake --install "${SOURCE_DIR}/ntv2/build/" --prefix "${BUILD_DIR}/aja"
-    fi
+    download_tarball "https://github.com/aja-video/ntv2/archive/refs/tags/${AJA_VER}.tar.gz" "${SOURCE_DIR}/ntv2"
+    cmake -S "${SOURCE_DIR}/ntv2/" -B "${SOURCE_DIR}/ntv2/build/" -G Ninja \
+    -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+    -DAJA_BUILD_OPENSOURCE=ON \
+    -DAJA_BUILD_APPS=OFF \
+    -DAJA_INSTALL_HEADERS=ON | tee "${BUILD_DIR}/cmake-aja.log"
+    cmake --build "${SOURCE_DIR}/ntv2/build/"
+    cmake --install "${SOURCE_DIR}/ntv2/build/" --prefix "${BUILD_DIR}/aja"
 }
 
 function stage_05_build_obs() {
@@ -300,69 +296,26 @@ function stage_05_build_obs() {
         PIPEWIRE_OPTIONS="-DENABLE_PIPEWIRE=OFF"
     fi
 
-    if [ "${OBS_MAJ_VER}" -ge 28 ]; then
-        RTMPS_OPTIONS="-DENABLE_RTMPS=ON"
-        BROWSER_OPTIONS="-DENABLE_BROWSER=ON"
-        VST_OPTIONS="-DENABLE_VST=ON"
-        if [ "${DISTRO_CMP_VER}" -ge 2210 ]; then
-            RTMPS_OPTIONS+=" -DENABLE_NEW_MPEGTS_OUTPUT=ON"
-        else
-            RTMPS_OPTIONS+=" -DENABLE_NEW_MPEGTS_OUTPUT=OFF"
-        fi
+
+    RTMPS_OPTIONS="-DENABLE_RTMPS=ON"
+    BROWSER_OPTIONS="-DENABLE_BROWSER=ON"
+    VST_OPTIONS="-DENABLE_VST=ON"
+    if [ "${DISTRO_CMP_VER}" -ge 2210 ]; then
+        RTMPS_OPTIONS+=" -DENABLE_NEW_MPEGTS_OUTPUT=ON"
     else
-        RTMPS_OPTIONS="-DWITH_RTMPS=ON"
-        BROWSER_OPTIONS="-DBUILD_BROWSER=ON"
-        VST_OPTIONS="-DBUILD_VST=ON"
+        RTMPS_OPTIONS+=" -DENABLE_NEW_MPEGTS_OUTPUT=OFF"
     fi
 
     case "${TARGET}" in
       portable)
         BUILD_TO="${BUILD_PORTABLE}"
         INSTALL_TO="${BASE_DIR}/${INSTALL_DIR}"
-        if [ "${OBS_MAJ_VER}" -ge 28 ]; then
-          PORTABLE_OPTIONS="-DLINUX_PORTABLE=ON"
-        else
-          PORTABLE_OPTIONS="-DUNIX_STRUCTURE=OFF"
-        fi
-        # Disable some StreamFX features that are not required, deprecated or unsupported in Linux.
-        # What remains of the StreamFX suite is:
-        #  - Nvidia NVENC (via FFmpeg)  [ Used by Wimpy ]
-        #  - Avid DNxHR (via FFmpeg)
-        #  - Apple ProRes (via FFmpeg)
-        #  - Blur                       [ Used by Wimpy ]
-        #  - Color Grading
-        #  - Dynamic Mask               [ Used by Wimpy ]
-        # Other capabilities are replaced by other plugins:
-        #  - 3D Transform is replaced by 3D Effects (exeldro)
-        #  - Shaders are replaced by Shader Filter (exeldro)
-        #  - Source Mirror is replaced by Source Clone (exeldro)
-        # https://github.com/Xaymar/obs-StreamFX/blob/root/CMakeLists.txt#L313
-        if [ "${OBS_MAJ_VER}" -le 28 ]; then
-            STREAMFX_OPTIONS="-DStreamFX_ENABLE_FILTER_AUTOFRAMING=OFF -DStreamFX_ENABLE_FILTER_AUTOFRAMING_NVIDIA=OFF \
-            -DStreamFX_ENABLE_FILTER_DENOISING=OFF -DStreamFX_ENABLE_FILTER_DENOISING_NVIDIA=OFF \
-            -DStreamFX_ENABLE_FILTER_UPSCALING=OFF -DStreamFX_ENABLE_FILTER_UPSCALING_NVIDIA=OFF \
-            -DStreamFX_ENABLE_FILTER_VIRTUAL_GREENSCREEN=OFF -DStreamFX_ENABLE_FILTER_VIRTUAL_GREENSCREEN_NVIDIA=OFF \
-            -DStreamFX_ENABLE_ENCODER_FFMPEG_AMF=OFF \
-            -DStreamFX_ENABLE_ENCODER_AOM_AV1=OFF \
-            -DStreamFX_ENABLE_FILTER_DISPLACEMENT=OFF \
-            -DStreamFX_ENABLE_FILTER_TRANSFORM=OFF \
-            -DStreamFX_ENABLE_FILTER_SDF_EFFECTS=OFF \
-            -DStreamFX_ENABLE_FILTER_SHADER=OFF \
-            -DStreamFX_ENABLE_SOURCE_SHADER=OFF \
-            -DStreamFX_ENABLE_TRANSITION_SHADER=OFF \
-            -DStreamFX_ENABLE_CLANG=OFF -DStreamFX_ENABLE_FRONTEND=OFF -DStreamFX_ENABLE_UPDATER=OFF"
-        else
-            STREAMFX_OPTIONS=""
-        fi
+        PORTABLE_OPTIONS="-DLINUX_PORTABLE=ON"
         ;;
       system)
         BUILD_TO="${BUILD_SYSTEM}"
         INSTALL_TO="/usr"
-        if [ "${OBS_MAJ_VER}" -ge 28 ]; then
-          PORTABLE_OPTIONS="-DLINUX_PORTABLE=OFF"
-        else
-          PORTABLE_OPTIONS="-DUNIX_STRUCTURE=ON"
-        fi;;
+        PORTABLE_OPTIONS="-DLINUX_PORTABLE=OFF"
     esac
 
     if [ -z "${RESTREAM_CLIENTID}" ] || [ -z "${RESTREAM_HASH}" ]; then
@@ -401,7 +354,6 @@ function stage_05_build_obs() {
       ${VST_OPTIONS} \
       -DENABLE_WAYLAND=ON \
       ${RTMPS_OPTIONS} \
-      ${STREAMFX_OPTIONS} \
       -DRESTREAM_CLIENTID=${RESTREAM_CLIENTID} \
       -DRESTREAM_HASH=${RESTREAM_HASH} \
       -DTWITCH_CLIENTID=${TWITCH_CLIENTID} \
@@ -430,7 +382,7 @@ function stage_05_build_obs() {
 }
 
 function stage_06_plugins_in_tree() {
-    if [ "${OBS_MAJ_VER}" -ge 29 ]; then
+    if [ ! -e ./plugins-"${OBS_MAJ_VER}"-in-tree.txt ]; then
         return
     fi
 
@@ -464,7 +416,7 @@ function stage_06_plugins_in_tree() {
     done < ./plugins-"${OBS_MAJ_VER}"-in-tree.txt
 
     # Adjust cmake VERSION SceneSwitch on Ubuntu 20.04
-    if [ "${DISTRO_CMP_VER}" -eq 2004 ] && [ "${OBS_MAJ_VER}" -ge 28 ]; then
+    if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
         sed -i 's/VERSION 3\.21/VERSION 3\.18/' "${SOURCE_DIR}/UI/frontend-plugins/SceneSwitcher/CMakeLists.txt" || true
     fi
 }
@@ -512,11 +464,11 @@ function stage_07_plugins_out_tree() {
         clone_source "${URL}.git" "${BRANCH}" "${PLUGIN_DIR}/${PLUGIN}"
 
         # Adjust cmake VERSION SceneSwitch on Ubuntu 20.04
-        if [ "${DISTRO_CMP_VER}" -eq 2004 ] && [ "${OBS_MAJ_VER}" -ge 28 ]; then
+        if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
             sed -i 's/VERSION 3\.21/VERSION 3\.18/' "${SOURCE_DIR}/UI/frontend-plugins/SceneSwitcher/CMakeLists.txt" || true
         fi
 
-        # Monkey patch the needlessly exagerated and inconsistent cmake version requirements        
+        # Monkey patch the needlessly exagerated and inconsistent cmake version requirements
         if [ "${PLUGIN}" == "obs-StreamFX" ] && [ "${OBS_MAJ_VER}" -ge 29 ]; then
             sed -i 's/VERSION 3\.26/VERSION 3\.18/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt" || true
             sed -i 's/VERSION 3\.20/VERSION 3\.18/' "${PLUGIN_DIR}/${PLUGIN}/cmake/clang/Clang.cmake" || true
@@ -619,10 +571,8 @@ function stage_07_plugins_out_tree() {
             # Apply patch to fix build errors
             wget -q "https://patch-diff.githubusercontent.com/raw/univrsal/dvds3/pull/3.diff" -O "${PLUGIN_DIR}/${PLUGIN}/3.diff"
             patch -p1 -d "${PLUGIN_DIR}/${PLUGIN}" < "${PLUGIN_DIR}/${PLUGIN}/3.diff"
-            if [ "${OBS_MAJ_VER}" -ge 28 ]; then
-                # Monkey patch to use the new find_package format introduced in OBS 28
-                sed -i 's/LibObs REQUIRED/libobs REQUIRED/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
-            fi
+            # Monkey patch to use the new find_package format introduced in OBS 28
+            sed -i 's/LibObs REQUIRED/libobs REQUIRED/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
               -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
@@ -636,11 +586,10 @@ function stage_07_plugins_out_tree() {
             cp -a "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins/dvd-screensaver/"* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/dvd-screensaver" || true
             rm -rf "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins"
         elif [ "${PLUGIN}" == "obs-rgb-levels-filter" ]; then
-            if [ "${OBS_MAJ_VER}" -ge 28 ]; then
-              # Monkey patch to use the new find_package format introduced in OBS 28
-              sed -i 's/include(external/#include(external/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
-              sed -i 's/LibObs REQUIRED/libobs REQUIRED/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
-            fi
+            # Monkey patch to use the new find_package format introduced in OBS 28
+            sed -i 's/include(external/#include(external/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
+            sed -i 's/LibObs REQUIRED/libobs REQUIRED/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
+
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
               -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
@@ -653,7 +602,7 @@ function stage_07_plugins_out_tree() {
             cp -a "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins/obs-rgb-levels-filter/"* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-rgb-levels-filter" || true
             rm -rf "${BASE_DIR}/${INSTALL_DIR}/lib/obs-plugins"
             rm -rf "${BASE_DIR}/${INSTALL_DIR}/share/obs-plugins"
-        elif [ "${OBS_MAJ_VER}" -ge 28 ]; then
+        else
             # Build process for OBS Studio 28 and newer
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
@@ -661,16 +610,6 @@ function stage_07_plugins_out_tree() {
               -DQT_VERSION="${QT_VER}"  | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
             cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
             cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
-        else
-            # Build process for OBS Studio 27 and older
-            cd "${PLUGIN_DIR}/${PLUGIN}"
-            cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" \
-              -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
-              -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
-              -DQT_VERSION="${QT_VER}" | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
-            make -C "${PLUGIN_DIR}/${PLUGIN}/build"
-            make -C "${PLUGIN_DIR}/${PLUGIN}/build" install
-            cd "${CWD}"
         fi
 
         # Reorgansise some misplaced plugins
@@ -702,11 +641,6 @@ function stage_07_plugins_out_tree() {
 }
 
 function stage_08_plugins_prebuilt() {
-    # Pre-built plugins are not required in OBS Studio 27 or older.
-    if [ "${OBS_MAJ_VER}" -le 27 ]; then
-        return
-    fi
-
     echo -e "\nPlugins (pre-built)\n" >> "${BUILD_DIR}/obs-manifest.txt"
     local URL=""
     local ZIP=""
@@ -765,10 +699,7 @@ function stage_09_finalise() {
     fi
 
     # Create scripts
-    local SCRIPTS="obs-dependencies obs-portable"
-    if [ "${OBS_MAJ_VER}" -ge 28 ]; then
-        SCRIPTS+=" obs-gamecapture"
-    fi
+    local SCRIPTS="obs-dependencies obs-portable obs-gamecapture"
 
     # Template scripts with correct Ubuntu versions
     for SCRIPT in ${SCRIPTS}; do
@@ -807,7 +738,7 @@ function stage_09_finalise() {
 
     # Provide additional runtime requirements
     #shellcheck disable=SC1003
-    if [ "${OBS_MAJ_VER}" -ge 28 ] && [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
+    if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
         echo -e '\tqt6-qpa-plugins \\\n\tqt6-wayland \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
     else
         echo -e '\tqtwayland5 \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
