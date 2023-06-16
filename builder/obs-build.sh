@@ -568,9 +568,6 @@ function stage_07_plugins_out_tree() {
                 continue
             fi
 
-            # Apply patch to fix build errors
-            wget -q "https://patch-diff.githubusercontent.com/raw/univrsal/dvds3/pull/3.diff" -O "${PLUGIN_DIR}/${PLUGIN}/3.diff"
-            patch -p1 -d "${PLUGIN_DIR}/${PLUGIN}" < "${PLUGIN_DIR}/${PLUGIN}/3.diff"
             # Monkey patch to use the new find_package format introduced in OBS 28
             sed -i 's/LibObs REQUIRED/libobs REQUIRED/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
@@ -578,7 +575,13 @@ function stage_07_plugins_out_tree() {
               -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
               -DLIBOBS_INCLUDE_DIR="${SOURCE_DIR}/libobs" \
               -DLIBOBS_LIB="/usr/lib/x86_64-linux-gnu/libobs.so" \
+              -DLIBOBS_DIR="/usr/lib/x86_64-linux-gnu/cmake/libobs" \
               -DGLOBAL_INSTALLATION=ON | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
+            #pushd "${PLUGIN_DIR}/${PLUGIN}"
+            #make -C build
+            #make -C build DESTDIR="${BASE_DIR}/${INSTALL_DIR}/" install
+            #popd
+              
             cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
             cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
             cp "${PLUGIN_DIR}/${PLUGIN}/build/dvd-screensaver.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true
