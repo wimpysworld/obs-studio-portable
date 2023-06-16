@@ -11,7 +11,7 @@ https://github.com/exeldro/obs-dynamic-delay/c6d4fbb7b7f30fb37c1e19738b37d4615df
 https://github.com/exeldro/obs-freeze-filter/be6770fa822a6cf45d9537ad2801e093b751a5ff
 https://github.com/exeldro/obs-gradient-source/0.3.1
 https://github.com/exeldro/obs-media-controls/b37f7ab24dcf40701e1f538c14f608a5a0db868b
-https://github.com/exeldro/obs-move-transition/2.8.3
+https://github.com/exeldro/obs-move-transition/2.9.1
 https://github.com/exeldro/obs-recursion-effect/0.0.5
 https://github.com/exeldro/obs-replay-source/1.6.11
 https://github.com/exeldro/obs-scene-collection-manager/0.0.8
