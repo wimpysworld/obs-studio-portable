@@ -522,6 +522,10 @@ function stage_07_plugins_out_tree() {
             sed -i 's/VERSION 3\.20/VERSION 3\.18/' "${PLUGIN_DIR}/${PLUGIN}/cmake/clang/Clang.cmake" || true
         fi
 
+        if [ "${PLUGIN}" == "obs-midi-mg" ]; then
+          sed -i 's/VERSION 3\.23/VERSION 3\.22/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt" || true
+        fi
+
         # obs-face-tracker requires that QT_VERSION is set
         local QT_VER="6"
         if [ "${DISTRO_CMP_VER}" -le 2004 ] ; then
