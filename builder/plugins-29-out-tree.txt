@@ -3,6 +3,7 @@ https://github.com/andilippi/obs-scene-as-transition/v1.1.0
 https://github.com/cg2121/obs-soundboard/1.1.1
 https://github.com/cg2121/obs-vintage-filter/1.0.0
 https://github.com/dimtpap/obs-pipewire-audio-capture/1.1.0
+https://github.com/dimtpap/obs-scale-to-sound/1.2.3
 https://github.com/exeldro/obs-3d-effect/0.0.2
 https://github.com/exeldro/obs-device-switcher/add32e3b28fa8d1b3a1b91de926a65c56e8b179e
 https://github.com/exeldro/obs-dir-watch-media/be0c880d3fcd30a651b82eec4fbe74c096642ae6
