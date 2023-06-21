@@ -589,10 +589,6 @@ function stage_07_plugins_out_tree() {
             cp -a "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins/dvd-screensaver/"* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/dvd-screensaver" || true
             rm -rf "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins"
         elif [ "${PLUGIN}" == "obs-rgb-levels-filter" ]; then
-            # Monkey patch to use the new find_package format introduced in OBS 28
-            sed -i 's/include(external/#include(external/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
-            sed -i 's/LibObs REQUIRED/libobs REQUIRED/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
-
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
               -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
