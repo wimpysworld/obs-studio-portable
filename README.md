@@ -55,8 +55,7 @@ The install process is simple:
     - **You use the `obs-portable` launcher** to ensure OBS Studio finds all the associated libraries and add-ons.
 
 ```bash
-wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r
-/obs-portable-29.1.3-r23172-ubuntu-$(lsb_release -rs).tar.bz2"
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23172/obs-portable-29.1.3-r23172-ubuntu-$(lsb_release -rs).tar.bz2"
 wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23172/obs-portable-29.1.3-r23172-ubuntu-$(lsb_release -rs).tar.bz2.sha256"
 sha256sum -c obs-portable-29.1.3-r23172-ubuntu-$(lsb_release -rs).tar.bz2.sha256
 tar xvf obs-portable-29.1.3-r23172-ubuntu-$(lsb_release -rs).tar.bz2
