@@ -30,7 +30,7 @@ The tarball of OBS Studio Portable includes a `manifest.txt` that describes exac
 | Ubuntu 22.10 | 29.1.3 (Qt 6) |
 | Ubuntu 23.04 | 29.1.3 (Qt 6) |
 | Ubuntu 23.10 | 29.1.3 (Qt 6) |
-| Plugins      | 47            |
+| Plugins      | 46            |
 
   - [Game Capture](https://github.com/nowrep/obs-vkcapture) is available on Ubuntu 22.04 and newer.
   - PipeWire support is available in Ubuntu 22.04 and newer.
@@ -106,7 +106,6 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ub
 ## Audio 🔉
 
   * **[Audio Pan](https://github.com/norihiro/obs-audio-pan-filter)** plugin; control stereo pan of audio sources.
-  * **[MIDI](https://github.com/nhielost/obs-midi-mg)** plugins; allows MIDI devices to interact with OBS Studio.
   * **[Mute Filter](https://github.com/norihiro/obs-mute-filter)** plugin; to mute audio from a source.
   * **[PipeWire Audio Capture](https://github.com/dimtpap/obs-pipewire-audio-capture)** plugin; capture application audio from PipeWire.
   * **[Scale to Sound](https://github.com/Qufyy/obs-scale-to-sound)** plugin; adds a filter which makes a source scale based on the audio levels of any audio source you choose

@@ -444,8 +444,7 @@ function stage_07_plugins_out_tree() {
 
         # Insufficient Golang or PipeWire or Qt support in Ubuntu 20.04 to build these plugins
         if [ "${DISTRO_CMP_VER}" -le 2004 ]; then
-            if [ "${PLUGIN}" == "obs-midi-mg" ] || \
-               [ "${PLUGIN}" == "obs-pipewire-audio-capture" ] || \
+            if [ "${PLUGIN}" == "obs-pipewire-audio-capture" ] || \
                [ "${PLUGIN}" == "obs-teleport" ] || \
                [ "${PLUGIN}" == "obs-vertical-canvas" ] || \
                [ "${PLUGIN}" == "obs-vkcapture" ]; then
@@ -472,10 +471,6 @@ function stage_07_plugins_out_tree() {
         if [ "${PLUGIN}" == "obs-StreamFX" ] && [ "${OBS_MAJ_VER}" -ge 29 ]; then
             sed -i 's/VERSION 3\.26/VERSION 3\.18/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt" || true
             sed -i 's/VERSION 3\.20/VERSION 3\.18/' "${PLUGIN_DIR}/${PLUGIN}/cmake/clang/Clang.cmake" || true
-        fi
-
-        if [ "${PLUGIN}" == "obs-midi-mg" ]; then
-          sed -i 's/VERSION 3\.23/VERSION 3\.22/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt" || true
         fi
 
         # obs-face-tracker requires that QT_VERSION is set
@@ -581,7 +576,7 @@ function stage_07_plugins_out_tree() {
             #make -C build
             #make -C build DESTDIR="${BASE_DIR}/${INSTALL_DIR}/" install
             #popd
-              
+
             cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
             cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
             cp "${PLUGIN_DIR}/${PLUGIN}/build/dvd-screensaver.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true
