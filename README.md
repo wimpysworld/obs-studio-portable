@@ -55,11 +55,11 @@ The install process is simple:
     - **You use the `obs-portable` launcher** to ensure OBS Studio finds all the associated libraries and add-ons.
 
 ```bash
-wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23172/obs-portable-29.1.3-r23172-ubuntu-$(lsb_release -rs).tar.bz2"
-wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23172/obs-portable-29.1.3-r23172-ubuntu-$(lsb_release -rs).tar.bz2.sha256"
-sha256sum -c obs-portable-29.1.3-r23172-ubuntu-$(lsb_release -rs).tar.bz2.sha256
-tar xvf obs-portable-29.1.3-r23172-ubuntu-$(lsb_release -rs).tar.bz2
-cd obs-portable-29.1.3-r23172-ubuntu-$(lsb_release -rs)
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23173/obs-portable-29.1.3-r23173-ubuntu-$(lsb_release -rs).tar.bz2"
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23173/obs-portable-29.1.3-r23173-ubuntu-$(lsb_release -rs).tar.bz2.sha256"
+sha256sum -c obs-portable-29.1.3-r23173-ubuntu-$(lsb_release -rs).tar.bz2.sha256
+tar xvf obs-portable-29.1.3-r23173-ubuntu-$(lsb_release -rs).tar.bz2
+cd obs-portable-29.1.3-r23173-ubuntu-$(lsb_release -rs)
 sudo ./obs-dependencies
 ./obs-portable
 ```
@@ -221,13 +221,13 @@ The actual build script, [`obs-build.sh`](builder/obs-build.sh), gets injected i
 
 ## Release numbers
 
-An OBS Studio Portable for Ubuntu release number will be something like r23172, and the filename will clearly indicate the version of OBS Studio and which Ubuntu release is it for:
+An OBS Studio Portable for Ubuntu release number will be something like r23173, and the filename will clearly indicate the version of OBS Studio and which Ubuntu release is it for:
 
 ```text
                      +-- OBS Portable for Ubuntu revision
                      |
                      v
-obs-portable-29.1.3-r23172-ubuntu-22.04.tar.bz2
+obs-portable-29.1.3-r23173-ubuntu-22.04.tar.bz2
               ^                    ^
               |                    |
               +-- OBS version      +-- Supported Ubuntu release
