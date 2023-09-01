@@ -21,7 +21,7 @@ Made with 💝 for <img src=".github/ubuntu.png" align="top" width="18" /></p>
 
 ## Supported Software
 
-The tarball of OBS Studio Portable includes a `manifest.txt` that describes exactly which versions of plugins and add-ons are included.
+The tarball of OBS Studio Portable includes a `manifest.txt` that describes precisely which versions of plugins and add-ons are included.
 
 |              | OBS Studio 29 |
 | ------------ | ------------- |
@@ -62,6 +62,27 @@ tar xvf obs-portable-29.1.3-r23173-ubuntu-$(lsb_release -rs).tar.bz2
 cd obs-portable-29.1.3-r23173-ubuntu-$(lsb_release -rs)
 sudo ./obs-dependencies
 ./obs-portable
+```
+
+## Distrobox
+
+If you use a non-Ubuntu distribution, you can use [Distrobox]() to run OBS Studio Portable.
+
+1. Install Distrobox; if you have an NVIDIA GPU, enable NVIDIA support in Podman/Docker too.
+2. Run [`xhost +si:localuser:$USER`](https://github.com/89luca89/distrobox/blob/main/docs/compatibility.md#compatibility-notes) on the host run it via an autostart script.
+3. Create the Distrobox container, then enter it.
+
+```bash
+distrobox create --image ubuntu:22.04 --name obs
+distrobox enter obs
+```
+4. Now follow the [Command Line instructions above](#command-line) to install OBS Studio Portable.
+5. If you have an NVIDIA GPU, install CUDA and NVENC support in the container.
+   - I run NixOS, and the new `--nvidia` option in Distrobox doesn't work on NixOS, so I installed the CUDA and NVENC support manually.
+   - Change the version number (*535 in the example below*) to match the version of the NVIDIA drivers you have installed on the host.
+
+```bash
+sudo apt-get install nvidia-headless-no-dkms-535 libnvidia-encode-535
 ```
 
 ## Graphical Install
