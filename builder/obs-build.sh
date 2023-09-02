@@ -254,7 +254,7 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_OBS_GSTREAMER}
 
-    PKG_OBS_URL_SOURCE="libpugixml-dev"
+    PKG_OBS_URL_SOURCE="libpsl-dev libssl-dev"
     echo "   - URL Source     : ${PKG_OBS_URL_SOURCE}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_OBS_URL_SOURCE}
