@@ -486,7 +486,7 @@ function stage_07_plugins_out_tree() {
             QT_VER="5"
         fi
 
-        if [ "${AUTHOR}" == "ujifgc" ] || [ "${AUTHOR}" == "exeldro" ] || [ "${AUTHOR}" == "Aitum" ] || [ "${AUTHOR}" == "andilippi" ] || [ "${PLUGIN}" == "obs-scale-to-sound" ]; then
+        if [ "${AUTHOR}" == "ujifgc" ] || [ "${AUTHOR}" == "exeldro" ] || [ "${AUTHOR}" == "Aitum" ] || [ "${AUTHOR}" == "andilippi" ] || [ "${AUTHOR}" == "FiniteSingularity" ] || [ "${PLUGIN}" == "obs-scale-to-sound" ]; then
             # Build process of plugins from Exeldro that support standalone builds
             # -Wno-error=switch is only really required for source-dock
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
@@ -504,11 +504,11 @@ function stage_07_plugins_out_tree() {
             #  - Nvidia NVENC (via FFmpeg)
             #  - Avid DNxHR (via FFmpeg)
             #  - Apple ProRes (via FFmpeg)
-            #  - Blur
             #  - Color Grading
             #  - Dynamic Mask
             # Other capabilities are replaced by other plugins:
             #  - 3D Transform is replaced by 3D Effects (exeldro)
+            #  - Blur is replaced by Composite Blur (FiniteSingularity)
             #  - Shaders are replaced by Shader Filter (exeldro)
             #  - Source Mirror is replaced by Source Clone (exeldro)
             # https://github.com/Xaymar/obs-StreamFX/blob/root/CMakeLists.txt#L313
@@ -520,6 +520,7 @@ function stage_07_plugins_out_tree() {
               -DENABLE_FILTER_VIRTUAL_GREENSCREEN=OFF -DENABLE_FILTER_VIRTUAL_GREENSCREEN_NVIDIA=OFF \
               -DENABLE_ENCODER_FFMPEG_AMF=OFF \
               -DENABLE_ENCODER_AOM_AV1=OFF \
+              -DENABLE_FILTER_BLUR=OFF \
               -DENABLE_FILTER_DISPLACEMENT=OFF \
               -DENABLE_FILTER_TRANSFORM=OFF \
               -DENABLE_FILTER_SDF_EFFECTS=OFF \
