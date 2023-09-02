@@ -39,7 +39,7 @@ https://github.com/norihiro/obs-mute-filter/0.2.2
 https://github.com/norihiro/obs-text-pthread/2.0.2
 https://github.com/nowrep/obs-vkcapture/v1.4.1
 https://github.com/obsproject/obs-websocket/4.9.1-compat
-https://github.com/phandasm/waveform/v1.6.1
+https://github.com/phandasm/waveform/v1.7.0
 https://github.com/wimpysworld/obs-rgb-levels-filter/1.0.0
 https://github.com/Ayowel/dvds3/c177440488d716e950bbb042654d9de1f18fffdc
 https://github.com/WarmUpTill/SceneSwitcher/1.22.1
