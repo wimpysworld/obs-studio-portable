@@ -11,6 +11,7 @@ https://github.com/exeldro/obs-downstream-keyer/0.2.6
 https://github.com/exeldro/obs-dynamic-delay/c6d4fbb7b7f30fb37c1e19738b37d4615df3f77a
 https://github.com/exeldro/obs-freeze-filter/be6770fa822a6cf45d9537ad2801e093b751a5ff
 https://github.com/exeldro/obs-gradient-source/0.3.2
+https://github.com/exeldro/obs-markdown/66885942948dfa4d72581ebab4fdf90487151d70
 https://github.com/exeldro/obs-media-controls/0ca9daadd55edf090ef07b8ebf29fd275a307a6c
 https://github.com/exeldro/obs-move-transition/2.9.4
 https://github.com/exeldro/obs-recursion-effect/0.0.5
