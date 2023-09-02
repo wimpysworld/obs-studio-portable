@@ -200,6 +200,11 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
         PKG_OBS_PLUGINS+=" libasio-dev libwebsocketpp-dev nlohmann-json3-dev"
     fi
 
+    # Intel® oneAPI Video Processing Library (oneVPL)
+    if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
+        PKG_OBS_PLUGINS+=" libvpl-dev"
+    fi
+
     # CEF Browser runtime requirements
     PKG_OBS_PLUGINS+=" libatk-bridge2.0-0 libcups2 libnspr4 libnss3 libxtst6"
 
