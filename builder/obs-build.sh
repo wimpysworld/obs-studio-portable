@@ -735,7 +735,7 @@ function stage_09_finalise() {
     # Provide additional runtime requirements
     #shellcheck disable=SC1003
     if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
-        echo -e '\tqt6-qpa-plugins \\\n\tqt6-wayland \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
+        echo -e '\tqt6-image-formats-plugins \\\n\tqt6-qpa-plugins \\\n\tqt6-wayland \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
     else
         echo -e '\tqtwayland5 \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
     fi
