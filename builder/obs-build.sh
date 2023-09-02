@@ -197,7 +197,7 @@ libxss-dev python3-dev swig"
     apt-get -y install --no-install-recommends ${PKG_OBS_CORE}
 
     PKG_OBS_PLUGINS="libasound2-dev libdrm-dev libfdk-aac-dev libfontconfig-dev \
-libfreetype6-dev libjack-jackd2-dev libpulse-dev libspeexdsp-dev \
+libfreetype6-dev libjack-jackd2-dev libpulse-dev libsndio-dev libspeexdsp-dev \
 libudev-dev libv4l-dev libva-dev libvlc-dev"
 
     # CEF Browser runtime requirements
