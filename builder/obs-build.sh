@@ -245,7 +245,7 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     apt-get -y install --no-install-recommends ${PKG_OBS_FACETRACKER}
 
     PKG_OBS_TEXT="libcairo2-dev libpango1.0-dev libpng-dev"
-    echo "   - PThread  : ${PKG_OBS_TEXT}" >> "${BUILD_DIR}/obs-manifest.txt"
+    echo "   - PThread        : ${PKG_OBS_TEXT}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_OBS_TEXT}
 
