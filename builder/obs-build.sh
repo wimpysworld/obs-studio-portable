@@ -725,7 +725,7 @@ function stage_09_finalise() {
         while read FILE; do
             while read LIB; do
                 echo "${LIB}" >> obs-libs.txt
-            done < <(ldd "${FILE}" | awk '{print $1}')
+            done < <(ldd "${FILE}" | grep "=>" | awk '{print $1}')
         done < <(find "${DIR}" -type f)
     done
 
@@ -740,7 +740,9 @@ function stage_09_finalise() {
     # Add the packages to the dependencies file
     #shellcheck disable=SC2162
     while read PKG; do
-        echo -e "\t${PKG} \\" >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
+        if [ -n "${PKG}" ]; then
+            echo -e "\t${PKG} \\" >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
+        fi
     done < <(sort -u obs-pkgs.txt)
 
     # Provide additional runtime requirements
