@@ -186,12 +186,6 @@ libxss-dev python3-dev swig"
         PKG_OBS_CORE+=" librist-dev libsrt-openssl-dev"
     fi
 
-    # For OBS Studio 29.1.0 and newer, mostly OBS Websocket 5.2 support related
-    # - https://github.com/obsproject/obs-studio/pull/8194
-    if [ "${OBS_MAJ_VER}" -ge 29 ]; then
-        PKG_OBS_CORE+=" libasio-dev libwebsocketpp-dev nlohmann-json3-dev"
-    fi
-
     echo " - OBS Core    : ${PKG_OBS_CORE}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_OBS_CORE}
@@ -199,6 +193,12 @@ libxss-dev python3-dev swig"
     PKG_OBS_PLUGINS="libasound2-dev libdrm-dev libfdk-aac-dev libfontconfig-dev \
 libfreetype6-dev libjack-jackd2-dev libpulse-dev libsndio-dev libspeexdsp-dev \
 libudev-dev libv4l-dev libva-dev libvlc-dev"
+
+    # For OBS Studio 29.1.0 and newer, mostly OBS Websocket 5.2 support related
+    # - https://github.com/obsproject/obs-studio/pull/8194
+    if [ "${OBS_MAJ_VER}" -ge 29 ]; then
+        PKG_OBS_PLUGINS+=" libasio-dev libwebsocketpp-dev nlohmann-json3-dev"
+    fi
 
     # CEF Browser runtime requirements
     PKG_OBS_PLUGINS+=" libatk-bridge2.0-0 libcups2 libnspr4 libnss3 libxtst6"
