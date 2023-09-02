@@ -739,7 +739,7 @@ function stage_09_finalise() {
     else
         echo -e '\tqtwayland5 \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
     fi
-    echo -e '\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tv4l2loopback-dkms \\\n\tv4l2loopback-utils' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
+    echo -e '\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tv4l2loopback-dkms \\\n\tv4l2loopback-utils' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
 }
 
 function stage_10_make_tarball() {
