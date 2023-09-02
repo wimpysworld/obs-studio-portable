@@ -171,6 +171,8 @@ function stage_01_get_apt() {
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_OBS_QT}
 
+    # libvulkan-dev and libxdamage-dev are not documented as dependencies in
+    # the upstream OBS build instructions
     PKG_OBS_CORE="libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev \
 libavutil-dev libswresample-dev libswscale-dev libcmocka-dev libcurl4-openssl-dev \
 libgl1-mesa-dev libgles2-mesa-dev libglvnd-dev libjansson-dev libluajit-5.1-dev \
