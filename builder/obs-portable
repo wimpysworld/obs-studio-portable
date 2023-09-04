@@ -20,5 +20,10 @@ if [ ! -d "${PORTABLE_DIR}/bin/64bit" ]; then
     exit 1
 fi
 
+# If we're in an OBS Studio Portable container, run the config fix script
+if [ -x /etc/profile.d/99-obs-config-fix.sh ]; then
+  /etc/profile.d/99-obs-config-fix.sh
+fi
+
 cd "${PORTABLE_DIR}/bin/64bit"
 exec ./obs --portable "${@}"
