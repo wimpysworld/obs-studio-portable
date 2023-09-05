@@ -69,16 +69,17 @@ If anything doesn't work correctly when you start the new OBS Studio, continue u
 
 ## Distrobox
 
-You can use [Distrobox](https://distrobox.privatedns.org/) to run OBS Studio Portable on any distro.
+You can use [Distrobox](https://distrobox.privatedns.org/) to run OBS Studio Portable on any Linux 🐧 distro.
+The container image for OBS Studio Portable is maintained under the umbrella of the [Universal Blue](https://universal-blue.org/) project.
 
-**NOTE!** While this method works, it is still in development, and the instructions below are subject to change in the future.
-There are some caveats:
-- The portable nature of the OBS Studio configuration is not preserved when using Distrobox.
+- https://github.com/ublue-os/obs-studio-portable
+
+**The portable nature of OBS Studio Portable is redefined when using Distrobox.**
+- *"portable"* now means you can run OBS Studio Portable on any Linux distro, not just Ubuntu.
 - The OBS Studio configuration is exposed in your home directory on the host via the `~/.config/obs-portable` directory.
 - Launching multiple instances of OBS Studio Portable containers is not recommended as the configuration location is shared.
-  - However, it is possible to install multiple copies of OBS Studio Portable, each with its own configuration, inside a single container.
 
-**That said, running a single instance of OBS Studio Portable works great!** I am currently using OBS Studio Portable this way on NixOS ❄️
+**Running a single instance of OBS Studio Portable works great!** I am currently using OBS Studio Portable this way on NixOS ❄️
 
 1. Install Distrobox (*1.4.2.1 or newer*) and Podman (*recommended*) or Docker.
 2. Add [`xhost +si:localuser:$USER`](https://github.com/89luca89/distrobox/blob/main/docs/compatibility.md#compatibility-notes) to `~/.distroboxrc`
@@ -88,8 +89,8 @@ There are some caveats:
 distrobox create --image ghcr.io/ublue-os/obs-studio-portable:latest --name obs --pull
 ```
 
-If you have an NVIDIA GPU, install CUDA and NVENC support in the container.
-- The `--nvidia` option, added in Distrobox 1.5.0, does not work on NixOS; So, I installed the CUDA and NVENC support manually in the container.
+If you have an NVIDIA GPU, install the required CUDA and NVENC support in the container.
+- The `--nvidia` option, added in Distrobox 1.5.0, does not work on NixOS; So, I install the required libraries in the container.
   - Change the version number (***535** in the example below*) to match the version of the NVIDIA drivers you have installed on the host.
 
 ```bash
@@ -110,7 +111,7 @@ distrobox-enter --name obs -- /opt/obs-portable/obs-portable
 ### Multiple OBS Studio Portable instances in Distrobox
 
 Should you require multiple instances of OBS Studio, each with its own configuration, follow the steps above to get OBS Studio Portable running in Distrobox.
-Then, extract the OBS Studio tarball into a different directory in your home directory on the host and launch it using the `./obs-portable` launcher.
+Then, extract the OBS Studio tarball into a different directory in your home directory on the host.
 For example:
 
 ```bash
