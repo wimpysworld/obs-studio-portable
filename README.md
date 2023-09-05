@@ -27,14 +27,13 @@ And OBS Studio Portable is also a container image for [Distrobox](https://distro
 
 The tarball of OBS Studio Portable includes a `manifest.txt` that describes precisely which versions of plugins and add-ons are included.
 
-|              | OBS Studio 29 |
-| ------------ | ------------- |
-| Ubuntu 20.04 | 29.1.3 (Qt 5) |
-| Ubuntu 22.04 | 29.1.3 (Qt 6) |
-| Ubuntu 22.10 | 29.1.3 (Qt 6) |
-| Ubuntu 23.04 | 29.1.3 (Qt 6) |
-| Ubuntu 23.10 | 29.1.3 (Qt 6) |
-| Plugins      | 46            |
+|                        | OBS Studio 29 | OBS Studio 30 |
+| ---------------------- | ------------- | ------------- |
+| Ubuntu 20.04 (Focal)   | 29.1.3 (Qt 5) | EOL           |
+| Ubuntu 22.04 (Jammy)   | 29.1.3 (Qt 6) | WIP           |
+| Ubuntu 23.04 (Lunar)   | 29.1.3 (Qt 6) | WIP           |
+| Ubuntu 23.10 (Mantic)  | 29.1.3 (Qt 6) | WIP           |
+| Plugins                | 49            | 49            |
 
 Some caveats:
 
