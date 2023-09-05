@@ -10,14 +10,18 @@ Made with 💝 for 🐧</p>
 
 # OBS Studio Portable for Linux
 
-**Running OBS Studio in Portable Mode means all settings (Profiles and Scene Collections) are saved within the same directory tree as the OBS Studio executables, plugins and configuration. You can copy the whole folder to another computer and use it.**
-
-  - Over 45 of the best 3rd Party plugins for OBS Studio are bundled!
+  - Includes nearly 50 of the best 3rd Party plugins for OBS Studio!
   - Chromium Embedded Frameworks (CEF) to enable Browser Sources
   - NVENC (NVIDIA) and VA-API (AMD & Intel) accelerated video encoding
   - Fraunhofer FDK AAC Codec
   - VLC and GStreamer Media sources
   - AJA NTV2 SDK
+
+## Portable?
+
+Running OBS Studio in Portable Mode means all settings (Profiles and Scene Collections) are saved within the same directory tree as the OBS Studio executables, plugins and configuration. You can copy the whole folder to another computer and use it.
+
+And OBS Studio Portable is also a container image for [Distrobox](https://distrobox.privatedns.org/), so you can run OBS Studio Portable on any Linux distro.
 
 ## Supported Software
 
@@ -32,15 +36,17 @@ The tarball of OBS Studio Portable includes a `manifest.txt` that describes prec
 | Ubuntu 23.10 | 29.1.3 (Qt 6) |
 | Plugins      | 46            |
 
-  - [Game Capture](https://github.com/nowrep/obs-vkcapture) is available on Ubuntu 22.04 and newer.
-  - PipeWire support is available in Ubuntu 22.04 and newer.
-  - [Teleport](https://github.com/fzwoch/obs-teleport) is available on Ubuntu 22.04 and newer.
-  - [SRT & RIST Protocol](https://obsproject.com/wiki/Streaming-With-SRT-Or-RIST-Protocols) support is available on Ubuntu 22.10 and newer.
-  - [WebSockets](https://github.com/obsproject/obs-websocket) 5.0.1 and 4.9.1-compat are both included
+Some caveats:
+
+- [Game Capture](https://github.com/nowrep/obs-vkcapture) is available on Ubuntu 22.04 and newer.
+- PipeWire support is available in Ubuntu 22.04 and newer.
+- [Teleport](https://github.com/fzwoch/obs-teleport) is available on Ubuntu 22.04 and newer.
+- [SRT & RIST Protocol](https://obsproject.com/wiki/Streaming-With-SRT-Or-RIST-Protocols) support is available on Ubuntu 22.10 and newer.
+- [WebSockets](https://github.com/obsproject/obs-websocket) 5.0.1 and 4.9.1-compat are both included
 
 # Install
 
-You can safely install these OBS Studio Portable builds alongside `.deb`, Flatpak or Snap installs of OBS Studio.
+You can safely install these OBS Studio Portable builds alongside [`.deb`](https://launchpad.net/~obsproject/+archive/ubuntu/obs-studio), [Flatpak](https://flathub.org/apps/com.obsproject.Studio) or [(unmaintained) Snap](https://snapcraft.io/obs-studio) installs of OBS Studio.
 
 ## Ubuntu
 
@@ -67,7 +73,7 @@ sudo ./obs-dependencies
 The upgrade process is the same as an install, and you can copy the `config` folder from your old OBS Studio Portable directory to the new one.
 If anything doesn't work correctly when you start the new OBS Studio, continue using the previous OBS Studio Portable instance.
 
-## Distrobox
+## Distrobox (*any Linux*)
 
 You can use [Distrobox](https://distrobox.privatedns.org/) to run OBS Studio Portable on any Linux 🐧 distro.
 The container image for OBS Studio Portable is maintained under the umbrella of the [Universal Blue](https://universal-blue.org/) project.
@@ -151,12 +157,12 @@ If any of the following are true for you, you might find these builds of OBS Stu
 - **I sometimes need old versions of OBS Studio**
   - I have some streaming projects that are archived and don't need upgrading. But I do want to reference them from time to time.
 
-# Batteries included
+# Batteries included 🔋
 
 I'm incredibly thankful to the OBS Studio developers and developers of the growing list of excellent plugins.
-These Portable builds of OBS Studio for Ubuntu celebrate the best of what's available. Thank you! 🙇
+These Portable builds of OBS Studio for Linux celebrate the best of what's available. Thank you! 🙇
 
-Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ubuntu:
+Here are the 3rd party plugins that come bundled with OBS Studio Portable for Linux:
 
 ## Audio 🔉
 
@@ -246,7 +252,7 @@ If the builds of OBS Studio offered here don't include a plugin that you use, yo
 
 ## OBS Virtual Camera
 
-OBS Studio Virtual Camera support is integrated. The `Start Virtual Camera` button is located in the Controls pane, just below `Start Recording`. Here's how to install and configure `v4l2loopback` which OBS uses:
+OBS Studio Virtual Camera support is integrated. The `Start Virtual Camera` button is in the Controls pane below `Start Recording`. Here's how to install and configure `v4l2loopback`, which OBS uses:
 
 ```bash
 echo 'options v4l2loopback devices=1 video_nr=13 card_label="OBS Virtual Camera" exclusive_caps=1' | sudo tee /etc/modprobe.d/v4l2loopback.conf
@@ -277,7 +283,7 @@ The actual build script, [`obs-build.sh`](builder/obs-build.sh), gets injected i
 
 ## Release numbers
 
-An OBS Studio Portable for Ubuntu release number will be something like r23173, and the filename will clearly indicate the version of OBS Studio and which Ubuntu release is it for:
+An OBS Studio Portable for Linux release number will be something like r23173, and the filename will indicate the version of OBS Studio and which Ubuntu release it is for:
 
 ```text
                      +-- OBS Portable for Ubuntu revision
@@ -289,7 +295,7 @@ obs-portable-29.1.3-r23173-ubuntu-22.04.tar.bz2
               +-- OBS version      +-- Supported Ubuntu release
 ```
 
-The purpose of the release number is to indicate a change to the composition of the portable release; most likely due to adding/updating the bundled 3rd party plugins.
+The purpose of the release number is to indicate a change to the composition of the portable release, most likely due to adding/updating the bundled 3rd party plugins.
 
 # References
 
