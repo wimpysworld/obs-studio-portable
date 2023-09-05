@@ -87,8 +87,7 @@ The container image for OBS Studio Portable is maintained under the umbrella of 
 **Running a single instance of OBS Studio Portable works great!** I am currently using OBS Studio Portable this way on NixOS ❄️
 
 1. Install Distrobox (*1.4.2.1 or newer*) and Podman (*recommended*) or Docker.
-2. Add [`xhost +si:localuser:$USER`](https://github.com/89luca89/distrobox/blob/main/docs/compatibility.md#compatibility-notes) to `~/.distroboxrc`
-3. Create a Distrobox container for OBS Studio Portable.
+2. Create a Distrobox container for OBS Studio Portable.
 
 ```bash
 distrobox create --image ghcr.io/ublue-os/obs-studio-portable:latest --name obs --pull
@@ -102,17 +101,19 @@ If you have an NVIDIA GPU, install the required CUDA and NVENC support in the co
 distrobox create --image ghcr.io/ublue-os/obs-studio-portable:latest --name obs --pull --additional-packages "nvidia-headless-no-dkms-535 libnvidia-encode-535"
 ```
 
-4. Run the initial setup.
+3. Run the initial setup.
 
 ```bash
 distrobox-enter --name obs -- /etc/profile.d/99-obs-config-fix.sh
 ```
 
-5. From now on, launch OBS Studio Portable using the `obs-portable` launcher.
+4. From now on, launch OBS Studio Portable using the `obs-portable` launcher.
 
 ```bash
 distrobox-enter --name obs -- /opt/obs-portable/obs-portable
 ```
+
+If the OBS Studio Portable container cannot connect to the host X11 server, add [`xhost +si:localuser:$USER`](https://github.com/89luca89/distrobox/blob/main/docs/compatibility.md#compatibility-notes) to `~/.distroboxrc`.
 ### Multiple OBS Studio Portable instances in Distrobox
 
 Should you require multiple instances of OBS Studio, each with its own configuration, follow the steps above to get OBS Studio Portable running in Distrobox.
