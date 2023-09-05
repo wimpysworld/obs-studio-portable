@@ -1,16 +1,16 @@
 <h1 align="center">
   <img src="https://avatars1.githubusercontent.com/u/7725691?v=3&s=256" alt="OBS Studio">
   <br />
-  OBS Studio <i>Portable</i> for Ubuntu
+  OBS Studio <i>Portable</i> for Linux
 </h1>
 
-<p align="center"><b>Portable builds of OBS Studio for Ubuntu, pre-loaded with extra features and plugins for live streaming and screen recording</b>
+<p align="center"><b>Portable builds of OBS Studio for Linux, pre-loaded with extra features and plugins for live streaming and screen recording</b>
 <br />
-Made with 💝 for <img src=".github/ubuntu.png" align="top" width="18" /></p>
+Made with 💝 for 🐧</p>
 
-# OBS Studio Portable for Ubuntu
+# OBS Studio Portable for Linux
 
-**Running OBS Studio in Portable Mode means that all settings (Profiles and Scene Collections) are saved within the same directory tree as the OBS Studio executables, plugins and configuration. You can copy the whole folder to another computer and just use it.**
+**Running OBS Studio in Portable Mode means all settings (Profiles and Scene Collections) are saved within the same directory tree as the OBS Studio executables, plugins and configuration. You can copy the whole folder to another computer and use it.**
 
   - Over 45 of the best 3rd Party plugins for OBS Studio are bundled!
   - Chromium Embedded Frameworks (CEF) to enable Browser Sources
@@ -40,12 +40,11 @@ The tarball of OBS Studio Portable includes a `manifest.txt` that describes prec
 
 # Install
 
-You can safely install these OBS Studio Portable builds alongside `.deb`,
-FlatPak or Snap installs of OBS Studio.
+You can safely install these OBS Studio Portable builds alongside `.deb`, Flatpak or Snap installs of OBS Studio.
 
-## Command Line
+## Ubuntu
 
-The install process is simple:
+The installation process is simple:
 
   - **[Download the tarball (and sha256 hash) of OBS Studio Portable](https://github.com/wimpysworld/obs-studio-portable/releases)** for the version of Ubuntu you're running.
     - **Builds are specific to an Ubuntu release!**
@@ -63,64 +62,98 @@ cd obs-portable-29.1.3-r23173-ubuntu-$(lsb_release -rs)
 sudo ./obs-dependencies
 ./obs-portable
 ```
+### Upgrades
+
+The upgrade process is the same as an install, and you can copy the `config` folder from your old OBS Studio Portable directory to the new one.
+If anything doesn't work correctly when you start the new OBS Studio, continue using the previous OBS Studio Portable instance.
 
 ## Distrobox
 
-If you use a non-Ubuntu distribution, you can use [Distrobox]() to run OBS Studio Portable.
+You can use [Distrobox](https://distrobox.privatedns.org/) to run OBS Studio Portable on any distro.
 
-1. Install Distrobox; if you have an NVIDIA GPU, enable NVIDIA support in Podman/Docker too.
-2. Run [`xhost +si:localuser:$USER`](https://github.com/89luca89/distrobox/blob/main/docs/compatibility.md#compatibility-notes) on the host run it via an autostart script.
-3. Create the Distrobox container, then enter it.
+**NOTE!** While this method works, it is still in development, and the instructions below are subject to change in the future.
+There are some caveats:
+- The portable nature of the OBS Studio configuration is not preserved when using Distrobox.
+- The OBS Studio configuration is exposed in your home directory on the host via the `~/.config/obs-portable` directory.
+- Launching multiple instances of OBS Studio Portable containers is not recommended as the configuration location is shared.
+  - However, it is possible to install multiple copies of OBS Studio Portable, each with its own configuration, inside a single container.
+
+**That said, running a single instance of OBS Studio Portable works great!** I am currently using OBS Studio Portable this way on NixOS ❄️
+
+1. Install Distrobox (*1.4.2.1 or newer*) and Podman (*recommended*) or Docker.
+2. Add [`xhost +si:localuser:$USER`](https://github.com/89luca89/distrobox/blob/main/docs/compatibility.md#compatibility-notes) to `~/.distroboxrc`
+3. Create a Distrobox container for OBS Studio Portable.
 
 ```bash
-distrobox create --image ubuntu:22.04 --name obs
-distrobox enter obs
+distrobox create --image ghcr.io/ublue-os/obs-studio-portable:latest --name obs --pull
 ```
-4. Now follow the [Command Line instructions above](#command-line) to install OBS Studio Portable.
-5. If you have an NVIDIA GPU, install CUDA and NVENC support in the container.
-   - I run NixOS, and the new `--nvidia` option in Distrobox doesn't work on NixOS, so I installed the CUDA and NVENC support manually.
-   - Change the version number (*535 in the example below*) to match the version of the NVIDIA drivers you have installed on the host.
+
+If you have an NVIDIA GPU, install CUDA and NVENC support in the container.
+- The `--nvidia` option, added in Distrobox 1.5.0, does not work on NixOS; So, I installed the CUDA and NVENC support manually in the container.
+  - Change the version number (***535** in the example below*) to match the version of the NVIDIA drivers you have installed on the host.
 
 ```bash
-sudo apt-get install nvidia-headless-no-dkms-535 libnvidia-encode-535
+distrobox create --image ghcr.io/ublue-os/obs-studio-portable:latest --name obs --pull --additional-packages "nvidia-headless-no-dkms-535 libnvidia-encode-535"
 ```
 
-## Graphical Install
+4. Run the initial setup.
 
-Or if you prefer a graphical interface, you can use [**the fabulous QuickOBS**](https://github.com/ymauray/quickobs) ✨ from the always wonderful [Yannick Mauray](https://github.com/frenchguych) 💖
+```bash
+distrobox-enter --name obs -- /etc/profile.d/99-obs-config-fix.sh
+```
 
-## Upgrades
+5. From now on, launch OBS Studio Portable using the `obs-portable` launcher.
 
-The upgrade process is the same as an install and you can simply copy the `config` folder from your old OBS Studio Portable directory to the new one. If anything doesn't correctly when you start the new OBS Studio, just keep using the previous OBS Studio Portable instance.
+```bash
+distrobox-enter --name obs -- /opt/obs-portable/obs-portable
+```
+### Multiple OBS Studio Portable instances in Distrobox
 
-[QuickOBS](https://github.com/ymauray/quickobs) includes a feature to save and restore your configurations too.
+Should you require multiple instances of OBS Studio, each with its own configuration, follow the steps above to get OBS Studio Portable running in Distrobox.
+Then, extract the OBS Studio tarball into a different directory in your home directory on the host and launch it using the `./obs-portable` launcher.
+For example:
+
+```bash
+mkdir ~/OBS-Studio-again
+cd ~/OBS-Studio-again
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23173/obs-portable-29.1.3-r23173-ubuntu-$(lsb_release -rs).tar.bz2"
+tar xvf obs-portable-29.1.3-r23173-ubuntu-$(lsb_release -rs).tar.bz2
+cd obs-portable-29.1.3-r23173-ubuntu-$(lsb_release -rs)
+```
+
+To launch the second instance of OBS Studio Portable in Distrobox, run the following command:
+
+```bash
+distrobox-enter --name obs -- ~/OBS-Studio-again/obs-portable
+```
 
 # Why does this project exist?
 
 If any of the following are true for you, you might find these builds of OBS Studio useful.
 
- - **I want a version of OBS Studio for Ubuntu that has all the features enabled, *by default***
-   - I use lots of 3rd party OBS Studio plugins in my stream configuration.
- - **I stream from two different locations using multiple computers**
-   - [Syncthing](https://syncthing.net/) syncs my streaming configuration between sites. I'd also like to include OBS Studio itself.
- - **I make changes to my OBS Studio configuration from various computers**
-   - Keeping these changes in sync manually can be cumbersome.
- - **I stream to multiple channels**
-   - Having discrete OBS Studio instances is easier to work with than switching between dozens of Profile and Scene Collection combinations.
- - **I don't want to deal with flag day releases of new software**
-   - New software is wonderful, but want to control when and how I upgrade each of my streaming configuration instances.
- - **My stream integrations are not (currently) compatible with packages of OBS Studio that use confinement**
-   - I have some funky stream integrations, and will likely create more. I don't want to limit my creative options.
- - **I sometimes stream OBS Studio how-tos and examples**
-   - Being able to run demo instances (at will) of OBS Studio with isolated configurations is great for this.
- - **I want a stable OBS setup and an in-development OBS setup**
-   - When developing new features for my stream, I want to freely experiment with new versions of OBS Studio and its plugins without fear of disrupting my stable setup.
- - **I sometimes need old versions of OBS Studio**
-   - I have some streaming projects that are archived and don't need upgrading. But I do want to reference them from time to time.
+- **I want a version of OBS Studio for Ubuntu that has all the features enabled; *by default***
+  - I use lots of 3rd party OBS Studio plugins in my stream configuration.
+- **I stream from two different locations using multiple computers**
+  - [Syncthing](https://syncthing.net/) syncs my streaming configuration between sites. I'd also like to include OBS Studio itself.
+- **I make changes to my OBS Studio configuration from various computers**
+  - Keeping these changes in sync manually can be cumbersome.
+- **I stream to multiple channels**
+  - Having discrete OBS Studio instances is easier to work with than switching between dozens of Profile and Scene Collection combinations.
+- **I don't want to deal with flag day releases of new software**
+  - New software is wonderful, but want to control when and how I upgrade each of my streaming configuration instances.
+- **My stream integrations are not (currently) compatible with packages of OBS Studio that use confinement**
+  - I have some funky stream integration;, and will likely create more. I don't want to limit my creative options.
+- **I sometimes stream OBS Studio how-tos and examples**
+  - Being able to run demo instances of OBS Studio with isolated configurations is great for this.
+- **I want a stable OBS setup and an in-development OBS setup**
+  - When developing new features for my stream, I can freely experiment with new versions of OBS Studio and its plugins without fear of disrupting my stable setup.
+- **I sometimes need old versions of OBS Studio**
+  - I have some streaming projects that are archived and don't need upgrading. But I do want to reference them from time to time.
 
 # Batteries included
 
-I'm extremely thankful to the OBS Studio developers and developers of the growing list of excellent plugins. These Portable builds of OBS Studio for Ubuntu celebrate the best of what's available. Thank you! 🙇
+I'm incredibly thankful to the OBS Studio developers and developers of the growing list of excellent plugins.
+These Portable builds of OBS Studio for Ubuntu celebrate the best of what's available. Thank you! 🙇
 
 Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ubuntu:
 
@@ -145,6 +178,7 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ub
 ## Effects ✨
 
   * **[3D Effect](https://github.com/exeldro/obs-3d-effect)** plugin; 3D effect filter.
+  * **[Composite Blur](https://github.com/FiniteSingularity/obs-composite-blur)** plugin; comprehensive blur plugin that provides several different blur algorithms, and proper compositing.
   * **[DVD Screensaver](https://github.com/univrsal/dvds3)** plugin; a DVD screen saver source type.
   * **[Downstream Keyer](https://github.com/exeldro/obs-downstream-keyer)** plugin; add a Downstream Keyer dock.
   * **[Dynamic Delay](https://github.com/exeldro/obs-dynamic-delay)** plugin; filter for dynamic delaying a video source.
@@ -185,13 +219,13 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ub
 
 ## Text 📝
 
+  * **[Markdown](https://github.com/exeldro/obs-markdown)** plugin; add Markdown sources
   * **[Text PThread](https://github.com/norihiro/obs-text-pthread)** plugin; Rich text source plugin with many advanced features including multi-language support, emoji support, vertical rendering and RTL support.
-
+  * **[URL Source](https://github.com/royshil/obs-urlsource)** plugin; fetch data from a URL (API), parse and display live update in scene
 ### To consider 🤔
 
 Here are some additional plugins that look useful that I might add in the future:
 
-  - <https://github.com/prgmitchell/blur-filter>
   - <https://git.vrsal.xyz/alex/Durchblick>
   - <https://github.com/cg2121/obs-decklink-output-filter>
   - <https://github.com/norihiro/obs-aja-output-filter>
@@ -258,6 +292,6 @@ The purpose of the release number is to indicate a change to the composition of 
 
 # References
 
-  - https://obsproject.com/wiki/Build-Instructions-For-Linux
-  - https://github.com/snapcrafters/obs-studio
-  - https://launchpad.net/~obsproject
+- https://obsproject.com/wiki/Build-Instructions-For-Linux
+- https://github.com/snapcrafters/obs-studio
+- https://launchpad.net/~obsproject
