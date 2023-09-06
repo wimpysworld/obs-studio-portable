@@ -658,16 +658,16 @@ function stage_08_plugins_prebuilt() {
     mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/dvd-screensaver"
     mv -v "${PLUGIN_DIR}/dvd-screensaver.v1.1.linux.x64/dvd-screensaver/data/"* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/dvd-screensaver/"
 
-    URL="https://github.com/royshil/obs-urlsource/releases/download/0.0.5/obs-urlsource-0.0.5-x86_64-linux-gnu.deb"
-    FILE="${URL##*/}"
-    echo " - ${URL}" >> "${BUILD_DIR}/obs-manifest.txt"
-    wget --quiet --show-progress --progress=bar:force:noscroll "${URL}" -O "${TARBALL_DIR}/${FILE}"
-    mkdir -p "${PLUGIN_DIR}/$(basename "${FILE}" .deb)"
-    ar -x "${TARBALL_DIR}/${FILE}" --output="${PLUGIN_DIR}/$(basename "${FILE}" .deb)"
-    tar xf "${PLUGIN_DIR}/$(basename "${FILE}" .deb)/data.tar.gz"
-    cp -v "${PLUGIN_DIR}/$(basename "${FILE}" .deb)/usr/local/lib/obs-plugins/obs-urlsource.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/"
-    mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-urlsource/locale/"
-    cp -v "${PLUGIN_DIR}/$(basename "${FILE}" .deb)/usr/local/share/obs/obs-plugins/obs-urlsource/locale/en-US.ini" "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-urlsource/locale/"
+    #URL="https://github.com/royshil/obs-urlsource/releases/download/0.0.5/obs-urlsource-0.0.5-x86_64-linux-gnu.deb"
+    #FILE="${URL##*/}"
+    #echo " - ${URL}" >> "${BUILD_DIR}/obs-manifest.txt"
+    #wget --quiet --show-progress --progress=bar:force:noscroll "${URL}" -O "${TARBALL_DIR}/${FILE}"
+    #mkdir -p "${PLUGIN_DIR}/$(basename "${FILE}" .deb)"
+    #ar -x "${TARBALL_DIR}/${FILE}" --output="${PLUGIN_DIR}/$(basename "${FILE}" .deb)"
+    #tar xf "${PLUGIN_DIR}/$(basename "${FILE}" .deb)/data.tar.gz"
+    #cp -v "${PLUGIN_DIR}/$(basename "${FILE}" .deb)/usr/local/lib/obs-plugins/obs-urlsource.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/"
+    #mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-urlsource/locale/"
+    #cp -v "${PLUGIN_DIR}/$(basename "${FILE}" .deb)/usr/local/share/obs/obs-plugins/obs-urlsource/locale/en-US.ini" "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-urlsource/locale/"
 }
 
 function stage_09_finalise() {
