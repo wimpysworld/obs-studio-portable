@@ -23,6 +23,8 @@ fi
 # If we're in an OBS Studio Portable container, run the config fix script
 if [ -x /etc/profile.d/99-obs-config-fix.sh ]; then
   /etc/profile.d/99-obs-config-fix.sh
+  # Make sure gstream find plugins from the container, not the host.
+  export GST_PLUGIN_SYSTEM_PATH_1_0=/usr/lib/x86_64-linux-gnu/gstreamer-1.0:"${GST_PLUGIN_SYSTEM_PATH_1_0}"
 fi
 
 cd "${PORTABLE_DIR}/bin/64bit"
