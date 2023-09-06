@@ -755,9 +755,9 @@ function stage_09_finalise() {
         echo -e '\tqtwayland5 \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
         echo -e '\tqtwayland5 \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
     fi
-    echo -e '\tlibgstreamer-plugins-good1.0-0 \\\n\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tv4l2loopback-dkms \\\n\tv4l2loopback-utils' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
-    echo -e '\tlibgstreamer-plugins-good1.0-0 \\\n\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tv4l2loopback-utils && \\\n' >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
-    echo -e 'rm -rd /var/lib/apt/lists/*' >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
+    echo -e '\tgstreamer1.0-plugins-good \\\n\tgstreamer1.0-x \\\n\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tv4l2loopback-dkms \\\n\tv4l2loopback-utils \\\n\txterm' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
+    echo -e '\tgstreamer1.0-plugins-good \\\n\tgstreamer1.0-x \\\n\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tmesa-vdpau-drivers \\\n\tmesa-va-drivers \\\n\tvlc-plugin-base \\\n\tv4l2loopback-utils \\\n\txterm && \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
+    echo -e 'apt-get clean && rm -rd /var/lib/apt/lists/*' >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
 }
 
 function stage_10_make_tarball() {
