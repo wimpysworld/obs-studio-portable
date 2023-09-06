@@ -152,7 +152,7 @@ function stage_01_get_apt() {
 
     apt-get -y upgrade
 
-    PKG_TOOLCHAIN="bzip2 clang-format clang-tidy cmake curl ${COMPILERS} file git libarchive-tools libc6-dev make meson ninja-build patch pkg-config tree unzip wget"
+    PKG_TOOLCHAIN="binutils bzip2 clang-format clang-tidy cmake curl ${COMPILERS} file git libarchive-tools libc6-dev make meson ninja-build patch pkg-config tree unzip wget"
     echo " - Toolchain   : ${PKG_TOOLCHAIN}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_TOOLCHAIN}
@@ -660,6 +660,12 @@ function stage_08_plugins_prebuilt() {
     rm -rf "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/dvd-screensaver"
     mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/dvd-screensaver"
     mv -v "${PLUGIN_DIR}/dvd-screensaver.v1.1.linux.x64/dvd-screensaver/data/"* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/dvd-screensaver/"
+    
+    URL="https://github.com/royshil/obs-urlsource/releases/download/0.0.5/obs-urlsource-0.0.5-x86_64-linux-gnu.deb"
+    FILE="${URL##*/}"
+    echo " - ${URL}" >> "${BUILD_DIR}/obs-manifest.txt"
+    wget --quiet --show-progress --progress=bar:force:noscroll "${URL}" -O "${TARBALL_DIR}/${FILE}"
+    ar -x "${TARBALL_DIR}/${FILE}" --output="${PLUGIN_DIR}/$(basename "${FILE}" .deb)"
 }
 
 function stage_09_finalise() {
