@@ -706,7 +706,7 @@ function stage_09_finalise() {
     fi
 
     # Create scripts
-    local SCRIPTS="obs-dependencies obs-portable obs-gamecapture"
+    local SCRIPTS="obs-container-dependencies obs-dependencies obs-portable obs-gamecapture"
 
     # Template scripts with correct Ubuntu versions
     for SCRIPT in ${SCRIPTS}; do
@@ -717,6 +717,7 @@ function stage_09_finalise() {
 
     # Populate the dependencies file
     echo "sudo apt-get install \\" >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
+    echo "DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install \\" >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
 
     # Build a list of all the linked libraries
     rm -f obs-libs.txt 2>/dev/null || true
@@ -742,6 +743,7 @@ function stage_09_finalise() {
     while read PKG; do
         if [ -n "${PKG}" ]; then
             echo -e "\t${PKG} \\" >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
+            echo -e "\t${PKG} \\" >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
         fi
     done < <(sort -u obs-pkgs.txt)
 
@@ -749,10 +751,14 @@ function stage_09_finalise() {
     #shellcheck disable=SC1003
     if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
         echo -e '\tqt6-image-formats-plugins \\\n\tqt6-qpa-plugins \\\n\tqt6-wayland \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
+        echo -e '\tqt6-image-formats-plugins \\\n\tqt6-qpa-plugins \\\n\tqt6-wayland \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
     else
         echo -e '\tqtwayland5 \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
+        echo -e '\tqtwayland5 \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
     fi
-    echo -e '\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tv4l2loopback-dkms \\\n\tv4l2loopback-utils' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
+    echo -e '\tlibgstreamer-plugins-good1.0-0 \\\n\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tv4l2loopback-dkms \\\n\tv4l2loopback-utils' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
+    echo -e '\tlibgstreamer-plugins-good1.0-0 \\\n\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tv4l2loopback-utils && \\\n' >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
+    echo -e 'rm -rd /var/lib/apt/lists/*' >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
 }
 
 function stage_10_make_tarball() {
