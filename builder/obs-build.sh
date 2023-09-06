@@ -719,7 +719,7 @@ function stage_09_finalise() {
     done
 
     # Populate the dependencies file
-    echo "sudo apt-get install \\" >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
+    echo "sudo apt-get --no-install-recommends install \\" >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
     echo "DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install \\" >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
 
     # Build a list of all the linked libraries
@@ -761,7 +761,7 @@ function stage_09_finalise() {
     fi
     echo -e '\tgstreamer1.0-plugins-good \\\n\tgstreamer1.0-plugins-bad \\\n\tgstreamer1.0-plugins-ugly \\\n\tgstreamer1.0-x \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
     echo -e '\tgstreamer1.0-plugins-good \\\n\tgstreamer1.0-plugins-bad \\\n\tgstreamer1.0-plugins-ugly \\\n\tgstreamer1.0-x \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
-    echo -e '\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tv4l2loopback-utils \\\n\tstterm'    >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
+    echo -e '\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tv4l2loopback-dkms \\\n\tv4l2loopback-utils \\\n\tstterm'  >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
     echo -e '\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tv4l2loopback-utils \\\n\tstterm \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
     echo -e '\t\tmesa-vdpau-drivers \\\n\tmesa-va-drivers && \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
     echo -e 'apt-get -y clean && rm -rd /var/lib/apt/lists/*' >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
