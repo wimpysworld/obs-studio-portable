@@ -237,8 +237,8 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
 
     PKG_OBS_FACETRACKER="liblapack-dev libopenblas-dev"
     case "${DISTRO_CMP_VER}" in
-        2204|2210|2304|2310) PKG_OBS_FACETRACKER+=" libcublas11";;
-        2004)           PKG_OBS_FACETRACKER+=" libcublas10";;
+        22*|23*) PKG_OBS_FACETRACKER+=" libcublas11";;
+        2004)    PKG_OBS_FACETRACKER+=" libcublas10";;
     esac
     echo "   - Face Tracker   : ${PKG_OBS_FACETRACKER}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
