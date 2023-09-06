@@ -2,9 +2,6 @@
 set -ex
 LC_ALL=C
 
-# https://obsproject.com/wiki/Build-Instructions-For-Linux
-
-
 OBS_VER=""
 if [ -n "${1}" ]; then
     OBS_VER="${1}"
