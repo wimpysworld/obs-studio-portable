@@ -16,6 +16,7 @@ Made with 💝 for 🐧</p>
   - Fraunhofer FDK AAC Codec
   - VLC and GStreamer Media sources
   - AJA NTV2 SDK
+  - [WebSockets](https://github.com/obsproject/obs-websocket) 5.0.1 and 4.9.1-compat are both included
 
 ## Portable?
 
@@ -41,7 +42,6 @@ Some caveats:
 - PipeWire support is available in Ubuntu 22.04 and newer.
 - [Teleport](https://github.com/fzwoch/obs-teleport) is available on Ubuntu 22.04 and newer.
 - [SRT & RIST Protocol](https://obsproject.com/wiki/Streaming-With-SRT-Or-RIST-Protocols) support is available on Ubuntu 22.10 and newer.
-- [WebSockets](https://github.com/obsproject/obs-websocket) 5.0.1 and 4.9.1-compat are both included
 
 # Install
 
@@ -207,7 +207,6 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Li
 
   * **[Game Capture](https://github.com/nowrep/obs-vkcapture)** plugin; Vulkan/OpenGL game capture.
   * **[GStreamer](https://github.com/fzwoch/obs-gstreamer)** plugin; feed GStreamer launch pipelines into OBS Studio.
-  * **[NvFBC](https://gitlab.com/fzwoch/obs-nvfbc)** plugin; screen capture via NVIDIA FBC API. Requires [NvFBC patches for Nvidia [drivers](https://github.com/keylase/nvidia-patch) for consumer-grade GPUs.
   * **[RTSP Server](https://github.com/iamscottxu/obs-rtspserver/)** plugin; RTSP server
   * **[Source Record](https://github.com/exeldro/obs-source-record)** plugin; make sources available to record via a filter.
   * **[StreamFX](https://github.com/Xaymar/obs-StreamFX)** plugin; unlocks the full potential of NVENC along with useful composition filters.
@@ -217,8 +216,6 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Li
 
 ## Tools 🛠
 
-  * **[Color Monitor](https://github.com/norihiro/obs-color-monitor)** plugin; vectorscope, waveform, and histogram.
-  * **[Scene Collection Manager](https://github.com/exeldro/obs-scene-collection-manager)** plugin; filter, backup and restore Scene Collections.
   * **[Scene Notes Dock](https://github.com/exeldro/obs-scene-notes-dock)** plugin; create a Dock for showing and editing notes for the currently active scene.
   * **[Source Clone](https://github.com/exeldro/obs-source-clone)** plugin; add source cloning
   * **[Source Copy](https://github.com/exeldro/obs-source-copy)** plugin; adds copy-and-paste options to the tools menu.
@@ -229,6 +226,17 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Li
   * **[Markdown](https://github.com/exeldro/obs-markdown)** plugin; add Markdown sources
   * **[Text PThread](https://github.com/norihiro/obs-text-pthread)** plugin; Rich text source plugin with many advanced features including multi-language support, emoji support, vertical rendering and RTL support.
   * **[URL Source](https://github.com/royshil/obs-urlsource)** plugin; fetch data from a URL (API), parse and display live update in scene
+
+### Removed 🗑️
+
+The plugins we're previously bundled with OBS Studio, but have since been removed.
+
+- **[Asynchronous Source Duplication](https://github.com/norihiro/obs-async-source-duplication)** - Source Clone plugin does the same thing
+- **[Color Monitor](https://github.com/norihiro/obs-color-monitor)** - has sources that have name collisions with over plugins
+- **[NvFBC](https://gitlab.com/fzwoch/obs-nvfbc)** - no longer functional since OBS Studio 28 due to the removal of GLX.
+  - Requires [NvFBC patches for Nvidia [drivers](https://github.com/keylase/nvidia-patch) for consumer-grade GPUs.
+- **[Scene Collection Manager](https://github.com/exeldro/obs-scene-collection-manager)** - can silently revert configuration to an older version
+
 ### To consider 🤔
 
 Here are some additional plugins that look useful that I might add in the future:
