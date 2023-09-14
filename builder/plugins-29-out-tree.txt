@@ -32,7 +32,7 @@ https://github.com/fzwoch/obs-vaapi/0.4.0
 https://github.com/iamscottxu/obs-rtspserver/v3.0.0
 #https://github.com/norihiro/obs-async-source-duplication/0.4.1
 https://github.com/norihiro/obs-audio-pan-filter/0.2.3
-#https://github.com/norihiro/obs-color-monitor/0.5.2
+#https://github.com/norihiro/obs-color-monitor/0.6.1
 https://github.com/norihiro/obs-command-source/0.4.0
 https://github.com/norihiro/obs-face-tracker/0.7.0
 https://github.com/norihiro/obs-multisource-effect/0.2.1
