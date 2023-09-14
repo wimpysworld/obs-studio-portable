@@ -222,7 +222,7 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
 
     echo " - 3rd Party Plugins" >> "${BUILD_DIR}/obs-manifest.txt"
     # 3rd party plugin dependencies:
-    PKG_OBS_SCENESWITCHER="libxss-dev libxtst-dev"
+    PKG_OBS_SCENESWITCHER="libleptonica-dev libtesseract-dev libxss-dev libxtst-dev"
     case "${DISTRO_CMP_VER}" in
         2304|2310) PKG_OBS_SCENESWITCHER+=" libproc2-dev";;
         *)    PKG_OBS_SCENESWITCHER+=" libprocps-dev";;
