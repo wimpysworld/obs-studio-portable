@@ -1,2 +1,2 @@
-TARGETABLE_DISTROS=("lunar" "jammy" "focal")
+TARGETABLE_DISTROS=("mantic" "lunar" "jammy" "focal")
 TARGETABLE_VERSIONS=("30.0.0-beta3" "29.1.3")
