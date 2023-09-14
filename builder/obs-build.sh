@@ -142,6 +142,9 @@ function stage_01_get_apt() {
         apt-get -y install software-properties-common
         add-apt-repository -y ppa:flexiondotorg/build-tools
         COMPILERS="gcc-10 g++-10 golang-1.16-go"
+    elif [ "${DISTRO_CMP_VER}" -ge 2310 ]; then
+        apt-get -y update
+        COMPILERS="gcc-12 g++-12 golang-go"
     else
         apt-get -y update
         COMPILERS="gcc g++ golang-go"
@@ -157,6 +160,8 @@ function stage_01_get_apt() {
     if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
         update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 800 --slave /usr/bin/g++ g++ /usr/bin/g++-10
         update-alternatives --install /usr/bin/go go /usr/lib/go-1.16/bin/go 10
+    elif [ "${DISTRO_CMP_VER}" -ge 2310 ]; then
+        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 800 --slave /usr/bin/g++ g++ /usr/bin/g++-12
     fi
 
     if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
