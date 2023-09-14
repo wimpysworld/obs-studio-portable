@@ -26,7 +26,7 @@ case ${OBS_MAJ_VER} in
         rm -rf "${BASE_DIR}/"{build,build_portable,build_system,plugins,source}
         rm -rf "${SOURCE_DIR}/ntv2/build/"
         exit 0;;
-    28|29)
+    28|29|30)
         AJA_VER="v16.2-bugfix5"
         CEF_VER="5060";;
   *)
@@ -234,8 +234,9 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
 
     PKG_OBS_FACETRACKER="liblapack-dev libopenblas-dev"
     case "${DISTRO_CMP_VER}" in
-        22*|23*) PKG_OBS_FACETRACKER+=" libcublas11";;
-        2004)    PKG_OBS_FACETRACKER+=" libcublas10";;
+        2310)     PKG_OBS_FACETRACKER+=" libcublas12";;
+        22*|2304) PKG_OBS_FACETRACKER+=" libcublas11";;
+        2004)     PKG_OBS_FACETRACKER+=" libcublas10";;
     esac
     echo "   - Face Tracker   : ${PKG_OBS_FACETRACKER}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
