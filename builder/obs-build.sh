@@ -325,6 +325,12 @@ function stage_05_build_obs() {
         RTMPS_OPTIONS+=" -DENABLE_NEW_MPEGTS_OUTPUT=OFF"
     fi
 
+    if [ "${OBS_MAJ_VER}" -ge 30 ]; then
+        WEBRTC_OPTIONS=" -DENABLE_WEBRTC=OFF"
+    else
+        WEBRTC_OPTIONS=" "
+    fi
+
     case "${TARGET}" in
       portable)
         BUILD_TO="${BUILD_PORTABLE}"
@@ -382,7 +388,7 @@ function stage_05_build_obs() {
       -DYOUTUBE_SECRET=${YOUTUBE_SECRET} \
       -DYOUTUBE_SECRET_HASH=${YOUTUBE_SECRET_HASH} \
       -Wno-dev \
-      ${PORTABLE_OPTIONS} | tee "${BUILD_DIR}/cmake-obs-${TARGET}.log"
+      ${PORTABLE_OPTIONS} ${WEBRTC_OPTIONS} | tee "${BUILD_DIR}/cmake-obs-${TARGET}.log"
 
     cmake --build "${BUILD_TO}/"
     cmake --install "${BUILD_TO}/" --prefix "${INSTALL_TO}"
