@@ -235,6 +235,7 @@ Here are some additional plugins that look useful that I might add in the future
 
   - <https://git.vrsal.xyz/alex/Durchblick>
   - <https://github.com/cg2121/obs-decklink-output-filter>
+  - <https://github.com/exeldro/obs-browser-transition>
   - <https://github.com/norihiro/obs-aja-output-filter>
   - <https://github.com/norihiro/obs-async-audio-filter>
   - <https://github.com/norihiro/obs-source-record-async>
