@@ -202,6 +202,11 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
         PKG_OBS_PLUGINS+=" libasio-dev libwebsocketpp-dev nlohmann-json3-dev"
     fi
 
+    # - https://github.com/obsproject/obs-studio/pull/8943
+    if [ "${OBS_MAJ_VER}" -ge 30 ]; then
+        PKG_OBS_PLUGINS+=" libqrcodegencpp-dev"
+    fi
+
     # Intel® oneAPI Video Processing Library (oneVPL)
     if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
         PKG_OBS_PLUGINS+=" libvpl-dev"
