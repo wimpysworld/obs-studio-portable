@@ -528,7 +528,6 @@ function stage_07_plugins_out_tree() {
               -DENABLE_ENCODER_FFMPEG_AMF=OFF \
               -DENABLE_ENCODER_AOM_AV1=OFF \
               -DENABLE_FILTER_BLUR=OFF \
-              -DENABLE_FILTER_DISPLACEMENT=OFF \
               -DENABLE_FILTER_TRANSFORM=OFF \
               -DENABLE_FILTER_SDF_EFFECTS=OFF \
               -DENABLE_SOURCE_MIRROR=OFF \
