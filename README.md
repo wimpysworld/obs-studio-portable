@@ -20,9 +20,9 @@ Made with 💝 for 🐧</p>
 
 ## Portable?
 
-Running OBS Studio in Portable Mode means all settings (Profiles and Scene Collections) are saved within the same directory tree as the OBS Studio executables, plugins and configuration. You can copy the whole folder to another computer and use it.
+Running OBS Studio in Portable Mode means all settings (Profiles and Scene Collections) are saved within the same directory tree as the OBS Studio executables, plugins, and configuration. You can copy the whole folder to another computer and use it.
 
-And OBS Studio Portable is also a container image for [Distrobox](https://distrobox.privatedns.org/), so you can run OBS Studio Portable on any Linux distro.
+OBS Studio Portable is also a container image for [Distrobox](https://distrobox.privatedns.org/), so you can run OBS Studio Portable on any Linux distro.
 
 ## Supported Software
 
@@ -31,9 +31,9 @@ The tarball of OBS Studio Portable includes a `manifest.txt` that describes prec
 |                        | OBS Studio 29 | OBS Studio 30 |
 | ---------------------- | ------------- | ------------- |
 | Ubuntu 20.04 (Focal)   | 29.1.3 (Qt 5) | EOL           |
-| Ubuntu 22.04 (Jammy)   | 29.1.3 (Qt 6) | WIP           |
-| Ubuntu 23.04 (Lunar)   | 29.1.3 (Qt 6) | WIP           |
-| Ubuntu 23.10 (Mantic)  | 29.1.3 (Qt 6) | WIP           |
+| Ubuntu 22.04 (Jammy)   | 29.1.3 (Qt 6) | 30.0.0-beta3  |
+| Ubuntu 23.04 (Lunar)   | 29.1.3 (Qt 6) | 30.0.0-beta3  |
+| Ubuntu 23.10 (Mantic)  | 29.1.3 (Qt 6) | 30.0.0-beta3  |
 | Plugins                | 44            | 44            |
 
 Some caveats:
@@ -45,7 +45,7 @@ Some caveats:
 
 # Install
 
-You can safely install these OBS Studio Portable builds alongside [`.deb`](https://launchpad.net/~obsproject/+archive/ubuntu/obs-studio), [Flatpak](https://flathub.org/apps/com.obsproject.Studio) or [(unmaintained) Snap](https://snapcraft.io/obs-studio) installs of OBS Studio.
+You can safely install these OBS Studio Portable builds alongside [`.deb`](https://launchpad.net/~obsproject/+archive/ubuntu/obs-studio), [Flatpak](https://flathub.org/apps/com.obsproject.Studio), or [(unmaintained) Snap](https://snapcraft.io/obs-studio) installs of OBS Studio.
 
 ## Ubuntu
 
@@ -145,13 +145,13 @@ If any of the following are true for you, you might find these builds of OBS Stu
 - **I make changes to my OBS Studio configuration from various computers**
   - Keeping these changes in sync manually can be cumbersome.
 - **I stream to multiple channels**
-  - Having discrete OBS Studio instances is easier to work with than switching between dozens of Profile and Scene Collection combinations.
+  - Discrete OBS Studio instances are easier to work with than switching between dozens of Profile and Scene Collection combinations.
 - **I don't want to deal with flag day releases of new software**
-  - New software is wonderful, but want to control when and how I upgrade each of my streaming configuration instances.
+  - New software is terrific, but I want to control when and how I upgrade each streaming configuration instance.
 - **My stream integrations are not (currently) compatible with packages of OBS Studio that use confinement**
   - I have some funky stream integration;, and will likely create more. I don't want to limit my creative options.
 - **I sometimes stream OBS Studio how-tos and examples**
-  - Being able to run demo instances of OBS Studio with isolated configurations is great for this.
+  - Running demo instances of OBS Studio with isolated configurations is excellent for this.
 - **I want a stable OBS setup and an in-development OBS setup**
   - When developing new features for my stream, I can freely experiment with new versions of OBS Studio and its plugins without fear of disrupting my stable setup.
 - **I sometimes need old versions of OBS Studio**
@@ -224,15 +224,15 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Li
 ## Text 📝
 
 - **[Markdown](https://github.com/exeldro/obs-markdown)** plugin; add Markdown sources
-- **[Text PThread](https://github.com/norihiro/obs-text-pthread)** plugin; Rich text source plugin with many advanced features including multi-language support, emoji support, vertical rendering and RTL support.
-- **[URL Source](https://github.com/royshil/obs-urlsource)** plugin; fetch data from a URL (API), parse and display live update in scene
+- **[Text PThread](https://github.com/norihiro/obs-text-pthread)** plugin; Rich text source plugin with many advanced features, including multi-language support, emoji support, vertical rendering and RTL support.
+- **[URL Source](https://github.com/royshil/obs-urlsource)** plugin; fetch data from a URL (API), parse and display live update in scene.
 
 ### Removed 🗑️
 
 The plugins we're previously bundled with OBS Studio, but have since been removed.
 
-- **[Asynchronous Source Duplication](https://github.com/norihiro/obs-async-source-duplication)** - Source Clone plugin does the same thing
-- **[Color Monitor](https://github.com/norihiro/obs-color-monitor)** - has sources that have name collisions with over plugins
+- **[Asynchronous Source Duplication](https://github.com/norihiro/obs-async-source-duplication)** - The Source Clone plugin does the same thing
+- **[Color Monitor](https://github.com/norihiro/obs-color-monitor)** - name collisions with other plugins
 - **[NvFBC](https://gitlab.com/fzwoch/obs-nvfbc)** - no longer functional since OBS Studio 28 due to the removal of GLX.
   - Requires [NvFBC patches for Nvidia [drivers](https://github.com/keylase/nvidia-patch) for consumer-grade GPUs.
 - **[Scene Collection Manager](https://github.com/exeldro/obs-scene-collection-manager)** - can silently revert configuration to an older version
@@ -284,7 +284,7 @@ env QT_QPA_PLATFORM=xcb ./obs-portable
 
 # Build process 🏗
 
-Each build is compiled in a freshly provisioned systemd container. The, somewhat hastily thrown-together, *"build scripts"* are included in this repository.
+Each build is compiled in a freshly provisioned systemd container. The somewhat hastily thrown-together *"build scripts"* are included in this repository.
 
 The `build-*.sh` scripts are wrappers to help automate things, with [`build-auto.sh`](./build-auto.sh) being the main entry point.
 
