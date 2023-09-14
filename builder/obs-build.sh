@@ -507,10 +507,12 @@ function stage_07_plugins_out_tree() {
         if [ "${AUTHOR}" == "ujifgc" ] || [ "${AUTHOR}" == "exeldro" ] || [ "${AUTHOR}" == "Aitum" ] || [ "${AUTHOR}" == "andilippi" ] || [ "${AUTHOR}" == "FiniteSingularity" ] || [ "${PLUGIN}" == "obs-scale-to-sound" ]; then
             # Build process of plugins from Exeldro that support standalone builds
             # -Wno-error=switch is only really required for source-dock
+            # -Wno-error=deprecated-declarations is for OBS 30+ and some plugins that use deprecated OBS APIs such as obs_frontend_add_dock()
+            
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
                 -DBUILD_OUT_OF_TREE=ON \
-                -DCMAKE_CXX_FLAGS="-Wno-error=switch" \
-                -DCMAKE_C_FLAGS="-Wno-error=switch" \
+                -DCMAKE_CXX_FLAGS="-Wno-error=switch -Wno-error=deprecated-declarations" \
+                -DCMAKE_C_FLAGS="-Wno-error=switch -Wno-error=deprecated-declarations" \
                 -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
                 -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
             cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
@@ -624,6 +626,8 @@ function stage_07_plugins_out_tree() {
         else
             # Build process for OBS Studio 28 and newer
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
+              -DCMAKE_CXX_FLAGS="-Wno-error=deprecated-declarations -Wno-dev" \
+              -DCMAKE_C_FLAGS="-Wno-error=deprecated-declarations -Wno-dev" \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
               -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
               -DQT_VERSION="${QT_VER}" | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
