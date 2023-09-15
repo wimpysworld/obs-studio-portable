@@ -42,7 +42,7 @@ echo "nameserver 1.0.0.1" >> "/tmp/resolv-${DISTRO}.conf"
 systemd-nspawn \
     --bind-ro="/tmp/resolv-${DISTRO}.conf":/etc/resolv.conf \
     --chdir=/root \
-    --directory "${R}" \
+    --directory="${R}" \
     --hostname="${DISTRO}" \
     --machine="${DISTRO}" \
     --resolv-conf=off \
