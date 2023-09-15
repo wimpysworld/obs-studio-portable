@@ -708,6 +708,12 @@ function stage_08_plugins_prebuilt() {
     #cp -v "${PLUGIN_DIR}/$(basename "${FILE}" .deb)/usr/local/lib/obs-plugins/obs-urlsource.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/"
     #mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-urlsource/locale/"
     #cp -v "${PLUGIN_DIR}/$(basename "${FILE}" .deb)/usr/local/share/obs/obs-plugins/obs-urlsource/locale/en-US.ini" "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-urlsource/locale/"
+    
+    URL="https://obsproject.com/forum/resources/yami-resized.1611/version/4885/download"
+    FILE="Yami-Resized-1.1.1.zip"
+    echo " - ${URL}" >> "${BUILD_DIR}/obs-manifest.txt"
+    wget --quiet --show-progress --progress=bar:force:noscroll "${URL}" -O "${TARBALL_DIR}/${FILE}"
+    unzip -o -qq "${TARBALL_DIR}/${FILE}" -d "${BASE_DIR}/${INSTALL_DIR}/data/obs-studio/themes"
 }
 
 function stage_09_finalise() {
