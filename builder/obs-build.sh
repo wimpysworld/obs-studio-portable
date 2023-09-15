@@ -667,10 +667,10 @@ function stage_07_plugins_out_tree() {
                 mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker"
                 wget --quiet --show-progress --progress=bar:force:noscroll "https://github.com/norihiro/obs-face-tracker/releases/download/0.7.0-hogdata/frontal_face_detector.dat.bz2" -O "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/frontal_face_detector.dat.bz2"
                 wget --quiet --show-progress --progress=bar:force:noscroll "https://github.com/davisking/dlib-models/raw/master/shape_predictor_5_face_landmarks.dat.bz2" -O "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/shape_predictor_5_face_landmarks.dat.bz2"
-                wget --quiet --show-progress --progress=bar:force:noscroll "https://github.com/davisking/dlib-models/raw/master/shape_predictor_68_face_landmarks.dat.bz2" -O "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/shape_predictor_68_face_landmarks.dat.bz2"
+                #wget --quiet --show-progress --progress=bar:force:noscroll "https://github.com/davisking/dlib-models/raw/master/shape_predictor_68_face_landmarks.dat.bz2" -O "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/shape_predictor_68_face_landmarks.dat.bz2"
                 bunzip2 -f "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/frontal_face_detector.dat.bz2"
                 bunzip2 -f "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/shape_predictor_5_face_landmarks.dat.bz2"
-                bunzip2 -f "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/shape_predictor_68_face_landmarks.dat.bz2"
+                #bunzip2 -f "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/shape_predictor_68_face_landmarks.dat.bz2"
                 ;;
         esac
 
