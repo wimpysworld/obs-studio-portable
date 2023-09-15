@@ -114,6 +114,7 @@ distrobox enter --name obs -- /opt/obs-portable/obs-portable
 ```
 
 If the OBS Studio Portable container cannot connect to the host X11 server, add [`xhost +si:localuser:$USER`](https://github.com/89luca89/distrobox/blob/main/docs/compatibility.md#compatibility-notes) to `~/.distroboxrc`.
+
 ### Multiple OBS Studio Portable instances in Distrobox
 
 Should you require multiple instances of OBS Studio, each with its own configuration, follow the steps above to get OBS Studio Portable running in Distrobox.
@@ -231,7 +232,7 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Li
 
 ### Removed 🗑️
 
-The plugins we're previously bundled with OBS Studio, but have since been removed.
+These plugins were previously bundled with OBS Studio, but have since been removed.
 
 - **[Asynchronous Source Duplication](https://github.com/norihiro/obs-async-source-duplication)** - The Source Clone plugin does the same thing
 - **[Color Monitor](https://github.com/norihiro/obs-color-monitor)** - name collisions with other plugins
