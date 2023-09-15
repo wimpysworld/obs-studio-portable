@@ -739,7 +739,7 @@ function stage_09_finalise() {
                 if [ "${TYPE}" == "ELF" ]; then
                     strip --strip-unneeded "${FILE}" || true
                     if [[ "${FILE}" == *.so* ]]; then
-                    chmod 644 "${FILE}"
+                        chmod 644 "${FILE}"
                     fi
                 else
                     chmod 644 "${FILE}"
