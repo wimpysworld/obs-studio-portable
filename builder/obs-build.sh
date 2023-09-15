@@ -241,12 +241,7 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     echo "   - Waveform       : ${PKG_OBS_WAVEFORM}" >> "${BUILD_DIR}/obs-manifest.txt"
     apt-get -y install --no-install-recommends ${PKG_OBS_WAVEFORM}
 
-    PKG_OBS_FACETRACKER="liblapack-dev libopenblas-dev"
-    case "${DISTRO_CMP_VER}" in
-        2310)     PKG_OBS_FACETRACKER+=" libcublas12";;
-        22*|2304) PKG_OBS_FACETRACKER+=" libcublas11";;
-        2004)     PKG_OBS_FACETRACKER+=" libcublas10";;
-    esac
+    PKG_OBS_FACETRACKER="libatlas-base-dev libblas-dev libblas64-dev libgsl-dev liblapack-dev libopenblas-dev"
     echo "   - Face Tracker   : ${PKG_OBS_FACETRACKER}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_OBS_FACETRACKER}
