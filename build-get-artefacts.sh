@@ -18,7 +18,6 @@ DISTRO="${1}"
 case "${DISTRO}" in
     focal) DISTRO_VER="20.04";;
     jammy) DISTRO_VER="22.04";;
-    kinetic) DISTRO_VER="22.10";;
     lunar) DISTRO_VER="23.04";;
     mantic) DISTRO_VER="23.10";;
     *) echo "ERROR! Unknown Ubuntu release: ${DISTRO}"
@@ -28,7 +27,7 @@ esac
 OBS_VER="${2}"
 OBS_MAJ_VER="${OBS_VER%%.*}"
 case "${OBS_MAJ_VER}" in
-    28|29)
+    28|29|30)
         if [ -d "${BUILDS_DIR}/Builds/obs-builder-${DISTRO}/root/obs-${OBS_MAJ_VER}" ]; then
             cp -v "${BUILDS_DIR}/Builds/obs-builder-${DISTRO}/root/obs-${OBS_MAJ_VER}/obs-portable-${OBS_VER}"*-ubuntu-${DISTRO_VER}.* artefacts/
             chown "${SUDO_USER}":"${SUDO_USER}" "artefacts/obs-portable-${OBS_VER}"*-ubuntu-${DISTRO_VER}.*
