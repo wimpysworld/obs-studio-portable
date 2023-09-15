@@ -34,7 +34,7 @@ The tarball of OBS Studio Portable includes a `manifest.txt` that describes prec
 | Ubuntu 22.04 (Jammy)   | 29.1.3 (Qt 6) | 30.0.0-beta3  |
 | Ubuntu 23.04 (Lunar)   | 29.1.3 (Qt 6) | 30.0.0-beta3  |
 | Ubuntu 23.10 (Mantic)  | 29.1.3 (Qt 6) | 30.0.0-beta3  |
-| Plugins                | 44            | 44            |
+| Plugins                | 45            | 45            |
 
 Some caveats:
 
@@ -194,6 +194,7 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Li
 - **[Gradient Source](https://github.com/exeldro/obs-gradient-source)** plugin; adding gradients as a Source.
 - **[Move Transition](https://github.com/exeldro/obs-move-transition)** plugin; move source to a new position during a scene transition.
 - **[Multi Source Effect](https://github.com/norihiro/obs-multisource-effect)** plugin; provides a custom effect to render multiple sources.
+- **[Pixel Art](https://github.com/dspstanky/pixel-art)** plugin; create retro-inspired pixel art visuals.
 - **[Recursion Effect](https://github.com/exeldro/obs-recursion-effect)** plugin; recursion effect filter.
 - **[Replay Source](https://github.com/exeldro/obs-replay-source)** plugin; slow motion replay async sources from memory.
 - **[RGB Levels](https://github.com/wimpysworld/obs-rgb-levels-filter)** plugin; simple filter to adjust RGB levels.
