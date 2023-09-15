@@ -209,7 +209,8 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Li
 - **[GStreamer](https://github.com/fzwoch/obs-gstreamer)** plugin; feed GStreamer launch pipelines into OBS Studio.
 - **[RTSP Server](https://github.com/iamscottxu/obs-rtspserver/)** plugin; RTSP server
 - **[Source Record](https://github.com/exeldro/obs-source-record)** plugin; make sources available to record via a filter.
-- **[StreamFX](https://github.com/Xaymar/obs-StreamFX)** plugin; unlocks the full potential of NVENC along with useful composition filters.
+- **[StreamFX](https://github.com/Xaymar/obs-StreamFX)** plugin; unlocks the full potential of NVENC along with encoders for Avid DNxHR, Apple ProRes and CineForm.
+  - **Only the *stable* StreamFX encoders, Color Grading and Dynamic Mask filters are enabled in OBS Studio Portable for Linux**.
 - **[Teleport](https://github.com/fzwoch/obs-teleport)** plugin; open NDI-like replacement. (*not NDI compatible*)
 - **[VA-API](https://github.com/exeldro/obs-transition-table)** plugin; GStreamer-based VA-API encoder implementation.
 - **[Vertical Canvas](https://github.com/Aitum/obs-vertical-canvas)** plugin; make content for TikTok, YouTube Shorts, Instagram Live, and more without the fuss.

@@ -519,32 +519,44 @@ function stage_07_plugins_out_tree() {
             cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
             rm -rfv "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins"
         elif [ "${PLUGIN}" == "obs-StreamFX" ]; then
-            # Disable some StreamFX features that are not required, deprecated or unsupported in Linux.
+            # Only enable stable features supported on Linux
             # What remains of the StreamFX suite is:
-            #  - Nvidia NVENC (via FFmpeg)
-            #  - Avid DNxHR (via FFmpeg)
-            #  - Apple ProRes (via FFmpeg)
-            #  - Color Grading
-            #  - Dynamic Mask
+            #  - Encoder: Nvidia NVENC (via FFmpeg)
+            #  - Encoder: Avid DNxHR (via FFmpeg)
+            #  - Encoder: Apple ProRes (via FFmpeg)
+            #  - Encoder: CineForm (via FFmpeg)
+            #  - Filter: Color Grading
+            #  - Filter: Dynamic Mask
             # Other capabilities are replaced by other plugins:
             #  - 3D Transform is replaced by 3D Effects (exeldro)
             #  - Blur is replaced by Composite Blur (FiniteSingularity)
             #  - Shaders are replaced by Shader Filter (exeldro)
             #  - Source Mirror is replaced by Source Clone (exeldro)
-            # https://github.com/Xaymar/obs-StreamFX/blob/root/CMakeLists.txt#L313
+            # https://github.com/Xaymar/obs-StreamFX/blob/root/CMakeLists.txt#L287
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
-              -DENABLE_FILTER_AUTOFRAMING=OFF -DENABLE_FILTER_AUTOFRAMING_NVIDIA=OFF \
-              -DENABLE_FILTER_DENOISING=OFF -DENABLE_FILTER_DENOISING_NVIDIA=OFF \
-              -DENABLE_FILTER_UPSCALING=OFF -DENABLE_FILTER_UPSCALING_NVIDIA=OFF \
-              -DENABLE_FILTER_VIRTUAL_GREENSCREEN=OFF -DENABLE_FILTER_VIRTUAL_GREENSCREEN_NVIDIA=OFF \
-              -DENABLE_ENCODER_FFMPEG_AMF=OFF \
               -DENABLE_ENCODER_AOM_AV1=OFF \
+              -DENABLE_ENCODER_FFMPEG=ON \
+              -DENABLE_ENCODER_FFMPEG_AMF=OFF \
+              -DENABLE_ENCODER_FFMPEG_NVENC=ON \
+              -DENABLE_ENCODER_FFMPEG_PRORES=ON \
+              -DENABLE_ENCODER_FFMPEG_DNXHR=ON \
+              -DENABLE_ENCODER_FFMPEG_CFHD=ON \
+              -DENABLE_FILTER_AUTOFRAMING=OFF \
+              -DENABLE_FILTER_AUTOFRAMING_NVIDIA=OFF \
               -DENABLE_FILTER_BLUR=OFF \
-              -DENABLE_FILTER_TRANSFORM=OFF \
+              -DENABLE_FILTER_COLOR_GRADE=ON \
+              -DENABLE_FILTER_DENOISING=OFF \
+              -DENABLE_FILTER_DENOISING_NVIDIA=OFF \
+              -DENABLE_FILTER_DYNAMIC_MASK=ON \
               -DENABLE_FILTER_SDF_EFFECTS=OFF \
-              -DENABLE_SOURCE_MIRROR=OFF \
               -DENABLE_FILTER_SHADER=OFF \
+              -DENABLE_FILTER_TRANSFORM=OFF \
+              -DENABLE_FILTER_UPSCALING=OFF \
+              -DENABLE_FILTER_UPSCALING_NVIDIA=OFF \
+              -DENABLE_FILTER_VIRTUAL_GREENSCREEN=OFF \
+              -DENABLE_FILTER_VIRTUAL_GREENSCREEN_NVIDIA=OFF \
+              -DENABLE_SOURCE_MIRROR=OFF \
               -DENABLE_SOURCE_SHADER=OFF \
               -DENABLE_TRANSITION_SHADER=OFF \
               -DENABLE_CLANG=OFF \
