@@ -37,7 +37,8 @@ if pidof -q apt-cacher-ng && [ -d "${R}/etc/apt/apt.conf.d" ]; then
     echo "Acquire::http { Proxy \"http://${APT_CACHE_IP}:3142\"; }" > "${R}/etc/apt/apt.conf.d/90cache"
 fi
 
-echo "nameserver 1.1.1.1" > "/tmp/resolv-${DISTRO}.conf"
+echo "nameserver 1.1.1.1" >  "/tmp/resolv-${DISTRO}.conf"
+echo "nameserver 1.0.0.1" >> "/tmp/resolv-${DISTRO}.conf"
 systemd-nspawn \
     --bind-ro="/tmp/resolv-${DISTRO}.conf":/etc/resolv.conf \
     --chdir=/root \
