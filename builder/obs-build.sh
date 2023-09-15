@@ -325,6 +325,7 @@ function stage_05_build_obs() {
         RTMPS_OPTIONS+=" -DENABLE_NEW_MPEGTS_OUTPUT=OFF"
     fi
 
+    # libdatachannel is not available in any Ubuntu release
     if [ "${OBS_MAJ_VER}" -ge 30 ]; then
         WEBRTC_OPTIONS=" -DENABLE_WEBRTC=OFF"
     else
