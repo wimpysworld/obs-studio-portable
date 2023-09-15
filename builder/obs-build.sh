@@ -594,7 +594,6 @@ function stage_07_plugins_out_tree() {
                    fi
                    ;;
             esac
-            chmod 644 "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/"*.so
         elif [ "${PLUGIN}" == "dvds3" ]; then
             # TODO: Fails to link against libobs on OBS 28 and newer
             if [ "${OBS_MAJ_VER}" -ge 28 ]; then
