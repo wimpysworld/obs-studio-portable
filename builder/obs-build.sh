@@ -467,7 +467,8 @@ function stage_07_plugins_out_tree() {
             if [ "${PLUGIN}" == "obs-pipewire-audio-capture" ] || \
                [ "${PLUGIN}" == "obs-teleport" ] || \
                [ "${PLUGIN}" == "obs-vertical-canvas" ] || \
-               [ "${PLUGIN}" == "obs-vkcapture" ]; then
+               [ "${PLUGIN}" == "obs-vkcapture" ] || \
+               [ "${PLUGIN}" == "pixel-art" ]; then
                  continue
             fi
         fi
