@@ -35,12 +35,6 @@ for DISTRO in ${DISTROS}; do
         ./build-validate.sh "${DISTRO}" "${OBS_VER}" || continue
         ./build-trash.sh "${DISTRO}"
         ./build-bootstrap.sh "${DISTRO}"
-
-        #shellcheck disable=SC1091
-        if [ -e builder/obs-options.sh ]; then
-            source builder/obs-options.sh
-        fi
-
         ./build-enter.sh "${DISTRO}" "/root/obs-build.sh ${OBS_VER}"
         ./build-get-artefacts.sh "${DISTRO}" "${OBS_VER}"
     done

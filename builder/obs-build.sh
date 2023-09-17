@@ -52,6 +52,11 @@ mkdir -p "${BASE_DIR}"/{build,build_portable,build_system,plugins,source,tarball
 STAMP=$(date +%y%j)
 INSTALL_DIR="obs-portable-${OBS_VER}-r${STAMP}-ubuntu-${DISTRO_VERSION}"
 
+#shellcheck disable=SC1091
+if [ -e ./obs-options.sh ]; then
+    source ./obs-options.sh
+fi
+
 function download_file() {
     local URL="${1}"
     local FILE="${URL##*/}"
