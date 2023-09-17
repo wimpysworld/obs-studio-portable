@@ -67,8 +67,7 @@ jobs:
         YOUTUBE_CLIENTID_HASH: ${{ secrets.YOUTUBE_CLIENTID_HASH }}
         YOUTUBE_SECRET: ${{ secrets.YOUTUBE_SECRET }}
         YOUTUBE_SECRET_HASH: ${{ secrets.YOUTUBE_SECRET_HASH }}
-      run: >
-        sudo --preserve-env
+      run: |
         ./build-auto.sh "${{ matrix.distro }}" "${{ matrix.version }}"
     - name: Upload OBS ${{ matrix.version }} for ${{ matrix.distro }} artefacts
       env:

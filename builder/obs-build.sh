@@ -338,21 +338,20 @@ function stage_05_build_obs() {
         PORTABLE_OPTIONS="-DLINUX_PORTABLE=OFF"
     esac
 
-    if [ -z "${RESTREAM_CLIENTID}" ] || [ -z "${RESTREAM_HASH}" ]; then
-        RESTREAM_CLIENTID=""
-        RESTREAM_HASH="0"
+    local TWITCH_OPTIONS=""
+    local RESTREAM_OPTIONS=""
+    local YOUTUBE_OPTIONS=""
+
+    if [ "${TWITCH_CLIENTID}" ] && [ "${TWITCH_HASH}" ]; then
+        TWITCH_OPTIONS="-DTWITCH_CLIENTID='${TWITCH_CLIENTID}' -DTWITCH_HASH='${TWITCH_HASH}'"
     fi
 
-    if [ -z "${TWITCH_CLIENTID}" ] || [ -z "${TWITCH_HASH}" ]; then
-        TWITCH_CLIENTID=""
-        TWITCH_HASH="0"
+    if [ "${RESTREAM_CLIENTID}" ] && [ "${RESTREAM_HASH}" ]; then
+        RESTREAM_OPTIONS="-DRESTREAM_CLIENTID='${RESTREAM_CLIENTID}' -DRESTREAM_HASH='${RESTREAM_HASH}'"
     fi
 
-    if [ -z "${YOUTUBE_CLIENTID}" ] || [ -z "${YOUTUBE_CLIENTID_HASH}" ] || [ -z "${YOUTUBE_SECRET}" ] || [ -z "${YOUTUBE_SECRET_HASH}" ]; then
-        YOUTUBE_CLIENTID=""
-        YOUTUBE_CLIENTID_HASH="0"
-        YOUTUBE_SECRET=""
-        YOUTUBE_SECRET_HASH="0"
+    if [ "${YOUTUBE_CLIENTID}" ] && [ "${YOUTUBE_CLIENTID_HASH}" ] && [ "${YOUTUBE_SECRET}" ] && [ "{YOUTUBE_SECRET_HASH}" ]; then
+        YOUTUBE_OPTIONS="-DYOUTUBE_CLIENTID='${YOUTUBE_CLIENTID}' -DYOUTUBE_CLIENTID_HASH='${YOUTUBE_CLIENTID_HASH}' -DYOUTUBE_SECRET='${YOUTUBE_SECRET}' -DYOUTUBE_SECRET_HASH='${YOUTUBE_SECRET_HASH}'"
     fi
 
     #shellcheck disable=SC2086,SC2090
@@ -374,15 +373,10 @@ function stage_05_build_obs() {
       ${VST_OPTIONS} \
       -DENABLE_WAYLAND=ON \
       ${RTMPS_OPTIONS} \
-      -DRESTREAM_CLIENTID=${RESTREAM_CLIENTID} \
-      -DRESTREAM_HASH=${RESTREAM_HASH} \
-      -DTWITCH_CLIENTID=${TWITCH_CLIENTID} \
-      -DTWITCH_HASH=${TWITCH_HASH} \
-      -DYOUTUBE_CLIENTID=${YOUTUBE_CLIENTID} \
-      -DYOUTUBE_CLIENTID_HASH=${YOUTUBE_CLIENTID_HASH} \
-      -DYOUTUBE_SECRET=${YOUTUBE_SECRET} \
-      -DYOUTUBE_SECRET_HASH=${YOUTUBE_SECRET_HASH} \
-      -Wno-dev \
+      ${RESTREAM_OPTIONS} \
+      ${TWITCH_OPTIONS} \
+      ${YOUTUBE_OPTIONS} \
+      -Wno-deprecated -Wno-dev --log-level=ERROR \
       ${PORTABLE_OPTIONS} ${WEBRTC_OPTIONS} | tee "${BUILD_DIR}/cmake-obs-${TARGET}.log"
 
     cmake --build "${BUILD_TO}/"
