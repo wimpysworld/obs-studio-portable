@@ -19,7 +19,8 @@ if [ ! -d /tmp/obs-portable ]; then
     exit 1
 fi
 
-DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends software-properties-common && \
+apt-get -y update && \
+DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends software-properties-common && \
 add-apt-repository -y --no-update ppa:pipewire-debian/pipewire-upstream && \
 add-apt-repository -y --no-update ppa:pipewire-debian/wireplumber-upstream && \
 apt-get -y update && \
