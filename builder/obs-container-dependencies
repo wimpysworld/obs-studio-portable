@@ -19,8 +19,8 @@ else
     exit 1
 fi
 
-if [ ! -d /tmp/obs-portable ]; then
-    echo "ERROR! This script is only intended to be run while composing the OBS Studio Portable container."
+if [ ! -d /tmp/obs-portable ] || [ ! -e /etc/profile.d/distrobox_profile.sh ]; then
+    echo "ERROR! This script is only intended to be run while composing a container."
     exit 1
 fi
 
