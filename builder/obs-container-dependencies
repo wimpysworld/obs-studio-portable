@@ -30,7 +30,7 @@ echo "deb https://ppa.launchpadcontent.net/pipewire-debian/wireplumber-upstream/
 echo "#deb-src https://ppa.launchpadcontent.net/pipewire-debian/wireplumber-upstream/ubuntu TARGET_CODENAME main" >> /etc/apt/sources.list.d/pipewire-debian-ubuntu-wireplumber-upstream-TARGET_CODENAME.list && \
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys FC43B7352BCC0EC8AF2EEB8B25088A0359807596 && \
 apt-get -y update && \
-DEBIAN_FRONTEND=noninteractive apt-get -y install \
+DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install \
 	gstreamer1.0-pipewire \
 	libpipewire-0.3-0 \
 	libpipewire-0.3-modules\
@@ -45,7 +45,5 @@ DEBIAN_FRONTEND=noninteractive apt-get -y install \
 	pipewire-alsa \
 	pipewire-v4l2 \
 	pipewire-libcamera \
-	pipewire-locales \
-	wireplumber \
 	gir1.2-wp-0.4 \
 	libwireplumber-0.4-0 && \
