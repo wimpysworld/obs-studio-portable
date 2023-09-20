@@ -90,16 +90,30 @@ The container image for OBS Studio Portable is maintained under the umbrella of 
 2. Create a Distrobox container for OBS Studio Portable.
 
 ```bash
-distrobox create --image ghcr.io/ublue-os/obs-studio-portable:latest --name obs
+distrobox create --image ghcr.io/ublue-os/obs-studio-portable:latest --name obs --pull
 ```
+### NVIDIA support
 
-If you have an NVIDIA GPU, install the required CUDA and NVENC support in the container.
-- The `--nvidia` option, added in Distrobox 1.5.0, does not work on NixOS; requiring that the required libraries be installed in the container.
+The appropriate NVIDIA libraries on the host should be automatically be linked inside the container 🪄
+However, the capability for Distrobox to automatically connect NVIDIA libraries was added in Distrobox 1.5.0, and is also not supported on all distros; NixOS for example.
+
+Therefore, if your are running an older version of Distrobox or the NVIDIA drivers are not automatically linked inside the container you can install them as follows:
   - Change the version number (***535** in the example below*) to match the version of the NVIDIA drivers you have installed on the host.
 
+#### NVIDIA complete driver stack
+
+Required if the display is rendered by an NVIDIA GPU.
+
 ```bash
-distrobox create --image ghcr.io/ublue-os/obs-studio-portable:latest --name obs --additional-packages "nvidia-headless-no-dkms-535 libnvidia-encode-535"
+distrobox create --image ghcr.io/ublue-os/obs-studio-portable:latest --name obs --pull --additional-packages nvidia-driver-535
 ```
+
+#### NVIDIA compute only
+
+Suitable for multi-GPU systems where the NVIDIA GPU is not rendering the display and only being used for compute.
+
+```bash
+distrobox create --image ghcr.io/ublue-os/obs-studio-portable:latest --name obs --pull --additional-packages libnvidia-encode-535 nvidia-headless-no-dkms-535
 
 3. Run the initial setup.
 
