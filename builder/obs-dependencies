@@ -12,4 +12,9 @@ else
     exit 1
 fi
 
+if [ -e /etc/profile.d/distrobox_profile.sh ]; then
+    echo "ERROR! This script is not suitable for running in Distrobox."
+    exit 1
+fi
+
 sudo apt-get -y update
