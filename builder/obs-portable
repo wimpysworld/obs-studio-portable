@@ -20,20 +20,33 @@ if [ ! -d "${PORTABLE_DIR}/bin/64bit" ]; then
     exit 1
 fi
 
-# If we're in an OBS Studio Portable container, run the config fix script
+# If running in an OBS Studio Portable container, run the config fix script
 if [ -x /etc/profile.d/99-obs-config-fix.sh ]; then
-  /etc/profile.d/99-obs-config-fix.sh
-  # Make sure gstreamer find plugins from the container, not the host.
-  export GST_PLUGIN_PATH="/usr/lib/x86_64-linux-gnu/gstreamer-1.0"
-  export GST_PLUGIN_SYSTEM_PATH="/usr/lib/x86_64-linux-gnu/gstreamer-1.0"
-  export GST_PLUGIN_SYSTEM_PATH_1_0="/usr/lib/x86_64-linux-gnu/gstreamer-1.0"
-  export GST_PLUGIN_SCANNER="/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner"
-
-  # Make sure Qt finds plugins from the container, not the host.
-  export QT_PLUGIN_PATH="/usr/lib/x86_64-linux-gnu/qt6/plugins:/usr/lib/x86_64-linux-gnu/qt5/plugins"
-  export QT_QPA_PLATFORMTHEME=""
-  export QT_STYLE_OVERRIDE=""
+    /etc/profile.d/99-obs-config-fix.sh
 fi
 
-cd "${PORTABLE_DIR}/bin/64bit"
+# If running in a Distrobox container, set up the environment
+if [ -e /etc/profile.d/distrobox_profile.sh ]; then
+    # Make sure gstreamer find plugins from the container, not the host.
+    export GST_PLUGIN_PATH="/usr/lib/x86_64-linux-gnu/gstreamer-1.0"
+    export GST_PLUGIN_SYSTEM_PATH="/usr/lib/x86_64-linux-gnu/gstreamer-1.0"
+    export GST_PLUGIN_SYSTEM_PATH_1_0="/usr/lib/x86_64-linux-gnu/gstreamer-1.0"
+    export GST_PLUGIN_SCANNER="/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner"
+
+    # Make sure Qt finds plugins from the container, not the host.
+    if [ "${DISTRO_CODENAME}" == "focal" ]; then
+        export QT_PLUGIN_PATH="/usr/lib/x86_64-linux-gnu/qt5/plugins"
+    else
+        export QT_PLUGIN_PATH="/usr/lib/x86_64-linux-gnu/qt6/plugins"
+    fi
+    export QT_QPA_PLATFORMTHEME=""
+    export QT_STYLE_OVERRIDE=""
+fi
+
+# Purge the GPU cache to avoid issues with the host's GPU drivers
+if [ -e "${PORTABLE_DIR}/config/obs-studio/plugin_config/obs-browser/GPUCache/index" ]; then
+    rm -f "${PORTABLE_DIR}"/config/obs-studio/plugin_config/obs-browser/GPUCache/*
+fi
+
+cd "${PORTABLE_DIR}/bin/64bit" || exit 1
 exec ./obs --portable "${@}"
