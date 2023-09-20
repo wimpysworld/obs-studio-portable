@@ -209,7 +209,6 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Li
 
 - **[Game Capture](https://github.com/nowrep/obs-vkcapture)** plugin; Vulkan/OpenGL game capture.
 - **[GStreamer](https://github.com/fzwoch/obs-gstreamer)** plugin; feed GStreamer launch pipelines into OBS Studio.
-- **[RTSP Server](https://github.com/iamscottxu/obs-rtspserver/)** plugin; RTSP server
 - **[Source Record](https://github.com/exeldro/obs-source-record)** plugin; make sources available to record via a filter.
 - **[StreamFX](https://github.com/Xaymar/obs-StreamFX)** plugin; unlocks the full potential of NVENC along with encoders for Avid DNxHR, Apple ProRes and CineForm.
   - **Only the *stable* StreamFX encoders, Color Grading and Dynamic Mask filters are enabled in OBS Studio Portable for Linux**.
@@ -234,11 +233,12 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Li
 
 These plugins were previously bundled with OBS Studio, but have since been removed.
 
-- **[Asynchronous Source Duplication](https://github.com/norihiro/obs-async-source-duplication)** - The Source Clone plugin does the same thing
-- **[Color Monitor](https://github.com/norihiro/obs-color-monitor)** - name collisions with other plugins
+- **[Asynchronous Source Duplication](https://github.com/norihiro/obs-async-source-duplication)** - The Source Clone plugin does the same thing.
+- **[Color Monitor](https://github.com/norihiro/obs-color-monitor)** - name collisions with other plugins.
 - **[NvFBC](https://gitlab.com/fzwoch/obs-nvfbc)** - no longer functional since OBS Studio 28 due to the removal of GLX.
   - Requires [NvFBC patches for Nvidia [drivers](https://github.com/keylase/nvidia-patch) for consumer-grade GPUs.
-- **[Scene Collection Manager](https://github.com/exeldro/obs-scene-collection-manager)** - can silently revert configuration to an older version
+- **[RTSP Server](https://github.com/iamscottxu/obs-rtspserver/)** - introduce a large number of memory leaks.
+- **[Scene Collection Manager](https://github.com/exeldro/obs-scene-collection-manager)** - can silently revert configurations to an older version.
 
 ### To consider 🤔
 
