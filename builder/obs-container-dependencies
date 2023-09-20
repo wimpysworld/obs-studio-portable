@@ -3,6 +3,11 @@
 # PipeWire and WirePlumber installer/updater for OBS Studio Portable
 # - https://pipewire-debian.github.io/pipewire-debian/
 
+if [ "${EUID}" -ne 0 ]; then
+    echo "ERROR! Please run as root."
+    exit 1
+fi
+
 if [ -e /etc/os-release ] && grep --quiet UBUNTU_CODENAME /etc/os-release; then
     DISTRO_CODENAME=$(grep UBUNTU_CODENAME /etc/os-release | cut -d'=' -f2 | sed 's/"//g')
     if [ "${DISTRO_CODENAME}" != "TARGET_CODENAME" ]; then
