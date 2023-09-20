@@ -39,7 +39,7 @@ https://github.com/norihiro/obs-face-tracker/0.7.1
 https://github.com/norihiro/obs-multisource-effect/0.2.1
 https://github.com/norihiro/obs-mute-filter/0.2.2
 https://github.com/norihiro/obs-text-pthread/2.0.2
-https://github.com/nowrep/obs-vkcapture/v1.4.2
+https://github.com/nowrep/obs-vkcapture/v1.4.3
 https://github.com/obsproject/obs-websocket/4.9.1-compat
 https://github.com/phandasm/waveform/v1.7.0
 #https://github.com/royshil/obs-urlsource/0.0.6
