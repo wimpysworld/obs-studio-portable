@@ -12,9 +12,34 @@ else
     exit 1
 fi
 
-if [ -e /etc/profile.d/distrobox_profile.sh ]; then
-    echo "ERROR! This script is not suitable for running in Distrobox."
-    exit 1
-fi
+sudo true
 
-sudo apt-get -y update
+if [ -e /etc/profile.d/distrobox_profile.sh ]; then
+    echo "deb https://ppa.launchpadcontent.net/pipewire-debian/pipewire-upstream/ubuntu TARGET_CODENAME main" | sudo tee /etc/apt/sources.list.d/pipewire-debian-ubuntu-pipewire-upstream-TARGET_CODENAME.list
+    echo "#deb-src https://ppa.launchpadcontent.net/pipewire-debian/pipewire-upstream/ubuntu TARGET_CODENAME main" | sudo tee -a /etc/apt/sources.list.d/pipewire-debian-ubuntu-pipewire-upstream-TARGET_CODENAME.list
+    echo "deb https://ppa.launchpadcontent.net/pipewire-debian/wireplumber-upstream/ubuntu TARGET_CODENAME main" | sudo tee /etc/apt/sources.list.d/pipewire-debian-ubuntu-wireplumber-upstream-TARGET_CODENAME.list
+    echo "#deb-src https://ppa.launchpadcontent.net/pipewire-debian/wireplumber-upstream/ubuntu TARGET_CODENAME main" | sudo tee -a /etc/apt/sources.list.d/pipewire-debian-ubuntu-wireplumber-upstream-TARGET_CODENAME.list
+    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys FC43B7352BCC0EC8AF2EEB8B25088A0359807596
+    sudo apt-get -y update
+    sudo apt-get -y --no-install-recommends install \
+        gstreamer1.0-pipewire \
+        libpipewire-0.3-0 \
+        libpipewire-0.3-modules\
+        libspa-0.2-bluetooth \
+        libspa-0.2-jack \
+        libspa-0.2-modules \
+        pipewire \
+        pipewire-audio-client-libraries \
+        pipewire-pulse \
+        pipewire-bin \
+        pipewire-jack \
+        pipewire-alsa \
+        pipewire-v4l2 \
+        pipewire-libcamera \
+        gir1.2-wp-0.4 \
+        libwireplumber-0.4-0 \
+        mesa-vdpau-drivers \
+        mesa-va-drivers
+else
+    sudo apt-get -y update
+fi
