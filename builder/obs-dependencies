@@ -42,4 +42,5 @@ if [ -e /etc/profile.d/distrobox_profile.sh ]; then
         mesa-va-drivers
 else
     sudo apt-get -y update
+    sudo apt-get -y --no-install-recommends install v4l2loopback-dkms v4l2loopback-utils
 fi
