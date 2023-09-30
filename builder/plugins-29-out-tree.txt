@@ -17,7 +17,6 @@ https://github.com/exeldro/obs-media-controls/0ca9daadd55edf090ef07b8ebf29fd275a
 https://github.com/exeldro/obs-move-transition/2.9.5
 https://github.com/exeldro/obs-recursion-effect/0.0.5
 https://github.com/exeldro/obs-replay-source/1.6.12
-#https://github.com/exeldro/obs-scene-collection-manager/0.0.8
 https://github.com/exeldro/obs-scene-notes-dock/0.1.1
 https://github.com/exeldro/obs-shaderfilter/2.0.0
 https://github.com/exeldro/obs-source-clone/0.1.4
@@ -30,10 +29,7 @@ https://github.com/exeldro/obs-transition-table/0.2.6
 https://github.com/fzwoch/obs-gstreamer/v0.4.0
 https://github.com/fzwoch/obs-teleport/0.6.6
 https://github.com/fzwoch/obs-vaapi/0.4.0
-#https://github.com/iamscottxu/obs-rtspserver/v3.0.0
-#https://github.com/norihiro/obs-async-source-duplication/0.4.1
 https://github.com/norihiro/obs-audio-pan-filter/0.2.3
-#https://github.com/norihiro/obs-color-monitor/0.6.1
 https://github.com/norihiro/obs-command-source/0.4.0
 https://github.com/norihiro/obs-face-tracker/0.7.1
 https://github.com/norihiro/obs-multisource-effect/0.2.1
@@ -44,7 +40,6 @@ https://github.com/obsproject/obs-websocket/4.9.1-compat
 https://github.com/phandasm/waveform/v1.7.0
 #https://github.com/royshil/obs-urlsource/0.0.6
 https://github.com/wimpysworld/obs-rgb-levels-filter/1.0.0
-#https://github.com/Ayowel/dvds3/c177440488d716e950bbb042654d9de1f18fffdc
 https://github.com/FiniteSingularity/obs-composite-blur/v1.0.4
 https://github.com/WarmUpTill/SceneSwitcher/1.23.1
 https://github.com/Xaymar/obs-StreamFX/0.12.0b299
