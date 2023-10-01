@@ -31,6 +31,7 @@ https://github.com/exeldro/obs-transition-table/0.2.6
 https://github.com/fzwoch/obs-gstreamer/v0.4.0
 https://github.com/fzwoch/obs-teleport/0.6.6
 https://github.com/fzwoch/obs-vaapi/0.4.0
+https://github.com/obs-ndi/obs-ndi/4.11.1
 https://github.com/norihiro/obs-audio-pan-filter/0.2.3
 https://github.com/norihiro/obs-command-source/0.4.0
 https://github.com/norihiro/obs-face-tracker/0.7.1

@@ -224,6 +224,7 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Li
 
 - **[Game Capture](https://github.com/nowrep/obs-vkcapture)** plugin; Vulkan/OpenGL game capture.
 - **[GStreamer](https://github.com/fzwoch/obs-gstreamer)** plugin; feed GStreamer launch pipelines into OBS Studio.
+- **[NDI](https://github.com/obs-ndi/obs-ndi)** plugin; Network A/V in OBS Studio with NewTek's NDI technology.
 - **[Source Record](https://github.com/exeldro/obs-source-record)** plugin; make sources available to record via a filter.
 - **[StreamFX](https://github.com/Xaymar/obs-StreamFX)** plugin; unlocks the full potential of NVENC along with encoders for Avid DNxHR, Apple ProRes and CineForm.
   - **Only the *stable* StreamFX encoders, Color Grading and Dynamic Mask filters are enabled in OBS Studio Portable for Linux**.
@@ -267,7 +268,6 @@ Here are some additional plugins that look useful that I might add in the future
 - <https://github.com/obs-ai/obs-backgroundremoval>
 - <https://github.com/obs-ai/obs-cleanstream>
 - <https://github.com/obs-ai/obs-localvocal>
-- <https://github.com/obs-ndi/obs-ndi>
 - <https://github.com/norihiro/obs-async-audio-filter>
 - <https://github.com/norihiro/obs-source-record-async>
 - <https://github.com/norihiro/obs-output-filter>

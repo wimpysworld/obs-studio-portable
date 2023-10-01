@@ -14,6 +14,12 @@ fi
 
 sudo true
 
+PORTABLE_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
+if ! cmp --quiet "${PORTABLE_DIR}/lib/libndi.so" /usr/local/lib/libndi.so.5; then
+    sudo mkdir -p /usr/local/lib >/dev/null 2>&1
+    sudo cp "${PORTABLE_DIR}/lib/libndi.so" /usr/local/lib/libndi.so.5
+fi
+
 if [ -e /etc/profile.d/distrobox_profile.sh ]; then
     echo "deb https://ppa.launchpadcontent.net/pipewire-debian/pipewire-upstream/ubuntu TARGET_CODENAME main" | sudo tee /etc/apt/sources.list.d/pipewire-debian-ubuntu-pipewire-upstream-TARGET_CODENAME.list
     echo "#deb-src https://ppa.launchpadcontent.net/pipewire-debian/pipewire-upstream/ubuntu TARGET_CODENAME main" | sudo tee -a /etc/apt/sources.list.d/pipewire-debian-ubuntu-pipewire-upstream-TARGET_CODENAME.list

@@ -266,6 +266,11 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_OBS_URL_SOURCE}
 
+    echo "   - NDI            : libndi5-dev" >> "${BUILD_DIR}/obs-manifest.txt"
+    download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5_5.5.3-1_amd64.deb"
+    download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5-dev_5.5.3-1_amd64.deb"
+    apt-get -y install --no-install-recommends ${TARBALL_DIR}/*.deb
+
     if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
         PKG_OBS_VKCAPTURE="glslang-dev glslang-tools"
         echo "   - Game Capture   : ${PKG_OBS_VKCAPTURE}" >> "${BUILD_DIR}/obs-manifest.txt"
@@ -710,6 +715,9 @@ function stage_08_plugins_prebuilt() {
 }
 
 function stage_09_finalise() {
+    # NDI
+    cp -v /usr/lib/libndi.so "${BASE_DIR}/${INSTALL_DIR}/lib/" || true
+
     # Remove CEF files that are lumped in with obs-plugins
     # Prevents OBS from enumating the .so files to determine if they can be loaded as a plugin
     rm -rf "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/locales" || true

@@ -24,6 +24,8 @@ if [ ! -d /tmp/obs-portable ]; then
     exit 1
 fi
 
+mkdir -p /usr/local/lib && \
+cp /tmp/obs-portable/lib/libndi.so /usr/local/lib/libndi.so.5 && \
 echo "deb https://ppa.launchpadcontent.net/pipewire-debian/pipewire-upstream/ubuntu TARGET_CODENAME main"      >  /etc/apt/sources.list.d/pipewire-debian-ubuntu-pipewire-upstream-TARGET_CODENAME.list && \
 echo "#deb-src https://ppa.launchpadcontent.net/pipewire-debian/pipewire-upstream/ubuntu TARGET_CODENAME main" >> /etc/apt/sources.list.d/pipewire-debian-ubuntu-pipewire-upstream-TARGET_CODENAME.list && \
 echo "deb https://ppa.launchpadcontent.net/pipewire-debian/wireplumber-upstream/ubuntu TARGET_CODENAME main"      >  /etc/apt/sources.list.d/pipewire-debian-ubuntu-wireplumber-upstream-TARGET_CODENAME.list && \
