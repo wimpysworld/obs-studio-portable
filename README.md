@@ -216,6 +216,7 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Li
 - **[RGB Levels](https://github.com/wimpysworld/obs-rgb-levels-filter)** plugin; simple filter to adjust RGB levels.
 - **[Scene as Transition](https://github.com/andilippi/obs-scene-as-transition)** plugin; use scenes as transitions.
 - **[Shader Filter](https://github.com/exeldro/obs-shaderfilter)** plugin; for applying an arbitrary shader to a source.
+- **[Stroke Glow Shadow](https://github.com/FiniteSingularity/obs-stroke-glow-shadow)** plugin; provide efficient Stroke, Glow, and Shadow effects on masked sources.
 - **[Time Shift](https://github.com/exeldro/obs-time-shift)** plugin;  time shift a source using a filter.
 - **[Time Warp Scan](https://github.com/exeldro/obs-time-warp-scan)** plugin; a time warp scan filter.
 - **[Vintage Filter](https://github.com/cg2121/obs-vintage-filter)** plugin; a filter to make source black & white or sepia.
@@ -264,7 +265,6 @@ Here are some additional plugins that look useful that I might add in the future
 - <https://git.vrsal.xyz/alex/Durchblick>
 - <https://github.com/ashmanix/obs-plugin-countdown>
 - <https://github.com/exeldro/obs-audio-monitor>
-- <https://github.com/FiniteSingularity/obs-stroke-glow-shadow>
 - <https://github.com/obs-ai/obs-backgroundremoval>
 - <https://github.com/obs-ai/obs-cleanstream>
 - <https://github.com/obs-ai/obs-localvocal>
