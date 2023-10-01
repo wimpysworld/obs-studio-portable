@@ -232,7 +232,6 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Li
 - **[Teleport](https://github.com/fzwoch/obs-teleport)** plugin; open NDI-like replacement. (*not NDI compatible*)
 - **[VA-API](https://github.com/exeldro/obs-transition-table)** plugin; GStreamer-based VA-API encoder implementation.
 - **[Vertical Canvas](https://github.com/Aitum/obs-vertical-canvas)** plugin; make content for TikTok, YouTube Shorts, Instagram Live, and more without the fuss.
-- **[Virtual Cam Filter](https://github.com/exeldro/obs-virtual-cam-filter)** plugin; adds a filter to output a source or scene to the build in virtual camera.
 
 ## Tools 🛠
 
