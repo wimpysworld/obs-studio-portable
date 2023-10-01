@@ -200,6 +200,7 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Li
 ## Effects ✨
 
 - **[3D Effect](https://github.com/exeldro/obs-3d-effect)** plugin; 3D effect filter.
+- **[Browser Transition](https://github.com/exeldro/obs-browser-transition)** plugin; show a browser source during scene transition.
 - **[Composite Blur](https://github.com/FiniteSingularity/obs-composite-blur)** plugin; comprehensive blur plugin that provides several different blur algorithms, and proper compositing.
 - **[DVD Screensaver](https://github.com/univrsal/dvds3)** plugin; a DVD screen saver source type.
 - **[Downstream Keyer](https://github.com/exeldro/obs-downstream-keyer)** plugin; add a Downstream Keyer dock.
