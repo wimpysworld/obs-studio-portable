@@ -261,7 +261,7 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_OBS_GSTREAMER}
 
-    PKG_OBS_URL_SOURCE="libpsl-dev libssl-dev"
+    PKG_OBS_URL_SOURCE="libidn2-dev libpsl-dev  libpugixml-dev libssl-dev"
     echo "   - URL Source     : ${PKG_OBS_URL_SOURCE}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_OBS_URL_SOURCE}
@@ -493,6 +493,12 @@ function stage_07_plugins_out_tree() {
             sed -i 's/VERSION 3\.20/VERSION 3\.18/' "${PLUGIN_DIR}/${PLUGIN}/cmake/clang/Clang.cmake" || true
         fi
 
+        # Monkey patch obs-url-source to use the system pugixml
+        if [ "${PLUGIN}" == "obs-urlsource" ]; then
+            sed -i 's/include(cmake\/BuildPugiXML\.cmake)/find_package(pugixml\ REQUIRED)/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
+            sed -i 's/PRIVATE libpugixml/PRIVATE pugixml/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
+        fi
+
         # obs-face-tracker requires that QT_VERSION is set
         local QT_VER="6"
         if [ "${DISTRO_CMP_VER}" -le 2004 ] ; then
@@ -696,17 +702,6 @@ function stage_08_plugins_prebuilt() {
     mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/dvd-screensaver"
     mv -v "${PLUGIN_DIR}/dvd-screensaver.v1.1.linux.x64/dvd-screensaver/data/"* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/dvd-screensaver/"
 
-    #URL="https://github.com/royshil/obs-urlsource/releases/download/0.0.5/obs-urlsource-0.0.5-x86_64-linux-gnu.deb"
-    #FILE="${URL##*/}"
-    #echo " - ${URL}" >> "${BUILD_DIR}/obs-manifest.txt"
-    #wget --quiet --show-progress --progress=bar:force:noscroll "${URL}" -O "${TARBALL_DIR}/${FILE}"
-    #mkdir -p "${PLUGIN_DIR}/$(basename "${FILE}" .deb)"
-    #ar -x "${TARBALL_DIR}/${FILE}" --output="${PLUGIN_DIR}/$(basename "${FILE}" .deb)"
-    #tar xf "${PLUGIN_DIR}/$(basename "${FILE}" .deb)/data.tar.gz"
-    #cp -v "${PLUGIN_DIR}/$(basename "${FILE}" .deb)/usr/local/lib/obs-plugins/obs-urlsource.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/"
-    #mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-urlsource/locale/"
-    #cp -v "${PLUGIN_DIR}/$(basename "${FILE}" .deb)/usr/local/share/obs/obs-plugins/obs-urlsource/locale/en-US.ini" "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-urlsource/locale/"
-    
     URL="https://obsproject.com/forum/resources/yami-resized.1611/version/4885/download"
     FILE="Yami-Resized-1.1.1.zip"
     echo " - ${URL}" >> "${BUILD_DIR}/obs-manifest.txt"
