@@ -26,6 +26,7 @@ https://github.com/ujifgc/obs-source-record/fix-29.1.2
 https://github.com/exeldro/obs-source-switcher/8babf207d140e52114b6db63d98749d7a0a2758b
 https://github.com/exeldro/obs-time-warp-scan/f955f8e3baa362efa88ee9a49e30a80bbd5baa6f
 https://github.com/exeldro/obs-transition-table/0.2.6
+https://github.com/exeldro/obs-virtual-cam-filter/8eb39373cb8249a50115d8945979b6ae6fc65ce1
 https://github.com/fzwoch/obs-gstreamer/v0.4.0
 https://github.com/fzwoch/obs-teleport/0.6.6
 https://github.com/fzwoch/obs-vaapi/0.4.0
