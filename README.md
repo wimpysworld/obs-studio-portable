@@ -207,7 +207,7 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Li
 - **[Dynamic Delay](https://github.com/exeldro/obs-dynamic-delay)** plugin; filter for dynamic delaying a video source.
 - **[Face Tracker](https://github.com/norihiro/obs-face-tracker)** plugin; face tracking plugin
 - **[Freeze Filter](https://github.com/exeldro/obs-freeze-filter)** plugin; freeze a source using a filter.
-- **[Gradient Source](https://github.com/exeldro/obs-gradient-source)** plugin; adding gradients as a Source.
+- **[Gradient](https://github.com/exeldro/obs-gradient-source)** plugin; adding gradients as a source.
 - **[Move Transition](https://github.com/exeldro/obs-move-transition)** plugin; move source to a new position during a scene transition.
 - **[Multi Source Effect](https://github.com/norihiro/obs-multisource-effect)** plugin; provides a custom effect to render multiple sources.
 - **[Pixel Art](https://github.com/dspstanky/pixel-art)** plugin; create retro-inspired pixel art visuals.
@@ -243,7 +243,7 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Li
 
 - **[Markdown](https://github.com/exeldro/obs-markdown)** plugin; add Markdown sources
 - **[Text PThread](https://github.com/norihiro/obs-text-pthread)** plugin; Rich text source plugin with many advanced features, including multi-language support, emoji support, vertical rendering and RTL support.
-- **[URL Source](https://github.com/royshil/obs-urlsource)** plugin; fetch data from a URL (API), parse and display live update in scene.
+- **[URL Source](https://github.com/obs-ai/obs-urlsource)** plugin; fetch data from a URL (API), parse and display live update in scene.
 
 ### Removed 🗑️
 
@@ -261,15 +261,21 @@ These plugins were previously bundled with OBS Studio, but have since been remov
 Here are some additional plugins that look useful that I might add in the future:
 
 - <https://git.vrsal.xyz/alex/Durchblick>
-- <https://github.com/cg2121/obs-decklink-output-filter>
-- <https://github.com/exeldro/obs-browser-transition>
-- <https://github.com/norihiro/obs-aja-output-filter>
+- <https://github.com/ashmanix/obs-plugin-countdown>
+- <https://github.com/exeldro/obs-audio-monitor>
+- <https://github.com/FiniteSingularity/obs-stroke-glow-shadow>
+- <https://github.com/obs-ai/obs-backgroundremoval>
+- <https://github.com/obs-ai/obs-cleanstream>
+- <https://github.com/obs-ai/obs-localvocal>
+- <https://github.com/obs-ndi/obs-ndi>
 - <https://github.com/norihiro/obs-async-audio-filter>
 - <https://github.com/norihiro/obs-source-record-async>
 - <https://github.com/norihiro/obs-output-filter>
 - <https://github.com/norihiro/obs-main-view-source>
 - <https://github.com/norihiro/obs-vnc>
-- [Virtual Cam Filter](https://github.com/exeldro/obs-virtual-cam-filter) plugin; make sources available to the virtual camera via a filter.
+- <https://github.com/univrsal/input-overlay>
+- <https://github.com/univrsal/tuna>
+
 
 ### Additional plugins
 
