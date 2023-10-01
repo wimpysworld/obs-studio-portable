@@ -261,11 +261,6 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_OBS_GSTREAMER}
 
-    PKG_OBS_URL_SOURCE="libidn2-dev libpsl-dev  libpugixml-dev libssl-dev"
-    echo "   - URL Source     : ${PKG_OBS_URL_SOURCE}" >> "${BUILD_DIR}/obs-manifest.txt"
-    #shellcheck disable=SC2086
-    apt-get -y install --no-install-recommends ${PKG_OBS_URL_SOURCE}
-
     echo "   - NDI            : libndi5-dev" >> "${BUILD_DIR}/obs-manifest.txt"
     download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5_5.5.3-1_amd64.deb"
     download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5-dev_5.5.3-1_amd64.deb"
@@ -280,6 +275,11 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
         PKG_OBS_AV1="libaom-dev"
         echo "   - AV1            : ${PKG_OBS_AV1}" >> "${BUILD_DIR}/obs-manifest.txt"
         apt-get -y install --no-install-recommends ${PKG_OBS_AV1}
+
+        PKG_OBS_URL_SOURCE="libidn2-dev libpsl-dev  libpugixml-dev libssl-dev"
+        echo "   - URL Source     : ${PKG_OBS_URL_SOURCE}" >> "${BUILD_DIR}/obs-manifest.txt"
+        #shellcheck disable=SC2086
+        apt-get -y install --no-install-recommends ${PKG_OBS_URL_SOURCE}
     fi
 }
 
@@ -470,6 +470,7 @@ function stage_07_plugins_out_tree() {
         if [ "${DISTRO_CMP_VER}" -le 2004 ]; then
             if [ "${PLUGIN}" == "obs-pipewire-audio-capture" ] || \
                [ "${PLUGIN}" == "obs-teleport" ] || \
+               [ "${PLUGIN}" == "obs-urlsource" ] || \
                [ "${PLUGIN}" == "obs-vertical-canvas" ] || \
                [ "${PLUGIN}" == "obs-vkcapture" ] || \
                [ "${PLUGIN}" == "pixel-art" ]; then
