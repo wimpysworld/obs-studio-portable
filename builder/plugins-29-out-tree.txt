@@ -19,7 +19,7 @@ https://github.com/exeldro/obs-move-transition/2.9.5
 https://github.com/exeldro/obs-recursion-effect/0.0.5
 https://github.com/exeldro/obs-replay-source/1.6.12
 https://github.com/exeldro/obs-scene-notes-dock/0.1.1
-https://github.com/exeldro/obs-shaderfilter/2.1.0
+https://github.com/exeldro/obs-shaderfilter/2.1.1
 https://github.com/exeldro/obs-source-clone/0.1.4
 https://github.com/exeldro/obs-source-copy/0.2.2
 https://github.com/exeldro/obs-source-dock/0.3.6
