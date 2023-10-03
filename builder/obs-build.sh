@@ -468,7 +468,8 @@ function stage_07_plugins_out_tree() {
 
         # Insufficient Golang or PipeWire or Qt support in Ubuntu 20.04 to build these plugins
         if [ "${DISTRO_CMP_VER}" -le 2004 ]; then
-            if [ "${PLUGIN}" == "obs-pipewire-audio-capture" ] || \
+            if [ "${PLUGIN}" == "obs-localvocal" ] || \
+               [ "${PLUGIN}" == "obs-pipewire-audio-capture" ] || \
                [ "${PLUGIN}" == "obs-teleport" ] || \
                [ "${PLUGIN}" == "obs-urlsource" ] || \
                [ "${PLUGIN}" == "obs-vertical-canvas" ] || \
@@ -639,6 +640,14 @@ function stage_07_plugins_out_tree() {
             cp -a "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins/obs-rgb-levels-filter/"* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-rgb-levels-filter" || true
             rm -rf "${BASE_DIR}/${INSTALL_DIR}/lib/obs-plugins"
             rm -rf "${BASE_DIR}/${INSTALL_DIR}/share/obs-plugins"
+        elif [ "${PLUGIN}" == "obs-localvocal" ]; then
+            cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
+              -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+              -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
+              -DUSE_SYSTEM_CURL=ON \
+              -DQT_VERSION="${QT_VER}" | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
+            cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
+            cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
         elif [ "${PLUGIN}" == "obs-urlsource" ]; then
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \

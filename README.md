@@ -182,6 +182,7 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Li
 ## Audio 🔉
 
 - **[Audio Pan](https://github.com/norihiro/obs-audio-pan-filter)** plugin; control stereo pan of audio sources.
+- **[Local Vocal](https://github.com/obs-ai/obs-localvocal)** plugin; local speech and text AI processing routines and  AI transcription.
 - **[Mute Filter](https://github.com/norihiro/obs-mute-filter)** plugin; to mute audio from a source.
 - **[PipeWire Audio Capture](https://github.com/dimtpap/obs-pipewire-audio-capture)** plugin; capture application audio from PipeWire.
 - **[Scale to Sound](https://github.com/Qufyy/obs-scale-to-sound)** plugin; adds a filter which makes a source scale based on the audio levels of any audio source you choose
@@ -265,7 +266,6 @@ Here are some additional plugins that look useful that I might add in the future
 - <https://github.com/ashmanix/obs-plugin-countdown>
 - <https://github.com/obs-ai/obs-backgroundremoval>
 - <https://github.com/obs-ai/obs-cleanstream>
-- <https://github.com/obs-ai/obs-localvocal>
 - <https://github.com/norihiro/obs-async-audio-filter>
 - <https://github.com/norihiro/obs-source-record-async>
 - <https://github.com/norihiro/obs-output-filter>
