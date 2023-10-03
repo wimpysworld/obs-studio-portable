@@ -499,12 +499,6 @@ function stage_07_plugins_out_tree() {
             sed -i 's/VERSION 3\.20/VERSION 3\.18/' "${PLUGIN_DIR}/${PLUGIN}/cmake/clang/Clang.cmake" || true
         fi
 
-        # Monkey patch obs-url-source to use the system pugixml
-        if [ "${PLUGIN}" == "obs-urlsource" ]; then
-            sed -i 's/include(cmake\/BuildPugiXML\.cmake)/find_package(pugixml\ REQUIRED)/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
-            sed -i 's/PRIVATE libpugixml/PRIVATE pugixml/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
-        fi
-
         # obs-face-tracker requires that QT_VERSION is set
         local QT_VER="6"
         if [ "${DISTRO_CMP_VER}" -le 2004 ] ; then
@@ -645,6 +639,15 @@ function stage_07_plugins_out_tree() {
             cp -a "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins/obs-rgb-levels-filter/"* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-rgb-levels-filter" || true
             rm -rf "${BASE_DIR}/${INSTALL_DIR}/lib/obs-plugins"
             rm -rf "${BASE_DIR}/${INSTALL_DIR}/share/obs-plugins"
+        elif [ "${PLUGIN}" == "obs-urlsource" ]; then
+            cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
+              -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+              -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
+              -DUSE_SYSTEM_CURL=ON \
+              -DUSE_SYSTEM_PUGIXML=ON \
+              -DQT_VERSION="${QT_VER}" | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
+            cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
+            cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
         else
             # Build process for OBS Studio 28 and newer
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \

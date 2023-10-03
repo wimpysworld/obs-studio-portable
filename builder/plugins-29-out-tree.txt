@@ -38,7 +38,7 @@ https://github.com/norihiro/obs-multisource-effect/0.2.1
 https://github.com/norihiro/obs-mute-filter/0.2.2
 https://github.com/norihiro/obs-text-pthread/2.0.2
 https://github.com/nowrep/obs-vkcapture/v1.4.3
-https://github.com/obs-ai/obs-urlsource/0.1.0
+https://github.com/flexiondotorg/obs-urlsource/use-system-libraries
 https://github.com/obsproject/obs-websocket/4.9.1-compat
 https://github.com/phandasm/waveform/v1.7.0
 https://github.com/wimpysworld/obs-rgb-levels-filter/1.0.0
