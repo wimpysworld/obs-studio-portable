@@ -470,19 +470,18 @@ function stage_07_plugins_out_tree() {
         if [ "${DISTRO_CMP_VER}" -le 2004 ]; then
             if [ "${PLUGIN}" == "obs-localvocal" ] || \
                [ "${PLUGIN}" == "obs-pipewire-audio-capture" ] || \
+               [ "${PLUGIN}" == "obs-rtspserver" ] || \
                [ "${PLUGIN}" == "obs-teleport" ] || \
                [ "${PLUGIN}" == "obs-urlsource" ] || \
                [ "${PLUGIN}" == "obs-vertical-canvas" ] || \
                [ "${PLUGIN}" == "obs-vkcapture" ] || \
                [ "${PLUGIN}" == "pixel-art" ]; then
+                 echo "Skipping ${PLUGIN} (not supported on ${DISTRO} ${DISTRO_VER})"
                  continue
             fi
         fi
 
-        if [ "${PLUGIN}" == "obs-rtspserver" ] && [ "${DISTRO_CMP_VER}" -le 2004 ]; then
-            echo "Skipping ${PLUGIN} (not supported on ${DISTRO} ${DISTRO_VER})"
-            continue
-        elif [ "${PLUGIN}" == "SceneSwitcher" ] && [ "${DISTRO_CMP_VER}" -le 2004 ] && [ "${OBS_MAJ_VER}" -ge 29 ]; then
+        if [ "${PLUGIN}" == "SceneSwitcher" ] && [ "${DISTRO_CMP_VER}" -le 2004 ] && [ "${OBS_MAJ_VER}" -ge 29 ]; then
             # SceneSwitcher 1.20 FTBFS on Ubuntu 20.04
             BRANCH="1.19.2"
         fi
