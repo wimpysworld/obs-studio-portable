@@ -466,8 +466,12 @@ function stage_07_plugins_out_tree() {
         PLUGIN="$(echo "${REPO}" | cut -d'/' -f5)"
         BRANCH="$(echo "${REPO}" | cut -d'/' -f6)"
 
+        # obs-face-tracker requires that QT_VERSION is set
+        local QT_VER="6"
+
         # Insufficient Golang or PipeWire or Qt support in Ubuntu 20.04 to build these plugins
         if [ "${DISTRO_CMP_VER}" -le 2004 ]; then
+            QT_VER="5"
             if [ "${PLUGIN}" == "obs-localvocal" ] || \
                [ "${PLUGIN}" == "obs-pipewire-audio-capture" ] || \
                [ "${PLUGIN}" == "obs-rtspserver" ] || \
@@ -478,32 +482,13 @@ function stage_07_plugins_out_tree() {
                [ "${PLUGIN}" == "pixel-art" ]; then
                  echo "Skipping ${PLUGIN} (not supported on ${DISTRO} ${DISTRO_VER})"
                  continue
+            elif [ "${PLUGIN}" == "SceneSwitcher" ] && [ "${OBS_MAJ_VER}" -ge 29 ]; then
+                # SceneSwitcher 1.20 FTBFS on Ubuntu 20.04
+                BRANCH="1.19.2"
             fi
         fi
 
-        if [ "${PLUGIN}" == "SceneSwitcher" ] && [ "${DISTRO_CMP_VER}" -le 2004 ] && [ "${OBS_MAJ_VER}" -ge 29 ]; then
-            # SceneSwitcher 1.20 FTBFS on Ubuntu 20.04
-            BRANCH="1.19.2"
-        fi
-
         clone_source "${URL}.git" "${BRANCH}" "${PLUGIN_DIR}/${PLUGIN}"
-
-        # Adjust cmake VERSION SceneSwitch on Ubuntu 20.04
-        if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
-            sed -i 's/VERSION 3\.21/VERSION 3\.18/' "${SOURCE_DIR}/UI/frontend-plugins/SceneSwitcher/CMakeLists.txt" || true
-        fi
-
-        # Monkey patch the needlessly exagerated and inconsistent cmake version requirements
-        if [ "${PLUGIN}" == "obs-StreamFX" ] && [ "${OBS_MAJ_VER}" -ge 29 ]; then
-            sed -i 's/VERSION 3\.26/VERSION 3\.18/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt" || true
-            sed -i 's/VERSION 3\.20/VERSION 3\.18/' "${PLUGIN_DIR}/${PLUGIN}/cmake/clang/Clang.cmake" || true
-        fi
-
-        # obs-face-tracker requires that QT_VERSION is set
-        local QT_VER="6"
-        if [ "${DISTRO_CMP_VER}" -le 2004 ] ; then
-            QT_VER="5"
-        fi
 
         if [ "${AUTHOR}" == "ujifgc" ] || [ "${AUTHOR}" == "exeldro" ] || [ "${AUTHOR}" == "Aitum" ] || [ "${AUTHOR}" == "andilippi" ] || [ "${AUTHOR}" == "FiniteSingularity" ] || [ "${PLUGIN}" == "obs-scale-to-sound" ]; then
             # Build process of plugins from Exeldro that support standalone builds
@@ -520,6 +505,11 @@ function stage_07_plugins_out_tree() {
             cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
             rm -rfv "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins"
         elif [ "${PLUGIN}" == "obs-StreamFX" ]; then
+            # Monkey patch the needlessly exagerated and inconsistent cmake version requirements
+            if [ "${OBS_MAJ_VER}" -ge 29 ]; then
+                sed -i 's/VERSION 3\.26/VERSION 3\.18/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt" || true
+                sed -i 's/VERSION 3\.20/VERSION 3\.18/' "${PLUGIN_DIR}/${PLUGIN}/cmake/clang/Clang.cmake" || true
+            fi
             # Only enable stable features supported on Linux
             # What remains of the StreamFX suite is:
             #  - Encoder: Nvidia NVENC (via FFmpeg)
@@ -657,6 +647,10 @@ function stage_07_plugins_out_tree() {
             cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
             cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
         else
+            # Adjust cmake VERSION SceneSwitch on Ubuntu 20.04
+            if [ "${PLUGIN}" == "SceneSwitcher" ] && [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
+                sed -i 's/VERSION 3\.21/VERSION 3\.18/' "${SOURCE_DIR}/UI/frontend-plugins/SceneSwitcher/CMakeLists.txt" || true
+            fi
             # Build process for OBS Studio 28 and newer
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
               -DCMAKE_CXX_FLAGS="-Wno-error=deprecated-declarations -Wno-dev" \
