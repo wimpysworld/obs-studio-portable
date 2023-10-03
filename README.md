@@ -10,19 +10,22 @@ Made with 💝 for 🐧</p>
 
 # OBS Studio Portable for Linux
 
-- Includes nearly 50 of the best 3rd Party plugins for OBS Studio!
+- Includes nearly **50 of the best 3rd Party plugins for OBS Studio**!
 - Chromium Embedded Frameworks (CEF) to enable Browser Sources
 - NVENC (NVIDIA) and VA-API (AMD & Intel) accelerated video encoding
+- Shader and GStreamer effects filters
 - Fraunhofer FDK AAC Codec
+- Pipewire application specific audio capture
 - VLC and GStreamer Media sources
 - AJA NTV2 SDK
-- [WebSockets](https://github.com/obsproject/obs-websocket) 5.0.1 and 4.9.1-compat are both included
+- [WebSockets](https://github.com/obsproject/obs-websocket) 5.x and 4.9.1-compat are both included
+- Markdown, Pango and API text sources
 
 ## Portable?
 
 Running OBS Studio in Portable Mode means all settings (Profiles and Scene Collections) are saved within the same directory tree as the OBS Studio executables, plugins, and configuration. You can copy the whole folder to another computer and use it.
 
-OBS Studio Portable is also a container image for [Distrobox](https://distrobox.privatedns.org/), so you can run OBS Studio Portable on any Linux distro.
+[OBS Studio Portable is also a container image](https://github.com/ublue-os/obs-studio-portable) for [Distrobox](https://distrobox.privatedns.org/), so you can run OBS Studio Portable on *any Linux distro*.
 
 ## Supported Software
 
