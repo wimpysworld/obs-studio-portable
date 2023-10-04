@@ -1,16 +1,16 @@
 <h1 align="center">
   <img src="https://avatars1.githubusercontent.com/u/7725691?v=3&s=256" alt="OBS Studio">
   <br />
-  OBS Studio <i>Portable</i> for Linux
+  OBS Studio <i>Portable</i> for Ubuntu
 </h1>
 
 <p align="center"><b>Portable builds of OBS Studio for Linux, pre-loaded with extra features and plugins for live streaming and screen recording</b>
 <br />
 Made with 💝 for 🐧</p>
 
-# OBS Studio Portable for Linux
+# OBS Studio Portable for Ubuntu
 
-- Includes nearly **50 of the best 3rd Party plugins for OBS Studio**!
+- Includes **50 of the best 3rd Party plugins for OBS Studio**!
 - Chromium Embedded Frameworks (CEF) to enable Browser Sources
 - NVENC (NVIDIA) and VA-API (AMD & Intel) accelerated video encoding
 - Shader and GStreamer effects filters
@@ -19,13 +19,15 @@ Made with 💝 for 🐧</p>
 - VLC and GStreamer Media sources
 - AJA NTV2 SDK
 - [WebSockets](https://github.com/obsproject/obs-websocket) 5.x and 4.9.1-compat are both included
+- [NewTek NDI™ integration](https://github.com/obs-ndi/obs-ndi) and [Teleport](https://github.com/fzwoch/obs-teleport) support
+- [SRT & RIST Protocol](https://obsproject.com/wiki/Streaming-With-SRT-Or-RIST-Protocols) support
 - Markdown, Pango and API text sources
 
 ## Portable?
 
 Running OBS Studio in Portable Mode means all settings (Profiles and Scene Collections) are saved within the same directory tree as the OBS Studio executables, plugins, and configuration. You can copy the whole folder to another computer and use it.
 
-[OBS Studio Portable is also a container image](https://github.com/ublue-os/obs-studio-portable) for [Distrobox](https://distrobox.privatedns.org/), so you can run OBS Studio Portable on *any Linux distro*.
+[OBS Studio Portable is also a container image](https://github.com/ublue-os/obs-studio-portable) for [Distrobox](https://distrobox.it/), so you can run OBS Studio Portable on *any Linux distro*.
 
 ## Supported Software
 
@@ -37,14 +39,7 @@ The tarball of OBS Studio Portable includes a `manifest.txt` that describes prec
 | Ubuntu 22.04 (Jammy)   | 29.1.3 (Qt 6) | 30.0.0-beta3  |
 | Ubuntu 23.04 (Lunar)   | 29.1.3 (Qt 6) | 30.0.0-beta3  |
 | Ubuntu 23.10 (Mantic)  | 29.1.3 (Qt 6) | 30.0.0-beta3  |
-| Plugins                | 48            | 48            |
-
-Some caveats:
-
-- [Game Capture](https://github.com/nowrep/obs-vkcapture) is available on Ubuntu 22.04 and newer.
-- PipeWire support is available in Ubuntu 22.04 and newer.
-- [Teleport](https://github.com/fzwoch/obs-teleport) is available on Ubuntu 22.04 and newer.
-- [SRT & RIST Protocol](https://obsproject.com/wiki/Streaming-With-SRT-Or-RIST-Protocols) support is available on Ubuntu 22.10 and newer.
+| Plugins                | 50            | 50            |
 
 # Install
 
@@ -62,11 +57,11 @@ The installation process is simple:
   - **You must use the `obs-portable` launcher** to ensure OBS Studio finds all the associated libraries and add-ons.
 
 ```bash
-wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23274/obs-portable-29.1.3-r23274-ubuntu-$(lsb_release -rs).tar.bz2"
-wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23274/obs-portable-29.1.3-r23274-ubuntu-$(lsb_release -rs).tar.bz2.sha256"
-sha256sum -c obs-portable-29.1.3-r23274-ubuntu-$(lsb_release -rs).tar.bz2.sha256
-tar xvf obs-portable-29.1.3-r23274-ubuntu-$(lsb_release -rs).tar.bz2
-cd obs-portable-29.1.3-r23274-ubuntu-$(lsb_release -rs)
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23277/obs-portable-29.1.3-r23277-ubuntu-$(lsb_release -rs).tar.bz2"
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23277/obs-portable-29.1.3-r23277-ubuntu-$(lsb_release -rs).tar.bz2.sha256"
+sha256sum -c obs-portable-29.1.3-r23277-ubuntu-$(lsb_release -rs).tar.bz2.sha256
+tar xvf obs-portable-29.1.3-r23277-ubuntu-$(lsb_release -rs).tar.bz2
+cd obs-portable-29.1.3-r23277-ubuntu-$(lsb_release -rs)
 sudo ./obs-dependencies
 ./obs-portable
 ```
@@ -77,10 +72,10 @@ If anything doesn't work correctly when you start the new OBS Studio, continue u
 
 ## Distrobox (*any Linux*)
 
-You can use [Distrobox](https://distrobox.privatedns.org/) to run OBS Studio Portable on any Linux 🐧 distro.
+You can use [Distrobox](https://distrobox.it/) to run OBS Studio Portable on *any Linux 🐧 distro*.
 The container image for OBS Studio Portable is maintained under the umbrella of the [Universal Blue](https://universal-blue.org/) project.
 
-- https://github.com/ublue-os/obs-studio-portable
+- **[OBS Studio Portable for Linux](https://github.com/ublue-os/obs-studio-portable)**
 
 **The portable nature of OBS Studio Portable is redefined when using Distrobox.**
 - *"portable"* now means you can run OBS Studio Portable on any Linux distro, not just Ubuntu.
@@ -141,9 +136,9 @@ For example:
 ```bash
 mkdir ~/OBS-Studio-again
 cd ~/OBS-Studio-again
-wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23274/obs-portable-29.1.3-r23274-ubuntu-$(lsb_release -rs).tar.bz2"
-tar xvf obs-portable-29.1.3-r23274-ubuntu-$(lsb_release -rs).tar.bz2
-cd obs-portable-29.1.3-r23274-ubuntu-$(lsb_release -rs)
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23277/obs-portable-29.1.3-r23277-ubuntu-$(lsb_release -rs).tar.bz2"
+tar xvf obs-portable-29.1.3-r23277-ubuntu-$(lsb_release -rs).tar.bz2
+cd obs-portable-29.1.3-r23277-ubuntu-$(lsb_release -rs)
 ```
 
 To launch the second instance of OBS Studio Portable in Distrobox, run the following command:
@@ -178,9 +173,9 @@ If any of the following are true for you, you might find these builds of OBS Stu
 # Batteries included 🔋
 
 I'm incredibly thankful to the OBS Studio developers and developers of the growing list of excellent plugins.
-These Portable builds of OBS Studio for Linux celebrate the best of what's available. Thank you! 🙇
+These Portable builds of OBS Studio for Ubuntu celebrates the best of what's available. Thank you! 🙇
 
-Here are the 3rd party plugins that come bundled with OBS Studio Portable for Linux:
+Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ubuntu:
 
 ## Audio 🔉
 
@@ -318,13 +313,13 @@ The actual build script, [`obs-build.sh`](builder/obs-build.sh), gets injected i
 
 ## Release numbers
 
-An OBS Studio Portable for Linux release number will be something like r23274, and the filename will indicate the version of OBS Studio and which Ubuntu release it is for:
+An OBS Studio Portable for Linux release number will be something like r23277, and the filename will indicate the version of OBS Studio and which Ubuntu release it is for:
 
 ```text
                      +-- OBS Portable for Ubuntu revision
                      |
                      v
-obs-portable-29.1.3-r23274-ubuntu-22.04.tar.bz2
+obs-portable-29.1.3-r23277-ubuntu-22.04.tar.bz2
               ^                    ^
               |                    |
               +-- OBS version      +-- Supported Ubuntu release
