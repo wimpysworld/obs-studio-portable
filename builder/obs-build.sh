@@ -639,6 +639,8 @@ function stage_07_plugins_out_tree() {
             cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
         elif [ "${PLUGIN}" == "obs-urlsource" ]; then
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
+              -DCMAKE_CXX_FLAGS="-Wno-dev -Wno-error=conversion -Wno-error=shadow" \
+              -DCMAKE_C_FLAGS="-Wno-dev -Wno-error=conversion -Wno-error=shadow" \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
               -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
               -DUSE_SYSTEM_CURL=ON \

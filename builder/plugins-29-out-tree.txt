@@ -38,7 +38,7 @@ https://github.com/norihiro/obs-mute-filter/0.2.2
 https://github.com/norihiro/obs-text-pthread/2.0.2
 https://github.com/nowrep/obs-vkcapture/v1.4.3
 https://github.com/obs-ai/obs-localvocal/0.0.3
-https://github.com/obs-ai/obs-urlsource/1c893a0fdc68e5ffed4195527946ceb0342d47e4
+https://github.com/obs-ai/obs-urlsource/0.1.1
 https://github.com/obs-ndi/obs-ndi/4.11.1
 https://github.com/obsproject/obs-websocket/4.9.1-compat
 https://github.com/phandasm/waveform/v1.7.0
