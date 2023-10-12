@@ -201,6 +201,9 @@ libxss-dev python3-dev swig"
 libfreetype6-dev libjack-jackd2-dev libpulse-dev libsndio-dev libspeexdsp-dev \
 libudev-dev libv4l-dev libva-dev libvlc-dev"
 
+    # CEF Browser runtime requirements
+    PKG_OBS_PLUGINS+=" libatk-bridge2.0-0 libcups2 libnspr4 libnss3 libxtst6"
+
     # For OBS Studio 29.1.0 and newer, mostly OBS Websocket 5.2 support related
     # - https://github.com/obsproject/obs-studio/pull/8194
     if [ "${OBS_MAJ_VER}" -ge 29 ]; then
@@ -212,16 +215,9 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
         PKG_OBS_PLUGINS+=" libqrcodegencpp-dev"
     fi
 
-    # Intel® oneAPI Video Processing Library (oneVPL)
+    # Pipewire and Intel® oneAPI Video Processing Library (oneVPL)
     if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
-        PKG_OBS_PLUGINS+=" libvpl-dev"
-    fi
-
-    # CEF Browser runtime requirements
-    PKG_OBS_PLUGINS+=" libatk-bridge2.0-0 libcups2 libnspr4 libnss3 libxtst6"
-
-    if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
-        PKG_OBS_PLUGINS+=" libpipewire-0.3-dev"
+        PKG_OBS_PLUGINS+=" libpipewire-0.3-dev libvpl-dev"
     else
         PKG_OBS_PLUGINS+=" libpipewire-0.2-dev"
     fi
