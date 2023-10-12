@@ -60,11 +60,11 @@ The installation process is simple:
   - **You must use the `obs-portable` launcher** to ensure OBS Studio finds all the associated libraries and add-ons.
 
 ```bash
-wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23278/obs-portable-29.1.3-r23278-ubuntu-$(lsb_release -rs).tar.bz2"
-wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23278/obs-portable-29.1.3-r23278-ubuntu-$(lsb_release -rs).tar.bz2.sha256"
-sha256sum -c obs-portable-29.1.3-r23278-ubuntu-$(lsb_release -rs).tar.bz2.sha256
-tar xvf obs-portable-29.1.3-r23278-ubuntu-$(lsb_release -rs).tar.bz2
-cd obs-portable-29.1.3-r23278-ubuntu-$(lsb_release -rs)
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23285/obs-portable-29.1.3-r23285-ubuntu-$(lsb_release -rs).tar.bz2"
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23285/obs-portable-29.1.3-r23285-ubuntu-$(lsb_release -rs).tar.bz2.sha256"
+sha256sum -c obs-portable-29.1.3-r23285-ubuntu-$(lsb_release -rs).tar.bz2.sha256
+tar xvf obs-portable-29.1.3-r23285-ubuntu-$(lsb_release -rs).tar.bz2
+cd obs-portable-29.1.3-r23285-ubuntu-$(lsb_release -rs)
 sudo ./obs-dependencies
 ./obs-portable
 ```
@@ -139,9 +139,9 @@ For example:
 ```bash
 mkdir ~/OBS-Studio-again
 cd ~/OBS-Studio-again
-wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23278/obs-portable-29.1.3-r23278-ubuntu-$(lsb_release -rs).tar.bz2"
-tar xvf obs-portable-29.1.3-r23278-ubuntu-$(lsb_release -rs).tar.bz2
-cd obs-portable-29.1.3-r23278-ubuntu-$(lsb_release -rs)
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23285/obs-portable-29.1.3-r23285-ubuntu-$(lsb_release -rs).tar.bz2"
+tar xvf obs-portable-29.1.3-r23285-ubuntu-$(lsb_release -rs).tar.bz2
+cd obs-portable-29.1.3-r23285-ubuntu-$(lsb_release -rs)
 ```
 
 To launch the second instance of OBS Studio Portable in Distrobox, run the following command:
@@ -316,13 +316,13 @@ The actual build script, [`obs-build.sh`](builder/obs-build.sh), gets injected i
 
 ## Release numbers
 
-An OBS Studio Portable for Linux release number will be something like r23278, and the filename will indicate the version of OBS Studio and which Ubuntu release it is for:
+An OBS Studio Portable for Linux release number will be something like r23285, and the filename will indicate the version of OBS Studio and which Ubuntu release it is for:
 
 ```text
                      +-- OBS Portable for Ubuntu revision
                      |
                      v
-obs-portable-29.1.3-r23278-ubuntu-22.04.tar.bz2
+obs-portable-29.1.3-r23285-ubuntu-22.04.tar.bz2
               ^                    ^
               |                    |
               +-- OBS version      +-- Supported Ubuntu release
