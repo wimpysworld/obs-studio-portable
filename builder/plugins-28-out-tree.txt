@@ -21,7 +21,7 @@ https://github.com/exeldro/obs-shaderfilter/2.1.1
 https://github.com/exeldro/obs-source-clone/0.1.4
 https://github.com/exeldro/obs-source-copy/0.2.2
 https://github.com/exeldro/obs-source-dock/0.3.6
-https://github.com/exeldro/obs-source-record/0.3.2
+https://github.com/exeldro/obs-source-record/4a543d3577d56a27f5f2b9aa541a466b37dafde0
 https://github.com/exeldro/obs-source-switcher/8babf207d140e52114b6db63d98749d7a0a2758b
 https://github.com/exeldro/obs-time-warp-scan/f955f8e3baa362efa88ee9a49e30a80bbd5baa6f
 https://github.com/exeldro/obs-transition-table/0.2.7
