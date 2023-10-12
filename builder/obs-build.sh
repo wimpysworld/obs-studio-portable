@@ -285,7 +285,7 @@ function stage_02_get_obs() {
 }
 
 function stage_03_get_cef() {
-    download_tarball "https://cdn-fastly.obsproject.com/downloads/cef_binary_${CEF_VER}_linux_x86_64_v2.tar.xz" "${BUILD_DIR}/cef"
+    download_tarball "https://cdn-fastly.obsproject.com/downloads/cef_binary_${CEF_VER}_linux_x86_64_v3.tar.xz" "${BUILD_DIR}/cef"
     mkdir -p "${BASE_DIR}/${INSTALL_DIR}/cef"
     cp -a "${BUILD_DIR}/cef/Release/"* "${BASE_DIR}/${INSTALL_DIR}/cef/"
     cp -a "${BUILD_DIR}/cef/Resources/"* "${BASE_DIR}/${INSTALL_DIR}/cef/"
