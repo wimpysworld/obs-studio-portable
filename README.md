@@ -46,7 +46,7 @@ The tarball of OBS Studio Portable includes a `manifest.txt` that describes prec
 
 # Install
 
-You can safely install these OBS Studio Portable builds alongside [`.deb`](https://launchpad.net/~obsproject/+archive/ubuntu/obs-studio), [Flatpak](https://flathub.org/apps/com.obsproject.Studio), or [(unmaintained) Snap](https://snapcraft.io/obs-studio) installs of OBS Studio.
+You can safely install these OBS Studio Portable builds alongside [`.deb`](https://launchpad.net/~obsproject/+archive/ubuntu/obs-studio), [Flatpak](https://flathub.org/apps/com.obsproject.Studio), or [Snap](https://snapcraft.io/obs-studio) installs of OBS Studio.
 
 ## Ubuntu
 
