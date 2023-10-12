@@ -4,9 +4,12 @@
   OBS Studio <i>Portable</i> for Ubuntu
 </h1>
 
-<p align="center"><b>Portable builds of OBS Studio for Linux, pre-loaded with extra features and plugins for live streaming and screen recording</b>
-<br />
-Made with 💝 for 🐧</p>
+<p align="center"><b>Portable builds of OBS Studio for Linux, pre-loaded with extra features and plugins for live streaming and screen recording</b></p>
+<p align="center">
+<img alt="GitHub all releases" src="https://img.shields.io/github/downloads/wimpysworld/obs-studio-portable/total?logo=github&label=Downloads">
+</p>
+
+<p align="center">Made with 💝 for 🐧</p>
 
 # OBS Studio Portable for Ubuntu
 
