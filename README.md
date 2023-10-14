@@ -42,7 +42,7 @@ The tarball of OBS Studio Portable includes a `manifest.txt` that describes prec
 | Ubuntu 22.04 (Jammy)   | 29.1.3 (Qt 6) | 30.0.0-rc1    |
 | Ubuntu 23.04 (Lunar)   | 29.1.3 (Qt 6) | 30.0.0-rc1    |
 | Ubuntu 23.10 (Mantic)  | 29.1.3 (Qt 6) | 30.0.0-rc1    |
-| Plugins                | 50            | 49            |
+| Plugins                | 51            | 50            |
 
 # Install
 
@@ -202,6 +202,7 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ub
 ## Effects ✨
 
 - **[3D Effect](https://github.com/exeldro/obs-3d-effect)** plugin; 3D effect filter.
+- **[Background Removal](https://github.com/obs-ai/obs-backgroundremoval)** plugin; portrait background removal, virtual green-screen and low-light enhancement
 - **[Browser Transition](https://github.com/exeldro/obs-browser-transition)** plugin; show a browser source during scene transition.
 - **[Composite Blur](https://github.com/FiniteSingularity/obs-composite-blur)** plugin; comprehensive blur plugin that provides several different blur algorithms, and proper compositing.
 - **[DVD Screensaver](https://github.com/univrsal/dvds3)** plugin; a DVD screen saver source type.
@@ -264,8 +265,8 @@ Here are some additional plugins that look useful that I might add in the future
 
 - <https://git.vrsal.xyz/alex/Durchblick>
 - <https://github.com/ashmanix/obs-plugin-countdown>
-- <https://github.com/obs-ai/obs-backgroundremoval>
 - <https://github.com/obs-ai/obs-cleanstream>
+- <https://github.com/LiveSplit/obs-livesplit-one>
 - <https://github.com/norihiro/obs-async-audio-filter>
 - <https://github.com/norihiro/obs-source-record-async>
 - <https://github.com/norihiro/obs-output-filter>
