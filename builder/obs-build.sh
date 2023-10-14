@@ -679,7 +679,7 @@ function stage_08_plugins_binary() {
     unzip -o -qq "${TARBALL_DIR}/${FILE}" -d "${BASE_DIR}/${INSTALL_DIR}/data/obs-studio/themes"
 }
 
-function stage_09_finalise() {
+function stage_08_finalise() {
     # NDI
     cp -v /usr/lib/libndi.so "${BASE_DIR}/${INSTALL_DIR}/lib/" || true
 
@@ -719,7 +719,9 @@ function stage_09_finalise() {
             done < <(find "${DIR}" -type f)
         done
     fi
+fi
 
+function stage_09_make_scripts() {
     # Create scripts
     local SCRIPTS="obs-container-dependencies obs-dependencies obs-portable obs-gamecapture"
 
@@ -798,5 +800,6 @@ stage_05_build_obs system
 stage_05_build_obs portable
 stage_06_plugins_source
 stage_07_plugins_binary
-stage_09_finalise
+stage_08_finalise
+stage_09_make_scripts
 stage_10_make_tarball
