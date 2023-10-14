@@ -613,7 +613,7 @@ function stage_07_plugins_out_tree() {
             cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
             mv -v "${BASE_DIR}/${INSTALL_DIR}/lib/obs-plugins/obs-backgroundremoval/libonnxruntime"* "${BASE_DIR}/${INSTALL_DIR}/lib/"
         elif [ "${PLUGIN}" == "obs-localvocal" ]; then
-            cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
+            cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja --preset linux-x86_64 \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
               -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
               -DUSE_SYSTEM_CURL=ON \
@@ -621,7 +621,7 @@ function stage_07_plugins_out_tree() {
             cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
             cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
         elif [ "${PLUGIN}" == "obs-urlsource" ]; then
-            cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
+            cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja --preset linux-x86_64 \
               -DCMAKE_CXX_FLAGS="-Wno-dev -Wno-error=conversion -Wno-error=shadow" \
               -DCMAKE_C_FLAGS="-Wno-dev -Wno-error=conversion -Wno-error=shadow" \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
