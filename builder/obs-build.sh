@@ -720,7 +720,7 @@ function stage_08_finalise() {
             done < <(find "${DIR}" -type f)
         done
     fi
-fi
+}
 
 function stage_09_make_scripts() {
     # Create scripts
