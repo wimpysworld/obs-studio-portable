@@ -410,7 +410,7 @@ function stage_05_build_obs() {
     fi
 }
 
-function stage_07_plugins_out_tree() {
+function stage_07_plugins_source() {
     echo -e "\nPlugins (out of tree)\n" >> "${BUILD_DIR}/obs-manifest.txt"
     local BRANCH=""
     local CHAR1=""
@@ -657,7 +657,7 @@ function stage_07_plugins_out_tree() {
     done < ./plugins-"${OBS_MAJ_VER}"-out-tree.txt
 }
 
-function stage_08_plugins_prebuilt() {
+function stage_08_plugins_binary() {
     echo -e "\nPlugins (pre-built)\n" >> "${BUILD_DIR}/obs-manifest.txt"
     local FILE=""
     local URL=""
@@ -796,7 +796,7 @@ stage_03_get_cef
 stage_04_get_aja
 stage_05_build_obs system
 stage_05_build_obs portable
-stage_07_plugins_out_tree
-stage_08_plugins_prebuilt
+stage_06_plugins_source
+stage_07_plugins_binary
 stage_09_finalise
 stage_10_make_tarball
