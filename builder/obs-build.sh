@@ -410,7 +410,7 @@ function stage_05_build_obs() {
     fi
 }
 
-function stage_07_plugins_source() {
+function stage_06_plugins_source() {
     echo -e "\nPlugins (out of tree)\n" >> "${BUILD_DIR}/obs-manifest.txt"
     local BRANCH=""
     local CHAR1=""
@@ -658,7 +658,7 @@ function stage_07_plugins_source() {
     done < ./plugins-"${OBS_MAJ_VER}"-out-tree.txt
 }
 
-function stage_08_plugins_binary() {
+function stage_07_plugins_binary() {
     echo -e "\nPlugins (pre-built)\n" >> "${BUILD_DIR}/obs-manifest.txt"
     local FILE=""
     local URL=""
