@@ -215,7 +215,7 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
         PKG_OBS_PLUGINS+=" libqrcodegencpp-dev"
         if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
             # Intel® oneAPI Video Processing Library (oneVPL)
-            PKG_OBS_PLUGINS+=" libqrcodegencpp-dev libvpl-dev libvpl2"
+            PKG_OBS_PLUGINS+=" libvpl-dev libvpl2"
         fi
     fi
 
