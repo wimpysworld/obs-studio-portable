@@ -578,7 +578,7 @@ function stage_07_plugins_out_tree() {
             go build -ldflags "-linkmode external -X main.version=${BRANCH}" -v -o "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/${PLUGIN}.so" .
             mv "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/${PLUGIN}.h" "${BASE_DIR}/${INSTALL_DIR}/include/" || true
             cd "${CWD}"
-        elif [ "${PLUGIN}" == "obs-gstreamer" ]|| [ "${PLUGIN}" == "obs-nvfbc" ] || [ "${PLUGIN}" == "obs-vaapi" ]; then
+        elif [ "${PLUGIN}" == "obs-gstreamer" ] || [ "${PLUGIN}" == "obs-vaapi" ]; then
             if [ "${DISTRO_CMP_VER}" -le 2204 ]; then
                 meson --buildtype=${BUILD_TYPE,,} --prefix="${BASE_DIR}/${INSTALL_DIR}" --libdir="${BASE_DIR}/${INSTALL_DIR}" "${PLUGIN_DIR}/${PLUGIN}" "${PLUGIN_DIR}/${PLUGIN}/build"
             else
@@ -586,15 +586,11 @@ function stage_07_plugins_out_tree() {
             fi
             ninja -C "${PLUGIN_DIR}/${PLUGIN}/build"
             ninja -C "${PLUGIN_DIR}/${PLUGIN}/build" install
-            case "${PLUGIN}" in
-                obs-nvfbc) mv "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/nvfbc.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true;;
-                *) if [ -e "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/${PLUGIN}.so" ]; then
-                     mv "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/${PLUGIN}.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true
-                   elif [ -e "${BASE_DIR}/${INSTALL_DIR}/${PLUGIN}.so" ]; then
-                     mv "${BASE_DIR}/${INSTALL_DIR}/${PLUGIN}.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true
-                   fi
-                   ;;
-            esac
+            if [ -e "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/${PLUGIN}.so" ]; then
+                mv "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/${PLUGIN}.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true
+            elif [ -e "${BASE_DIR}/${INSTALL_DIR}/${PLUGIN}.so" ]; then
+                mv "${BASE_DIR}/${INSTALL_DIR}/${PLUGIN}.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true
+            fi
         elif [ "${PLUGIN}" == "obs-rgb-levels-filter" ]; then
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
