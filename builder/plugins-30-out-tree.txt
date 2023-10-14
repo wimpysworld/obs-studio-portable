@@ -46,4 +46,3 @@ https://github.com/wimpysworld/obs-rgb-levels-filter/1.0.0
 https://github.com/FiniteSingularity/obs-composite-blur/v1.0.5
 https://github.com/FiniteSingularity/obs-stroke-glow-shadow/v1.0.1
 https://github.com/WarmUpTill/SceneSwitcher/1.23.1
-https://github.com/Xaymar/obs-StreamFX/0.12.0b299

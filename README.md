@@ -42,7 +42,7 @@ The tarball of OBS Studio Portable includes a `manifest.txt` that describes prec
 | Ubuntu 22.04 (Jammy)   | 29.1.3 (Qt 6) | 30.0.0-rc1    |
 | Ubuntu 23.04 (Lunar)   | 29.1.3 (Qt 6) | 30.0.0-rc1    |
 | Ubuntu 23.10 (Mantic)  | 29.1.3 (Qt 6) | 30.0.0-rc1    |
-| Plugins                | 50            | 50            |
+| Plugins                | 50            | 49            |
 
 # Install
 
@@ -229,8 +229,6 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ub
 - **[GStreamer](https://github.com/fzwoch/obs-gstreamer)** plugin; feed GStreamer launch pipelines into OBS Studio.
 - **[NDI](https://github.com/obs-ndi/obs-ndi)** plugin; Network A/V in OBS Studio with NewTek's NDI technology.
 - **[Source Record](https://github.com/exeldro/obs-source-record)** plugin; make sources available to record via a filter.
-- **[StreamFX](https://github.com/Xaymar/obs-StreamFX)** plugin; unlocks the full potential of NVENC along with encoders for Avid DNxHR, Apple ProRes and CineForm.
-  - **Only the *stable* StreamFX encoders, Color Grading and Dynamic Mask filters are enabled in OBS Studio Portable for Linux**.
 - **[Teleport](https://github.com/fzwoch/obs-teleport)** plugin; open NDI-like replacement. (*not NDI compatible*)
 - **[VA-API](https://github.com/exeldro/obs-transition-table)** plugin; GStreamer-based VA-API encoder implementation.
 - **[Vertical Canvas](https://github.com/Aitum/obs-vertical-canvas)** plugin; make content for TikTok, YouTube Shorts, Instagram Live, and more without the fuss.
@@ -256,8 +254,9 @@ These plugins were previously bundled with OBS Studio, but have since been remov
 - **[Color Monitor](https://github.com/norihiro/obs-color-monitor)** - name collisions with other plugins.
 - **[NvFBC](https://gitlab.com/fzwoch/obs-nvfbc)** - no longer functional since OBS Studio 28 due to the removal of GLX.
   - Requires [NvFBC patches for Nvidia [drivers](https://github.com/keylase/nvidia-patch) for consumer-grade GPUs.
-- **[RTSP Server](https://github.com/iamscottxu/obs-rtspserver/)** - introduce a large number of memory leaks.
+- **[RTSP Server](https://github.com/iamscottxu/obs-rtspserver/)** - introduced a large number of memory leaks.
 - **[Scene Collection Manager](https://github.com/exeldro/obs-scene-collection-manager)** - can silently revert configurations to an older version.
+- **[StreamFX](https://github.com/Xaymar/obs-StreamFX)** plugin; Dropped from OBS 30 onward. Not compatible with Vertical Plugin, 0.12.0b366 and newer forcibly include pointless UI elements and component inclusion is no longer configurable.
 
 ### To consider 🤔
 
@@ -274,7 +273,6 @@ Here are some additional plugins that look useful that I might add in the future
 - <https://github.com/norihiro/obs-vnc>
 - <https://github.com/univrsal/input-overlay>
 - <https://github.com/univrsal/tuna>
-
 
 ### Additional plugins
 
