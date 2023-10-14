@@ -391,7 +391,7 @@ function stage_05_build_obs() {
       ${RESTREAM_OPTIONS} \
       ${TWITCH_OPTIONS} \
       ${YOUTUBE_OPTIONS} \
-      -Wno-deprecated -Wno-dev --log-level=ERROR \
+      -Wno-dev --log-level=ERROR \
       ${PORTABLE_OPTIONS} ${WEBRTC_OPTIONS} | tee "${BUILD_DIR}/cmake-obs-${TARGET}.log"
 
     cmake --build "${BUILD_TO}/"
