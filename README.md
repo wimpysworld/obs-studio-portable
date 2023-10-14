@@ -42,7 +42,7 @@ The tarball of OBS Studio Portable includes a `manifest.txt` that describes prec
 | Ubuntu 22.04 (Jammy)   | 29.1.3 (Qt 6) | 30.0.0-rc1    |
 | Ubuntu 23.04 (Lunar)   | 29.1.3 (Qt 6) | 30.0.0-rc1    |
 | Ubuntu 23.10 (Mantic)  | 29.1.3 (Qt 6) | 30.0.0-rc1    |
-| Plugins                | 52            | 51            |
+| Plugins                | 52            | 50            |
 
 # Install
 
