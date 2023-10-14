@@ -590,32 +590,6 @@ function stage_07_plugins_out_tree() {
                    fi
                    ;;
             esac
-        elif [ "${PLUGIN}" == "dvds3" ]; then
-            # TODO: Fails to link against libobs on OBS 28 and newer
-            if [ "${OBS_MAJ_VER}" -ge 28 ]; then
-                continue
-            fi
-
-            # Monkey patch to use the new find_package format introduced in OBS 28
-            sed -i 's/LibObs REQUIRED/libobs REQUIRED/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
-            cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
-              -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
-              -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
-              -DLIBOBS_INCLUDE_DIR="${SOURCE_DIR}/libobs" \
-              -DLIBOBS_LIB="/usr/lib/x86_64-linux-gnu/libobs.so" \
-              -DLIBOBS_DIR="/usr/lib/x86_64-linux-gnu/cmake/libobs" \
-              -DGLOBAL_INSTALLATION=ON | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
-            #pushd "${PLUGIN_DIR}/${PLUGIN}"
-            #make -C build
-            #make -C build DESTDIR="${BASE_DIR}/${INSTALL_DIR}/" install
-            #popd
-
-            cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
-            cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
-            cp "${PLUGIN_DIR}/${PLUGIN}/build/dvd-screensaver.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true
-            mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/dvd-screensaver"
-            cp -a "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins/dvd-screensaver/"* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/dvd-screensaver" || true
-            rm -rf "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins"
         elif [ "${PLUGIN}" == "obs-rgb-levels-filter" ]; then
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
