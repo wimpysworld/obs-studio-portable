@@ -266,6 +266,11 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5-dev_5.5.3-1_amd64.deb"
     apt-get -y install --no-install-recommends ${TARBALL_DIR}/*.deb
 
+    PKG_OBS_TUNA="libdbus-1-dev libmpdclient-dev libtag1-dev"
+    echo "   - Tuna           : ${PKG_OBS_TUNA}" >> "${BUILD_DIR}/obs-manifest.txt"
+    #shellcheck disable=SC2086
+    apt-get -y install --no-install-recommends ${PKG_OBS_TUNA}
+
     if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
         PKG_OBS_VKCAPTURE="glslang-dev glslang-tools"
         echo "   - Game Capture   : ${PKG_OBS_VKCAPTURE}" >> "${BUILD_DIR}/obs-manifest.txt"
@@ -629,6 +634,22 @@ function stage_07_plugins_out_tree() {
               -DUSE_SYSTEM_CURL=ON \
               -DUSE_SYSTEM_PUGIXML=ON \
               -DQT_VERSION="${QT_VER}" | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
+            cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
+            cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
+        elif [ "${PLUGIN}" == "tuna" ]; then
+            # Use system libmpdclient and taglib
+            # https://aur.archlinux.org/packages/obs-tuna
+            wget -q "https://aur.archlinux.org/cgit/aur.git/plain/FindLibMPDClient.cmake?h=obs-tuna" -O "${PLUGIN_DIR}/${PLUGIN}/cmake/external/FindLibMPDClient.cmake"
+            wget -q "https://aur.archlinux.org/cgit/aur.git/plain/FindTaglib.cmake?h=obs-tuna" -O "${PLUGIN_DIR}/${PLUGIN}/cmake/external/FindTaglib.cmake"
+            wget -q "https://aur.archlinux.org/cgit/aur.git/plain/deps_CMakeLists.txt?h=obs-tuna" -O "${PLUGIN_DIR}/${PLUGIN}/deps/CMakeLists.txt"
+            sed -i '13 a find_package(LibMPDClient REQUIRED)\nfind_package(Taglib REQUIRED)' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
+            cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
+              -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+              -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
+              -DCREDS="MISSING" \
+              -DLASTFM_CREDS="MISSING" \
+              -DQT_VERSION="${QT_VER}" \
+              -Wno-error=deprecated-declarations -Wno-dev | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
             cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
             cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
         else

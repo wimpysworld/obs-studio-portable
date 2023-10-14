@@ -42,7 +42,7 @@ The tarball of OBS Studio Portable includes a `manifest.txt` that describes prec
 | Ubuntu 22.04 (Jammy)   | 29.1.3 (Qt 6) | 30.0.0-rc1    |
 | Ubuntu 23.04 (Lunar)   | 29.1.3 (Qt 6) | 30.0.0-rc1    |
 | Ubuntu 23.10 (Mantic)  | 29.1.3 (Qt 6) | 30.0.0-rc1    |
-| Plugins                | 51            | 50            |
+| Plugins                | 52            | 51            |
 
 # Install
 
@@ -188,6 +188,7 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ub
 - **[PipeWire Audio Capture](https://github.com/dimtpap/obs-pipewire-audio-capture)** plugin; capture application audio from PipeWire.
 - **[Scale to Sound](https://github.com/Qufyy/obs-scale-to-sound)** plugin; adds a filter which makes a source scale based on the audio levels of any audio source you choose
 - **[Soundboard](https://github.com/cg2121/obs-soundboard)** plugin; adds a soundboard dock.
+- **[Tuna](https://github.com/univrsal/tuna)** plugin; get song information from various sources.
 - **[Waveform](https://github.com/phandasm/waveform)** plugin; audio spectral analysis.
 
 ## Automation 🎛
@@ -273,7 +274,6 @@ Here are some additional plugins that look useful that I might add in the future
 - <https://github.com/norihiro/obs-main-view-source>
 - <https://github.com/norihiro/obs-vnc>
 - <https://github.com/univrsal/input-overlay>
-- <https://github.com/univrsal/tuna>
 
 ### Additional plugins
 
