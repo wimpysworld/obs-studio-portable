@@ -503,10 +503,9 @@ function stage_07_plugins_out_tree() {
             # -Wno-error=deprecated-declarations is for OBS 30+ and some plugins that use deprecated OBS APIs such as obs_frontend_add_dock()
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
                 -DBUILD_OUT_OF_TREE=ON \
-                -DCMAKE_CXX_FLAGS="-Wno-error=switch -Wno-error=deprecated-declarations -Wno-error=stringop-overflow" \
-                -DCMAKE_C_FLAGS="-Wno-error=switch -Wno-error=deprecated-declarations -Wno-error=stringop-overflow" \
                 -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
-                -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
+                -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
+                -Wno-error=switch -Wno-error=deprecated-declarations -Wno-error=stringop-overflow | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
             cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
             cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
             rm -rfv "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins"
@@ -627,13 +626,12 @@ function stage_07_plugins_out_tree() {
             cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
         elif [ "${PLUGIN}" == "obs-urlsource" ]; then
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja --preset linux-x86_64 \
-              -DCMAKE_CXX_FLAGS="-Wno-dev -Wno-error=conversion -Wno-error=shadow" \
-              -DCMAKE_C_FLAGS="-Wno-dev -Wno-error=conversion -Wno-error=shadow" \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
               -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
               -DUSE_SYSTEM_CURL=ON \
               -DUSE_SYSTEM_PUGIXML=ON \
-              -DQT_VERSION="${QT_VER}" | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
+              -DQT_VERSION="${QT_VER}" \
+              -Wno-dev -Wno-error=conversion -Wno-error=shadow | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
             cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
             cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
         elif [ "${PLUGIN}" == "tuna" ]; then
@@ -659,11 +657,10 @@ function stage_07_plugins_out_tree() {
             fi
             # Build process for OBS Studio 28 and newer
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
-              -DCMAKE_CXX_FLAGS="-Wno-error=deprecated-declarations -Wno-dev" \
-              -DCMAKE_C_FLAGS="-Wno-error=deprecated-declarations -Wno-dev" \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
               -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
-              -DQT_VERSION="${QT_VER}" | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
+              -DQT_VERSION="${QT_VER}" \
+              -Wno-error=deprecated-declarations -Wno-dev | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
             cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
             cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
         fi
