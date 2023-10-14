@@ -27,7 +27,7 @@ esac
 OBS_VER="${2}"
 OBS_MAJ_VER="${OBS_VER%%.*}"
 case "${OBS_MAJ_VER}" in
-    28|29|30)
+    29|30)
         if [ -d "${BUILDS_DIR}/Builds/obs-builder-${DISTRO}/root/obs-${OBS_MAJ_VER}" ]; then
             cp -v "${BUILDS_DIR}/Builds/obs-builder-${DISTRO}/root/obs-${OBS_MAJ_VER}/obs-portable-${OBS_VER}"*-ubuntu-${DISTRO_VER}.* artefacts/
             chown "${SUDO_USER}":"${SUDO_USER}" "artefacts/obs-portable-${OBS_VER}"*-ubuntu-${DISTRO_VER}.*
