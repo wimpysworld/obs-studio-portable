@@ -20,7 +20,7 @@ https://github.com/exeldro/obs-recursion-effect/0.0.5
 https://github.com/exeldro/obs-replay-source/1.6.12
 https://github.com/exeldro/obs-scene-notes-dock/0.1.1
 https://github.com/exeldro/obs-shaderfilter/2.1.1
-https://github.com/exeldro/obs-source-clone/0.1.4
+https://github.com/exeldro/obs-source-clone/87fe2720c2ef610c24335ea65709e5f0a68c5d56
 https://github.com/exeldro/obs-source-copy/0.2.2
 https://github.com/exeldro/obs-source-dock/0.3.6
 https://github.com/exeldro/obs-source-record/0.3.2
