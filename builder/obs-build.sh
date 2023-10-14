@@ -410,46 +410,6 @@ function stage_05_build_obs() {
     fi
 }
 
-function stage_06_plugins_in_tree() {
-    if [ ! -e ./plugins-"${OBS_MAJ_VER}"-in-tree.txt ]; then
-        return
-    fi
-
-    echo -e "\nPlugins (in tree)\n" >> "${BUILD_DIR}/obs-manifest.txt"
-    local BRANCH=""
-    local CHAR1=""
-    local DIRECTORY=""
-    local PLUGIN=""
-    local URL=""
-
-    #shellcheck disable=SC2162
-    while read REPO; do
-        CHAR1=$(echo "${REPO}" | sed 's/ *$//g' | cut -c1)
-        if [ "${CHAR1}" == "#" ]; then
-            continue
-        fi
-        URL="$(echo "${REPO}" | cut -d'/' -f1-5)"
-        PLUGIN="$(echo "${REPO}" | cut -d'/' -f5)"
-        BRANCH="$(echo "${REPO}" | cut -d'/' -f6)"
-        DIRECTORY="$(echo "${REPO}" | cut -d'/' -f7-)"
-        if [ "${PLUGIN}" == "obs-rtspserver" ] && [ "${DISTRO_CMP_VER}" -le 2004 ]; then
-            echo "Skipping ${PLUGIN} (not supported on ${DISTRO} ${DISTRO_VER})"
-            continue
-        elif [ "${PLUGIN}" == "SceneSwitcher" ] && [ "${DISTRO_CMP_VER}" -le 2004 ] && [ "${OBS_MAJ_VER}" -ge 29 ]; then
-            # SceneSwitcher 1.20 FTBFS on Ubuntu 20.04
-            BRANCH="1.19.2"
-        fi
-        clone_source "${URL}.git" "${BRANCH}" "${SOURCE_DIR}/${DIRECTORY}/${PLUGIN}"
-
-        grep -qxF "add_subdirectory(${PLUGIN})" "${SOURCE_DIR}/${DIRECTORY}/CMakeLists.txt" || echo "add_subdirectory(${PLUGIN})" >> "${SOURCE_DIR}/${DIRECTORY}/CMakeLists.txt"
-    done < ./plugins-"${OBS_MAJ_VER}"-in-tree.txt
-
-    # Adjust cmake VERSION SceneSwitch on Ubuntu 20.04
-    if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
-        sed -i 's/VERSION 3\.21/VERSION 3\.18/' "${SOURCE_DIR}/UI/frontend-plugins/SceneSwitcher/CMakeLists.txt" || true
-    fi
-}
-
 function stage_07_plugins_out_tree() {
     echo -e "\nPlugins (out of tree)\n" >> "${BUILD_DIR}/obs-manifest.txt"
     local BRANCH=""
@@ -835,7 +795,6 @@ stage_02_get_obs
 stage_03_get_cef
 stage_04_get_aja
 stage_05_build_obs system
-stage_06_plugins_in_tree
 stage_05_build_obs portable
 stage_07_plugins_out_tree
 stage_08_plugins_prebuilt
