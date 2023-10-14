@@ -445,7 +445,8 @@ function stage_07_plugins_source() {
                [ "${PLUGIN}" == "obs-urlsource" ] || \
                [ "${PLUGIN}" == "obs-vertical-canvas" ] || \
                [ "${PLUGIN}" == "obs-vkcapture" ] || \
-               [ "${PLUGIN}" == "pixel-art" ]; then
+               [ "${PLUGIN}" == "pixel-art" ] || \
+               [ "${PLUGIN}" == "tuna" ]; then
                  echo "Skipping ${PLUGIN} (not supported on ${DISTRO} ${DISTRO_VER})"
                  continue
             elif [ "${PLUGIN}" == "SceneSwitcher" ] && [ "${OBS_MAJ_VER}" -ge 29 ]; then
