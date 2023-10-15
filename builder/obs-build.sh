@@ -663,28 +663,6 @@ function stage_06_plugins_source() {
     done < ./plugins-"${OBS_MAJ_VER}".txt
 }
 
-function stage_07_plugins_binary() {
-    echo -e "\nPlugins (pre-built)\n" >> "${BUILD_DIR}/obs-manifest.txt"
-    local FILE=""
-    local URL=""
-
-    URL="https://github.com/univrsal/dvds3/releases/download/v1.1/dvd-screensaver.v1.1.linux.x64.zip"
-    FILE="${URL##*/}"
-    echo " - ${URL}" >> "${BUILD_DIR}/obs-manifest.txt"
-    wget --quiet --show-progress --progress=bar:force:noscroll "${URL}" -O "${TARBALL_DIR}/${FILE}"
-    unzip -o -qq "${TARBALL_DIR}/${FILE}" -d "${PLUGIN_DIR}/$(basename "${FILE}" .zip)"
-    mv -v "${PLUGIN_DIR}/dvd-screensaver.v1.1.linux.x64/dvd-screensaver/bin/64bit/dvd-screensaver.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/"
-    rm -rf "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/dvd-screensaver"
-    mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/dvd-screensaver"
-    mv -v "${PLUGIN_DIR}/dvd-screensaver.v1.1.linux.x64/dvd-screensaver/data/"* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/dvd-screensaver/"
-
-    URL="https://obsproject.com/forum/resources/yami-resized.1611/version/4885/download"
-    FILE="Yami-Resized-1.1.1.zip"
-    echo " - ${URL}" >> "${BUILD_DIR}/obs-manifest.txt"
-    wget --quiet --show-progress --progress=bar:force:noscroll "${URL}" -O "${TARBALL_DIR}/${FILE}"
-    unzip -o -qq "${TARBALL_DIR}/${FILE}" -d "${BASE_DIR}/${INSTALL_DIR}/data/obs-studio/themes"
-}
-
 function stage_08_finalise() {
     # NDI
     cp -v /usr/lib/libndi.so "${BASE_DIR}/${INSTALL_DIR}/lib/" || true
@@ -805,7 +783,6 @@ stage_04_get_aja
 stage_05_build_obs system
 stage_05_build_obs portable
 stage_06_plugins_source
-stage_07_plugins_binary
 stage_08_finalise
 stage_09_make_scripts
 stage_10_make_tarball
