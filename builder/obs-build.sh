@@ -589,11 +589,13 @@ function stage_06_plugins_source() {
         elif [ "${PLUGIN}" == "obs-urlsource" ]; then
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja --preset linux-x86_64 \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+              -DCMAKE_CXX_FLAGS="-Wno-error=conversion -Wno-error=shadow" \
+              -DCMAKE_C_FLAGS="-Wno-error=conversion -Wno-error=shadow" \
               -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
               -DUSE_SYSTEM_CURL=ON \
               -DUSE_SYSTEM_PUGIXML=ON \
               -DQT_VERSION="${QT_VER}" \
-              -Wno-dev -Wno-error=conversion -Wno-error=shadow | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
+              -Wno-dev | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
             cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
             cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
         elif [ "${PLUGIN}" == "tuna" ]; then
@@ -605,11 +607,13 @@ function stage_06_plugins_source() {
             sed -i '13 a find_package(LibMPDClient REQUIRED)\nfind_package(Taglib REQUIRED)' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+              -DCMAKE_CXX_FLAGS="-Wno-error=deprecated-declarations" \
+              -DCMAKE_C_FLAGS="-Wno-error=deprecated-declarations" \
               -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
               -DCREDS="MISSING" \
               -DLASTFM_CREDS="MISSING" \
               -DQT_VERSION="${QT_VER}" \
-              -Wno-error=deprecated-declarations -Wno-dev | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
+              -Wno-dev | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
             cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
             cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
         else
@@ -620,9 +624,11 @@ function stage_06_plugins_source() {
             # Build process for OBS Studio 28 and newer
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+              -DCMAKE_CXX_FLAGS="-Wno-error=deprecated-declarations" \
+              -DCMAKE_C_FLAGS="-Wno-error=deprecated-declarations" \
               -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
               -DQT_VERSION="${QT_VER}" \
-              -Wno-error=deprecated-declarations -Wno-dev | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
+              -Wno-dev | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
             cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
             cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
         fi
