@@ -275,6 +275,15 @@ Here are some additional plugins that look useful that I might add in the future
 - <https://github.com/norihiro/obs-vnc>
 - <https://github.com/univrsal/input-overlay>
 
+#### gPhoto
+
+There isn't a definitive gPhoto plugin for OBS Studio so I'm reluctant to include it. Here's what I know:
+
+- [Original obs-gphoto 0.3.0](https://github.com/Atterratio/obs-gphoto) - unmaintained and doesn't build against current OBS.
+  - [Forked obs-gphoto 0.4.0](https://github.com/adlerweb/obs-gphoto) - unmaintained, updated for imagemagick7, I was using this with OBS 27.
+  - [Forked obs-gphoto 0.3.0](https://github.com/mika314/obs-gphoto) - look like build system updates to work with OBS 28, but I haven't tested it.
+  - [Forked obs-gphoto 0.3.0](https://github.com/christophehenry/obs-gphoto) - looks like build system and code updates to work with OBS 29, but I haven't tested it.
+
 ### Additional plugins
 
 If the builds of OBS Studio offered here don't include a plugin that you use, you can download a pre-compiled version and add it to the portable folder:
