@@ -402,6 +402,12 @@ function stage_05_build_obs() {
       mkdir -p /usr/include/caption/ || true
       cp "${SOURCE_DIR}/deps/libcaption/caption/"*.h "/usr/include/caption/"
     fi
+
+    # Make sure the uthash headers are discoverable for 3rd party out-of-tree plugins
+    if [ "${TARGET}" == "system" ] && [ -d "${SOURCE_DIR}/deps/uthash/uthash" ]; then
+      mkdir -p /usr/include/uthash/ || true
+      cp "${SOURCE_DIR}/deps/uthash/uthash/"*.h "/usr/include/uthash/"
+    fi
 }
 
 function stage_06_plugins_source() {
