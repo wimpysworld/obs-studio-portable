@@ -666,7 +666,7 @@ function stage_06_plugins_source() {
             mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/${PLUGIN}"
             mv -v "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins/${PLUGIN}"/* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/${PLUGIN}/" || true
         fi
-    done < ./plugins-"${OBS_MAJ_VER}"-out-tree.txt
+    done < ./plugins-"${OBS_MAJ_VER}".txt
 }
 
 function stage_07_plugins_binary() {
