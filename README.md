@@ -264,20 +264,20 @@ These plugins were previously bundled with OBS Studio, but have since been remov
 
 Here are some additional plugins that look useful that I might add in the future:
 
-- <https://git.vrsal.xyz/alex/Durchblick>
-- <https://github.com/ashmanix/obs-plugin-countdown>
-- <https://github.com/obs-ai/obs-cleanstream>
-- <https://github.com/LiveSplit/obs-livesplit-one>
-- <https://github.com/norihiro/obs-async-audio-filter>
-- <https://github.com/norihiro/obs-source-record-async>
-- <https://github.com/norihiro/obs-output-filter>
-- <https://github.com/norihiro/obs-main-view-source>
-- <https://github.com/norihiro/obs-vnc>
-- <https://github.com/univrsal/input-overlay>
+- [Async Audio Filter](https://github.com/norihiro/obs-async-audio-filter)
+- [Durchblick](https://git.vrsal.xyz/alex/Durchblick) - *needs testing, user reports indicate stability issues*
+- [Clean Stream](https://github.com/obs-ai/obs-cleanstream) - *currently experimental*
+- [Countdown](https://github.com/ashmanix/obs-plugin-countdown)
+- [Input Overlay](https://github.com/univrsal/input-overlay)
+- [LiveSplit](https://github.com/LiveSplit/obs-livesplit-one)
+- [Main View Source](https://github.com/norihiro/obs-main-view-source)
+- [Output Filter](https://github.com/norihiro/obs-output-filter)
+- [Source Record Async](https://github.com/norihiro/obs-source-record-async)
+- [VNC](https://github.com/norihiro/obs-vnc) - *not compatible with current OBS*
 
 #### gPhoto
 
-There isn't a definitive gPhoto plugin for OBS Studio so I'm reluctant to include it. Here's what I know:
+There isn't a definitive gPhoto plugin for current OBS Studio so I'm reluctant to include it. Here's what I know:
 
 - [Original obs-gphoto 0.3.0](https://github.com/Atterratio/obs-gphoto) - unmaintained and doesn't build against current OBS.
   - [Forked obs-gphoto 0.4.0](https://github.com/adlerweb/obs-gphoto) - unmaintained, updated for imagemagick7, I was using this with OBS 27.
