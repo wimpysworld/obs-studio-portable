@@ -43,7 +43,6 @@ https://github.com/obs-ai/obs-urlsource/0.1.2
 https://github.com/obs-ndi/obs-ndi/4.11.1
 https://github.com/obsproject/obs-websocket/4.9.1-compat
 https://github.com/phandasm/waveform/v1.7.0
-#https://github.com/univrsal/tuna/v1.9.7
 https://github.com/wimpysworld/obs-dvd-screensaver/0.0.1
 https://github.com/wimpysworld/obs-rgb-levels/1.0.1
 https://github.com/FiniteSingularity/obs-composite-blur/v1.0.5
