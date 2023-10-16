@@ -410,8 +410,8 @@ function stage_05_build_obs() {
     fi
 }
 
-function stage_06_plugins_source() {
-    echo -e "\nPlugins (out of tree)\n" >> "${BUILD_DIR}/obs-manifest.txt"
+function stage_06_plugins() {
+    echo -e "\nPlugins\n" >> "${BUILD_DIR}/obs-manifest.txt"
     local BRANCH=""
     local CHAR1=""
     local CWD=""
@@ -669,6 +669,18 @@ function stage_06_plugins_source() {
     done < ./plugins-"${OBS_MAJ_VER}".txt
 }
 
+function stage_07_themes() {
+    echo -e "\nThemes\n" >> "${BUILD_DIR}/obs-manifest.txt"
+    local FILE=""
+    local URL=""
+
+    URL="https://obsproject.com/forum/resources/yami-resized.1611/version/4885/download"
+    FILE="Yami-Resized-1.1.1.zip"
+    echo " - ${URL}" >> "${BUILD_DIR}/obs-manifest.txt"
+    wget --quiet --show-progress --progress=bar:force:noscroll "${URL}" -O "${TARBALL_DIR}/${FILE}"
+    unzip -o -qq "${TARBALL_DIR}/${FILE}" -d "${BASE_DIR}/${INSTALL_DIR}/data/obs-studio/themes"
+}
+
 function stage_08_finalise() {
     # NDI
     cp -v /usr/lib/libndi.so "${BASE_DIR}/${INSTALL_DIR}/lib/" || true
@@ -788,7 +800,8 @@ stage_03_get_cef
 stage_04_get_aja
 stage_05_build_obs system
 stage_05_build_obs portable
-stage_06_plugins_source
+stage_06_plugins
+stage_07_themes
 stage_08_finalise
 stage_09_make_scripts
 stage_10_make_tarball
