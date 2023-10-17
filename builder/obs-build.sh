@@ -314,44 +314,43 @@ function stage_04_get_aja() {
 }
 
 function stage_05_build_obs() {
+    local OPTIONS=""
     local TARGET="system"
     if [ -n "${1}" ]; then
         TARGET="${1}"
-    fi
-
-    if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
-        PIPEWIRE_OPTIONS="-DENABLE_PIPEWIRE=ON"
-    else
-        PIPEWIRE_OPTIONS="-DENABLE_PIPEWIRE=OFF"
-    fi
-
-    RTMPS_OPTIONS="-DENABLE_RTMPS=ON"
-    BROWSER_OPTIONS="-DENABLE_BROWSER=ON"
-    VST_OPTIONS="-DENABLE_VST=ON"
-    if [ "${DISTRO_CMP_VER}" -ge 2210 ]; then
-        RTMPS_OPTIONS+=" -DENABLE_NEW_MPEGTS_OUTPUT=ON"
-    else
-        RTMPS_OPTIONS+=" -DENABLE_NEW_MPEGTS_OUTPUT=OFF"
-    fi
-
-    # libdatachannel is not available in any Ubuntu release
-    if [ "${OBS_MAJ_VER}" -ge 30 ]; then
-        WEBRTC_OPTIONS=" -DENABLE_WEBRTC=OFF"
-    else
-        WEBRTC_OPTIONS=" "
     fi
 
     case "${TARGET}" in
       portable)
         BUILD_TO="${BUILD_PORTABLE}"
         INSTALL_TO="${BASE_DIR}/${INSTALL_DIR}"
-        PORTABLE_OPTIONS="-DLINUX_PORTABLE=ON"
+        OPTIONS="-DLINUX_PORTABLE=ON"
         ;;
       system)
         BUILD_TO="${BUILD_SYSTEM}"
         INSTALL_TO="/usr"
-        PORTABLE_OPTIONS="-DLINUX_PORTABLE=OFF"
+        OPTIONS="-DLINUX_PORTABLE=OFF"
     esac
+
+    if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
+        OPTIONS+=" -DENABLE_PIPEWIRE=ON"
+    else
+        OPTIONS+=" -DENABLE_PIPEWIRE=OFF"
+    fi
+
+    OPTIONS+=" -DENABLE_RTMPS=ON"
+    if [ "${DISTRO_CMP_VER}" -ge 2210 ]; then
+        OPTIONS+=" -DENABLE_NEW_MPEGTS_OUTPUT=ON"
+    else
+        OPTIONS+=" -DENABLE_NEW_MPEGTS_OUTPUT=OFF"
+    fi
+    OPTIONS+=" -DENABLE_BROWSER=ON"
+    OPTIONS+=" -DENABLE_VST=ON"
+    
+    # libdatachannel is not available in any Ubuntu release
+    if [ "${OBS_MAJ_VER}" -ge 30 ]; then
+        OPTIONS+=" -DENABLE_WEBRTC=OFF"
+    fi
 
     local TWITCH_OPTIONS=""
     local RESTREAM_OPTIONS=""
@@ -377,23 +376,17 @@ function stage_05_build_obs() {
       -DENABLE_AJA=ON \
       -DAJA_LIBRARIES_INCLUDE_DIR="${BUILD_DIR}"/aja/include/ \
       -DAJA_NTV2_LIB="${BUILD_DIR}"/aja/lib/libajantv2.a \
-      ${BROWSER_OPTIONS} \
       -DCEF_ROOT_DIR="${BUILD_DIR}/cef" \
       -DENABLE_ALSA=OFF \
       -DENABLE_JACK=ON \
       -DENABLE_LIBFDK=ON \
-      ${PIPEWIRE_OPTIONS} \
       -DENABLE_PULSEAUDIO=ON \
       -DENABLE_VLC=ON \
-      ${VST_OPTIONS} \
       -DENABLE_WAYLAND=ON \
-      ${RTMPS_OPTIONS} \
       ${RESTREAM_OPTIONS} \
       ${TWITCH_OPTIONS} \
       ${YOUTUBE_OPTIONS} \
-      -Wno-dev --log-level=ERROR \
-      ${PORTABLE_OPTIONS} ${WEBRTC_OPTIONS} | tee "${BUILD_DIR}/cmake-obs-${TARGET}.log"
-
+      -Wno-dev --log-level=ERROR ${OPTIONS} | tee "${BUILD_DIR}/cmake-obs-${TARGET}.log"
     cmake --build "${BUILD_TO}/"
     cmake --install "${BUILD_TO}/" --prefix "${INSTALL_TO}"
 
