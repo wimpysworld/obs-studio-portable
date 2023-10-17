@@ -415,7 +415,8 @@ function stage_06_plugins() {
     local BRANCH=""
     local CHAR1=""
     local CWD=""
-    local NO_ERROR=""
+    local ERROR=""
+    local EXTRA=""
     local PLUGIN=""
     local URL=""
 
@@ -457,25 +458,9 @@ function stage_06_plugins() {
 
         clone_source "${URL}.git" "${BRANCH}" "${PLUGIN_DIR}/${PLUGIN}"
 
-        NO_ERROR=""
-        if [ "${AUTHOR}" == "ujifgc" ] || [ "${AUTHOR}" == "exeldro" ] || [ "${AUTHOR}" == "Aitum" ] || [ "${AUTHOR}" == "andilippi" ] || [ "${AUTHOR}" == "FiniteSingularity" ] || [ "${PLUGIN}" == "obs-scale-to-sound" ]; then
-            case "${PLUGIN}" in
-                obs-source-dock) NO_ERROR="-Wno-error=switch";;
-                obs-stroke-glow-shadow) NO_ERROR="-Wno-error=stringop-overflow";;
-                *) NO_ERROR="";;
-            esac
-            # -Wno-error=deprecated-declarations is for some plugins that use deprecated OBS APIs such as obs_frontend_add_dock()
-            cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
-                -DBUILD_OUT_OF_TREE=ON \
-                -DCMAKE_CXX_FLAGS="-Wno-error=deprecated-declarations ${NO_ERROR}" \
-                -DCMAKE_C_FLAGS="-Wno-error=deprecated-declarations ${NO_ERROR}" \
-                -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
-                -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
-                -Wno-dev | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
-            cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
-            cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
-            rm -rfv "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins"
-        elif [ "${PLUGIN}" == "obs-StreamFX" ]; then
+        ERROR=""
+        EXTRA=""
+        if [ "${PLUGIN}" == "obs-StreamFX" ]; then
             # Monkey patch the needlessly exagerated and inconsistent cmake version requirements
             if [ "${OBS_MAJ_VER}" -ge 29 ]; then
                 sed -i 's/VERSION 3\.26/VERSION 3\.18/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt" || true
@@ -533,7 +518,7 @@ function stage_06_plugins() {
             mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/StreamFX"
             cp -a "${BASE_DIR}/${INSTALL_DIR}/plugins/StreamFX/data/"* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/StreamFX/" || true
             rm -rf "${BASE_DIR}/${INSTALL_DIR}/plugins"
-        elif [ "${PLUGIN}" == "obs-teleport" ] && [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
+        elif [ "${PLUGIN}" == "obs-teleport" ]; then
             # Requires Go 1.17, which is not available in Ubuntu 20.04
             export CGO_CPPFLAGS="${CPPFLAGS}"
             export CGO_CFLAGS="${CFLAGS} -I/usr/include/obs"
@@ -557,116 +542,68 @@ function stage_06_plugins() {
             elif [ -e "${BASE_DIR}/${INSTALL_DIR}/${PLUGIN}.so" ]; then
                 mv "${BASE_DIR}/${INSTALL_DIR}/${PLUGIN}.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true
             fi
-        elif [ "${PLUGIN}" == "obs-rgb-levels-filter" ]; then
-            cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
-              -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
-              -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
-              -DOBS_SRC_DIR="${SOURCE_DIR}" \
-              -DLIBOBS_LIB="${BUILD_SYSTEM}/libobs/libobs.so" | tee "${BUILD_DIR}/cmake-${PLUGIN}.log" || true
-            cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
-            cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
-            mv -v "${BASE_DIR}/${INSTALL_DIR}/lib/obs-plugins/obs-rgb-levels-filter.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true
-            mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-rgb-levels-filter"
-            cp -a "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins/obs-rgb-levels-filter/"* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-rgb-levels-filter" || true
-            rm -rf "${BASE_DIR}/${INSTALL_DIR}/lib/obs-plugins"
-            rm -rf "${BASE_DIR}/${INSTALL_DIR}/share/obs-plugins"
-        elif [ "${PLUGIN}" == "obs-backgroundremoval" ]; then
-            cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja --preset linux-x86_64 \
-              -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
-              -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
-              -DQT_VERSION="${QT_VER}" | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
-            cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
-            cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
-            mv -v "${BASE_DIR}/${INSTALL_DIR}/lib/obs-plugins/obs-backgroundremoval/libonnxruntime"* "${BASE_DIR}/${INSTALL_DIR}/lib/"
-        elif [ "${PLUGIN}" == "obs-localvocal" ]; then
-            cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja --preset linux-x86_64 \
-              -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
-              -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
-              -DUSE_SYSTEM_CURL=ON \
-              -DQT_VERSION="${QT_VER}" | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
-            cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
-            cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
-        elif [ "${PLUGIN}" == "obs-urlsource" ]; then
-            cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja --preset linux-x86_64 \
-              -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
-              -DCMAKE_CXX_FLAGS="-Wno-error=conversion -Wno-error=shadow" \
-              -DCMAKE_C_FLAGS="-Wno-error=conversion -Wno-error=shadow" \
-              -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
-              -DUSE_SYSTEM_CURL=ON \
-              -DUSE_SYSTEM_PUGIXML=ON \
-              -DQT_VERSION="${QT_VER}" \
-              -Wno-dev | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
-            cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
-            cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
-        elif [ "${PLUGIN}" == "tuna" ]; then
-            # Use system libmpdclient and taglib
-            # https://aur.archlinux.org/packages/obs-tuna
-            wget -q "https://aur.archlinux.org/cgit/aur.git/plain/FindLibMPDClient.cmake?h=obs-tuna" -O "${PLUGIN_DIR}/${PLUGIN}/cmake/external/FindLibMPDClient.cmake"
-            wget -q "https://aur.archlinux.org/cgit/aur.git/plain/FindTaglib.cmake?h=obs-tuna" -O "${PLUGIN_DIR}/${PLUGIN}/cmake/external/FindTaglib.cmake"
-            wget -q "https://aur.archlinux.org/cgit/aur.git/plain/deps_CMakeLists.txt?h=obs-tuna" -O "${PLUGIN_DIR}/${PLUGIN}/deps/CMakeLists.txt"
-            sed -i '13 a find_package(LibMPDClient REQUIRED)\nfind_package(Taglib REQUIRED)' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
-            cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
-              -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
-              -DCMAKE_CXX_FLAGS="-Wno-error=deprecated-declarations" \
-              -DCMAKE_C_FLAGS="-Wno-error=deprecated-declarations" \
-              -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
-              -DCREDS="MISSING" \
-              -DLASTFM_CREDS="MISSING" \
-              -DQT_VERSION="${QT_VER}" \
-              -Wno-dev | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
-            cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
-            cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
         else
-            # Adjust cmake VERSION SceneSwitch on Ubuntu 20.04
-            if [ "${PLUGIN}" == "SceneSwitcher" ] && [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
-                sed -i 's/VERSION 3\.21/VERSION 3\.18/' "${SOURCE_DIR}/UI/frontend-plugins/SceneSwitcher/CMakeLists.txt" || true
+            if [ "${AUTHOR}" == "ujifgc" ] || [ "${AUTHOR}" == "exeldro" ] || [ "${AUTHOR}" == "Aitum" ] || [ "${AUTHOR}" == "andilippi" ] || [ "${AUTHOR}" == "FiniteSingularity" ] || [ "${PLUGIN}" == "obs-scale-to-sound" ]; then
+                EXTRA="-DBUILD_OUT_OF_TREE=ON"
             fi
+            case "${PLUGIN}" in
+                SceneSwitcher)
+                    # Adjust cmake VERSION SceneSwitch on Ubuntu 20.04
+                    if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
+                        sed -i 's/VERSION 3\.21/VERSION 3\.18/' "${SOURCE_DIR}/UI/frontend-plugins/SceneSwitcher/CMakeLists.txt" || true
+                    fi;;
+                tuna)
+                    # Use system libmpdclient and taglib
+                    # https://aur.archlinux.org/packages/obs-tuna
+                    wget -q "https://aur.archlinux.org/cgit/aur.git/plain/FindLibMPDClient.cmake?h=obs-tuna" -O "${PLUGIN_DIR}/${PLUGIN}/cmake/external/FindLibMPDClient.cmake"
+                    wget -q "https://aur.archlinux.org/cgit/aur.git/plain/FindTaglib.cmake?h=obs-tuna" -O "${PLUGIN_DIR}/${PLUGIN}/cmake/external/FindTaglib.cmake"
+                    wget -q "https://aur.archlinux.org/cgit/aur.git/plain/deps_CMakeLists.txt?h=obs-tuna" -O "${PLUGIN_DIR}/${PLUGIN}/deps/CMakeLists.txt"
+                    sed -i '13 a find_package(LibMPDClient REQUIRED)\nfind_package(Taglib REQUIRED)' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
+                    EXTRA="-DCREDS=\"MISSING\" -DLASTFM_CREDS=\"MISSING\"";;
+                obs-localvocal)
+                    EXTRA="--preset linux-x86_64 -DUSE_SYSTEM_CURL=ON";;
+                obs-urlsource)
+                    EXTRA="--preset linux-x86_64 -DUSE_SYSTEM_CURL=ON -DUSE_SYSTEM_PUGIXML=ON"
+                    ERROR="-Wno-error=conversion -Wno-error=shadow";;
+                obs-backgroundremoval)
+                    EXTRA="--preset linux-x86_64";;
+                obs-source-dock)
+                    ERROR="-Wno-error=switch";;
+                obs-stroke-glow-shadow)
+                    ERROR="-Wno-error=stringop-overflow";;
+            esac
+            
             # Build process for OBS Studio 28 and newer
+            # -Wno-error=deprecated-declarations is for some plugins that use deprecated OBS APIs such as obs_frontend_add_dock()
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
-              -DCMAKE_CXX_FLAGS="-Wno-error=deprecated-declarations" \
-              -DCMAKE_C_FLAGS="-Wno-error=deprecated-declarations" \
+              -DCMAKE_CXX_FLAGS="-Wno-error=deprecated-declarations ${ERROR}" \
+              -DCMAKE_C_FLAGS="-Wno-error=deprecated-declarations ${ERROR}" \
               -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
-              -DQT_VERSION="${QT_VER}" \
+              -DQT_VERSION="${QT_VER}" ${EXTRA} \
               -Wno-dev | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
             cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
             cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
-        fi
-
-        # Reorgansise some misplaced plugins
-        case ${PLUGIN} in
-            obs-pipewire-audio-capture|obs-vkcapture)
-                # The plugins share a common patten
-                NEW_PLUGIN=$(echo "${PLUGIN}" | cut -d'-' -f2-3)
-                mv -v "${BASE_DIR}/${INSTALL_DIR}/lib/obs-plugins/linux-${NEW_PLUGIN}.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true
-                rm -rf "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/linux-${NEW_PLUGIN}" || true
-                mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/linux-${NEW_PLUGIN}"
-                mv -v "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins/linux-${NEW_PLUGIN}"/* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/linux-${NEW_PLUGIN}/" || true
-                rm "${BASE_DIR}/${INSTALL_DIR}/bin/"obs-*capture 2>/dev/null || true
-                ;;
-            waveform)
-                mv -v "${BASE_DIR}/${INSTALL_DIR}"/waveform/bin/64bit/*waveform.so "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true
-                rm -rf "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/waveform"
-                mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/waveform"
-                mv -v "${BASE_DIR}/${INSTALL_DIR}/waveform/data/"* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/waveform/" || true
-                ;;
-            obs-face-tracker)
-                # Add face detection models for face tracker plugin
-                mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker"
-                wget --quiet --show-progress --progress=bar:force:noscroll "https://github.com/norihiro/obs-face-tracker/releases/download/0.7.0-hogdata/frontal_face_detector.dat.bz2" -O "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/frontal_face_detector.dat.bz2"
-                wget --quiet --show-progress --progress=bar:force:noscroll "https://github.com/davisking/dlib-models/raw/master/shape_predictor_5_face_landmarks.dat.bz2" -O "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/shape_predictor_5_face_landmarks.dat.bz2"
-                bunzip2 -f "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/frontal_face_detector.dat.bz2"
-                bunzip2 -f "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/shape_predictor_5_face_landmarks.dat.bz2"
-                ;;
-        esac
-
-        mv -v "${BASE_DIR}/${INSTALL_DIR}/lib/obs-plugins/${PLUGIN}.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true
-        if [ -d "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins/${PLUGIN}" ]; then
-            rm -rf "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/${PLUGIN}" || true
-            mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/${PLUGIN}"
-            mv -v "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins/${PLUGIN}"/* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/${PLUGIN}/" || true
         fi
     done < ./plugins-"${OBS_MAJ_VER}".txt
+    
+    # Re-organise misplaced plugins
+    mv -v "${BASE_DIR}/${INSTALL_DIR}/lib/obs-plugins/"*.so "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/"
+    cp -av "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins/"* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/"
+    rm -rf "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins"
+    # Re-organsise waveform plugin
+    mv -v "${BASE_DIR}/${INSTALL_DIR}/waveform/bin/64bit/"*.so "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/"
+    mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/waveform"
+    mv -v "${BASE_DIR}/${INSTALL_DIR}/waveform/data/"* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/waveform/" || true
+    rm -rf "${BASE_DIR}/${INSTALL_DIR}/waveform/"
+    # Re-organsise libonnxruntime
+    mv -v "${BASE_DIR}/${INSTALL_DIR}/lib/obs-plugins/obs-backgroundremoval/libonnxruntime"* "${BASE_DIR}/${INSTALL_DIR}/lib/" || true
+    # Add face detection models for face tracker plugin
+    mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker"
+    wget --quiet --show-progress --progress=bar:force:noscroll "https://github.com/norihiro/obs-face-tracker/releases/download/0.7.0-hogdata/frontal_face_detector.dat.bz2" -O "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/frontal_face_detector.dat.bz2"
+    wget --quiet --show-progress --progress=bar:force:noscroll "https://github.com/davisking/dlib-models/raw/master/shape_predictor_5_face_landmarks.dat.bz2" -O "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/shape_predictor_5_face_landmarks.dat.bz2"
+    bunzip2 -f "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/frontal_face_detector.dat.bz2"
+    bunzip2 -f "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/shape_predictor_5_face_landmarks.dat.bz2"
 }
 
 function stage_07_themes() {
