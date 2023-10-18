@@ -302,13 +302,13 @@ function stage_03_get_cef() {
     chmod 755 "${BASE_DIR}/${INSTALL_DIR}/cef/locales"
 }
 
-function stage_04_get_aja() {
+function stage_04_build_aja() {
     download_tarball "https://github.com/aja-video/ntv2/archive/refs/tags/${AJA_VER}.tar.gz" "${SOURCE_DIR}/ntv2"
     cmake -S "${SOURCE_DIR}/ntv2/" -B "${SOURCE_DIR}/ntv2/build/" -G Ninja \
-    -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
-    -DAJA_BUILD_OPENSOURCE=ON \
-    -DAJA_BUILD_APPS=OFF \
-    -DAJA_INSTALL_HEADERS=ON | tee "${BUILD_DIR}/cmake-aja.log"
+        -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+        -DAJA_BUILD_OPENSOURCE=ON \
+        -DAJA_BUILD_APPS=OFF \
+        -DAJA_INSTALL_HEADERS=ON | tee "${BUILD_DIR}/cmake-aja.log"
     cmake --build "${SOURCE_DIR}/ntv2/build/"
     cmake --install "${SOURCE_DIR}/ntv2/build/" --prefix "${BUILD_DIR}/aja"
 }
@@ -714,7 +714,7 @@ echo -e "  - https://github.com/wimpysworld/obs-studio-portable/\n"             
 stage_01_get_apt
 stage_02_get_obs
 stage_03_get_cef
-stage_04_get_aja
+stage_04_build_aja
 stage_05_build_obs system
 stage_05_build_obs portable
 stage_06_plugins
