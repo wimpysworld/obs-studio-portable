@@ -255,15 +255,22 @@ These plugins were previously bundled with OBS Studio, but have since been remov
 - **[Asynchronous Source Duplication](https://github.com/norihiro/obs-async-source-duplication)** - The Source Clone plugin does the same thing.
 - **[Color Monitor](https://github.com/norihiro/obs-color-monitor)** - name collisions with other plugins.
 - **[NvFBC](https://gitlab.com/fzwoch/obs-nvfbc)** - no longer functional since OBS Studio 28 due to the removal of GLX.
-  - Requires [NvFBC patches for Nvidia [drivers](https://github.com/keylase/nvidia-patch) for consumer-grade GPUs.
 - **[RTSP Server](https://github.com/iamscottxu/obs-rtspserver/)** - introduced a large number of memory leaks.
 - **[Scene Collection Manager](https://github.com/exeldro/obs-scene-collection-manager)** - can silently revert configurations to an older version.
-- **[StreamFX](https://github.com/Xaymar/obs-StreamFX)** - dropped from OBS 30 onward. Incompatible with Vertical Plugin, 0.12.0b366 onwards forcibly include pointless UI elements and component inclusion is no longer configurable. StreamFX features are now provided via superior plugins and StreamFX development has fallen way behind OBS Studio release cadence.
+- **[StreamFX](https://github.com/Xaymar/obs-StreamFX)** - dropped from OBS 30 onward, StreamFX development has fallen way behind OBS Studio release cadence. StreamFX is incompatible with Vertical Plugin, 0.12.0b366 onward forcibly includes pointless UI elements and component inclusion is no longer configurable. Many StreamFX features are now provided via superior plugins from other authors:
+  - Dynamic Masks will is replaced with [**Advanced Masks**](https://github.com/FiniteSingularity/obs-advanced-masks) by [*FiniteSingularity*](https://github.com/FiniteSingularity).
+  - 3D Transform is replaced with [**3D Effects**](https://github.com/exeldro/obs-3d-effect) by [*exeldro*](https://github.com/exeldro/).
+  - Blur is replaced with [**Composite Blur**](https://github.com/FiniteSingularity/obs-composite-blur) by [*FiniteSingularity*](https://github.com/FiniteSingularity).
+  - SDF Effects is replaced with [**Stroke, Glow, and Shadow**](https://github.com/FiniteSingularity/obs-stroke-glow-shadow) by [*FiniteSingularity*](https://github.com/FiniteSingularity).
+  - Shaders are replaced with [**Shader Filter**](https://github.com/exeldro/obs-shader-filter) by [*exeldro*](https://github.com/exeldro/) and [**GStreamer**](https://github.com/fzwoch/obs-gstreamer) by [*fzwoch*](https://github.com/fzwoch).
+  - Source Mirror is replaced with [**Source Clone**](https://github.com/exeldro/obs-source-clone) by [*exeldro*](https://github.com/exeldro/).
+  - The [**GStreamer**](https://github.com/fzwoch/obs-gstreamer) and [**VA-API**](https://github.com/fzwoch/obs-vaapi) plugins by [*fzwoch*](https://github.com/fzwoch/) offer advanced encoder tuning.
 
 ### To consider 🤔
 
 Here are some additional plugins that look useful that I might add in the future:
 
+- [Advanced Masks](https://github.com/FiniteSingularity/obs-advanced-masks) - *keenly waiting for a stable release*
 - [Async Audio Filter](https://github.com/norihiro/obs-async-audio-filter)
 - [Durchblick](https://git.vrsal.xyz/alex/Durchblick) - *needs testing, user reports indicate stability issues*
 - [Clean Stream](https://github.com/obs-ai/obs-cleanstream) - *currently experimental*
@@ -273,7 +280,7 @@ Here are some additional plugins that look useful that I might add in the future
 - [Main View Source](https://github.com/norihiro/obs-main-view-source)
 - [Output Filter](https://github.com/norihiro/obs-output-filter)
 - [Source Record Async](https://github.com/norihiro/obs-source-record-async)
-- [VNC](https://github.com/norihiro/obs-vnc) - *not compatible with current OBS*
+- [VNC](https://github.com/norihiro/obs-vnc) - *not compatible with current OBS Studio release*
 
 #### gPhoto
 

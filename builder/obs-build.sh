@@ -459,20 +459,7 @@ function stage_06_plugins() {
                 sed -i 's/VERSION 3\.26/VERSION 3\.18/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt" || true
                 sed -i 's/VERSION 3\.20/VERSION 3\.18/' "${PLUGIN_DIR}/${PLUGIN}/cmake/clang/Clang.cmake" || true
             fi
-            # Only enable stable features supported on Linux
-            # What remains of the StreamFX suite is:
-            #  - Encoder: Nvidia NVENC (via FFmpeg)
-            #  - Encoder: Avid DNxHR (via FFmpeg)
-            #  - Encoder: Apple ProRes (via FFmpeg)
-            #  - Encoder: CineForm (via FFmpeg)
-            #  - Filter: Color Grading
-            #  - Filter: Dynamic Mask
-            # Other capabilities are replaced by other plugins:
-            #  - 3D Transform is replaced by 3D Effects (exeldro)
-            #  - Blur is replaced by Composite Blur (FiniteSingularity)
-            #  - Shaders are replaced by Shader Filter (exeldro)
-            #  - Source Mirror is replaced by Source Clone (exeldro)
-            # https://github.com/Xaymar/obs-StreamFX/blob/root/CMakeLists.txt#L287
+            # Only enable stable features supported on Linux; see README.md for more details
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
               -DENABLE_ENCODER_AOM_AV1=OFF \
