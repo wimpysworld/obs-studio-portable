@@ -552,7 +552,7 @@ function stage_06_plugins() {
                     wget -q "https://aur.archlinux.org/cgit/aur.git/plain/FindTaglib.cmake?h=obs-tuna" -O "${PLUGIN_DIR}/${PLUGIN}/cmake/external/FindTaglib.cmake"
                     wget -q "https://aur.archlinux.org/cgit/aur.git/plain/deps_CMakeLists.txt?h=obs-tuna" -O "${PLUGIN_DIR}/${PLUGIN}/deps/CMakeLists.txt"
                     sed -i '13 a find_package(LibMPDClient REQUIRED)\nfind_package(Taglib REQUIRED)' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
-                    EXTRA="-DCREDS=\"MISSING\" -DLASTFM_CREDS=\"MISSING\"";;
+                    EXTRA="-DCREDS=MISSING -DLASTFM_CREDS=MISSING";;
                 obs-localvocal)
                     EXTRA="--preset linux-x86_64 -DUSE_SYSTEM_CURL=ON";;
                 obs-urlsource)
