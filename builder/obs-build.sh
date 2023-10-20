@@ -119,7 +119,6 @@ function download_tarball() {
     else
         echo " - ${DIR} already exists. Skipping..."
     fi
-    echo " - ${URL}" >> "${BUILD_DIR}/obs-manifest.txt"
 }
 
 function clone_source() {
@@ -141,12 +140,9 @@ function clone_source() {
             git clone "${REPO}" --filter=tree:0 --recurse-submodules --shallow-submodules --branch "${BRANCH}" "${DIR}"
         fi
     fi
-    echo " - ${REPO} (${BRANCH})" >> "${BUILD_DIR}/obs-manifest.txt"
 }
 
 function stage_01_get_apt() {
-    echo -e "\nBuild dependencies\n" >> "${BUILD_DIR}/obs-manifest.txt"
-
     if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
         # Newer cmake, ninja-build, meson for Ubuntu 20.04
         apt-get -y update
@@ -164,7 +160,6 @@ function stage_01_get_apt() {
     apt-get -y upgrade
 
     PKG_TOOLCHAIN="binutils bzip2 clang-format clang-tidy cmake curl ${COMPILERS} file git libarchive-tools libc6-dev make meson ninja-build patch pkg-config tree unzip wget"
-    echo " - Toolchain   : ${PKG_TOOLCHAIN}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_TOOLCHAIN}
 
@@ -180,7 +175,6 @@ function stage_01_get_apt() {
     else
         PKG_OBS_QT="qtbase5-dev qtbase5-private-dev qtwayland5 libqt5svg5-dev libqt5x11extras5-dev"
     fi
-    echo " - Qt          : ${PKG_OBS_QT}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_OBS_QT}
 
@@ -199,7 +193,6 @@ libxss-dev python3-dev swig"
         PKG_OBS_CORE+=" librist-dev libsrt-openssl-dev"
     fi
 
-    echo " - OBS Core    : ${PKG_OBS_CORE}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_OBS_CORE}
 
@@ -232,11 +225,9 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
         PKG_OBS_PLUGINS+=" libpipewire-0.2-dev"
     fi
 
-    echo " - OBS Plugins : ${PKG_OBS_PLUGINS}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_OBS_PLUGINS}
 
-    echo " - 3rd Party Plugins" >> "${BUILD_DIR}/obs-manifest.txt"
     # 3rd party plugin dependencies:
     PKG_OBS_SCENESWITCHER="libopencv-dev libxss-dev libxtst-dev"
     case "${DISTRO_CMP_VER}" in
@@ -244,58 +235,47 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
         *)   PKG_OBS_SCENESWITCHER+=" libprocps-dev";;
     esac
 
-    echo "   - SceneSwitcher  : ${PKG_OBS_SCENESWITCHER}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_OBS_SCENESWITCHER}
 
     PKG_OBS_WAVEFORM="libfftw3-dev"
-    echo "   - Waveform       : ${PKG_OBS_WAVEFORM}" >> "${BUILD_DIR}/obs-manifest.txt"
     apt-get -y install --no-install-recommends ${PKG_OBS_WAVEFORM}
 
     PKG_OBS_FACETRACKER="libatlas-base-dev libblas-dev libblas64-dev libgsl-dev liblapack-dev libopenblas-dev"
-    echo "   - Face Tracker   : ${PKG_OBS_FACETRACKER}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_OBS_FACETRACKER}
 
     PKG_OBS_TEXT="libcairo2-dev libpango1.0-dev libpng-dev"
-    echo "   - PThread        : ${PKG_OBS_TEXT}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_OBS_TEXT}
 
     PKG_OBS_GSTREAMER="libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-good1.0-dev libgstreamer-plugins-bad1.0-dev"
-    echo "   - GStreamer      : ${PKG_OBS_GSTREAMER}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_OBS_GSTREAMER}
 
-    echo "   - NDI            : libndi5-dev" >> "${BUILD_DIR}/obs-manifest.txt"
     download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5_5.5.3-1_amd64.deb"
     download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5-dev_5.5.3-1_amd64.deb"
     apt-get -y install --no-install-recommends ${TARBALL_DIR}/*.deb
 
     PKG_OBS_TUNA="libdbus-1-dev libmpdclient-dev libtag1-dev"
-    echo "   - Tuna           : ${PKG_OBS_TUNA}" >> "${BUILD_DIR}/obs-manifest.txt"
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_OBS_TUNA}
 
     if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
         PKG_OBS_VKCAPTURE="glslang-dev glslang-tools"
-        echo "   - Game Capture   : ${PKG_OBS_VKCAPTURE}" >> "${BUILD_DIR}/obs-manifest.txt"
         #shellcheck disable=SC2086
         apt-get -y install --no-install-recommends ${PKG_OBS_VKCAPTURE}
 
         PKG_OBS_AV1="libaom-dev"
-        echo "   - AV1            : ${PKG_OBS_AV1}" >> "${BUILD_DIR}/obs-manifest.txt"
         apt-get -y install --no-install-recommends ${PKG_OBS_AV1}
 
         PKG_OBS_URL_SOURCE="libidn2-dev libpsl-dev  libpugixml-dev libssl-dev"
-        echo "   - URL Source     : ${PKG_OBS_URL_SOURCE}" >> "${BUILD_DIR}/obs-manifest.txt"
         #shellcheck disable=SC2086
         apt-get -y install --no-install-recommends ${PKG_OBS_URL_SOURCE}
     fi
 }
 
 function stage_02_get_obs() {
-    echo -e "\nOBS Studio\n" >> "${BUILD_DIR}/obs-manifest.txt"
     clone_source "https://github.com/obsproject/obs-studio.git" "${OBS_VER}" "${SOURCE_DIR}"
 }
 
@@ -410,7 +390,6 @@ function stage_05_build_obs() {
 }
 
 function stage_06_plugins() {
-    echo -e "\nPlugins\n" >> "${BUILD_DIR}/obs-manifest.txt"
     local BRANCH=""
     local CHAR1=""
     local CWD=""
@@ -602,13 +581,11 @@ function stage_06_plugins() {
 }
 
 function stage_07_themes() {
-    echo -e "\nThemes\n" >> "${BUILD_DIR}/obs-manifest.txt"
     local FILE=""
     local URL=""
 
     URL="https://obsproject.com/forum/resources/yami-resized.1611/version/4885/download"
     FILE="Yami-Resized-1.1.1.zip"
-    echo " - ${URL}" >> "${BUILD_DIR}/obs-manifest.txt"
     wget --quiet --show-progress --progress=bar:force:noscroll "${URL}" -O "${TARBALL_DIR}/${FILE}"
     unzip -o -qq "${TARBALL_DIR}/${FILE}" -d "${BASE_DIR}/${INSTALL_DIR}/data/obs-studio/themes"
 }
@@ -721,15 +698,11 @@ function stage_10_make_tarball() {
         TARBALL_NAME+="-essential"
     fi
     cd "${BASE_DIR}"
-    cp "${BUILD_DIR}/obs-manifest.txt" "${BASE_DIR}/${INSTALL_DIR}/manifest.txt"
     tar cjf "${TARBALL_NAME}.tar.bz2" --exclude cmake --exclude include --exclude lib/pkgconfig "${INSTALL_DIR}"
     sha256sum "${TARBALL_NAME}.tar.bz2" > "${BASE_DIR}/${TARBALL_NAME}.tar.bz2.sha256"
     sed -i -r "s/ .*\/(.+)/  \1/g" "${BASE_DIR}/${TARBALL_NAME}.tar.bz2.sha256"
-    cp "${BUILD_DIR}/obs-manifest.txt" "${BASE_DIR}/${INSTALL_DIR}.txt"
 }
 
-echo -e "Portable OBS Studio ${OBS_VER} for Ubuntu ${DISTRO_VERSION} manifest (r${STAMP})\n\n" > "${BUILD_DIR}/obs-manifest.txt"
-echo -e "  - https://github.com/wimpysworld/obs-studio-portable/\n"                           >> "${BUILD_DIR}/obs-manifest.txt"
 stage_01_get_apt
 stage_02_get_obs
 stage_03_get_cef

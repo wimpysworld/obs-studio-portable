@@ -34,8 +34,6 @@ Running OBS Studio in Portable Mode means all settings (Profiles and Scene Colle
 
 ## Supported Software
 
-The tarball of OBS Studio Portable includes a `manifest.txt` that describes precisely which versions of plugins and add-ons are included.
-
 |                        | OBS Studio 29 | OBS Studio 30 |
 | ---------------------- | ------------- | ------------- |
 | Ubuntu 20.04 (Focal)   | 29.1.3 (Qt 5) | EOL           |
