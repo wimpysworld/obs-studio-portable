@@ -716,11 +716,15 @@ function stage_09_make_scripts() {
 }
 
 function stage_10_make_tarball() {
+    local TARBALL_NAME="${INSTALL_DIR}"
+    if [ "${PLUGIN_LIST}" == "essential" ]; then
+        TARBALL_NAME+="-essential"
+    fi
     cd "${BASE_DIR}"
     cp "${BUILD_DIR}/obs-manifest.txt" "${BASE_DIR}/${INSTALL_DIR}/manifest.txt"
-    tar cjf "${INSTALL_DIR}.tar.bz2" --exclude cmake --exclude include --exclude lib/pkgconfig "${INSTALL_DIR}"
-    sha256sum "${INSTALL_DIR}.tar.bz2" > "${BASE_DIR}/${INSTALL_DIR}.tar.bz2.sha256"
-    sed -i -r "s/ .*\/(.+)/  \1/g" "${BASE_DIR}/${INSTALL_DIR}.tar.bz2.sha256"
+    tar cjf "${TARBALL_NAME}.tar.bz2" --exclude cmake --exclude include --exclude lib/pkgconfig "${INSTALL_DIR}"
+    sha256sum "${TARBALL_NAME}.tar.bz2" > "${BASE_DIR}/${TARBALL_NAME}.tar.bz2.sha256"
+    sed -i -r "s/ .*\/(.+)/  \1/g" "${BASE_DIR}/${TARBALL_NAME}.tar.bz2.sha256"
     cp "${BUILD_DIR}/obs-manifest.txt" "${BASE_DIR}/${INSTALL_DIR}.txt"
 }
 
