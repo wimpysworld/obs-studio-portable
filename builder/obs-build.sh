@@ -13,6 +13,7 @@ BUILD_DIR="${BASE_DIR}/build"
 BUILD_PORTABLE="${BASE_DIR}/build_portable"
 BUILD_SYSTEM="${BASE_DIR}/build_system"
 BUILD_TYPE="Release"
+PLUGIN_LIST="auxiliary"
 PLUGIN_DIR="${BASE_DIR}/plugins"
 SOURCE_DIR="${BASE_DIR}/source"
 TARBALL_DIR="${BASE_DIR}/tarballs"
@@ -32,6 +33,11 @@ case ${OBS_MAJ_VER} in
   *)
         echo "ERROR! Unsupported version: ${OBS_MAJ_VER}"
         exit 1;;
+esac
+
+case "${2}" in
+  essential) PLUGIN_LIST="${2}";;
+  *) PLUGIN_LIST="auxiliary";;
 esac
 
 if [ -e /etc/os-release ] && grep --quiet UBUNTU_CODENAME /etc/os-release; then
@@ -411,19 +417,28 @@ function stage_06_plugins() {
     local ERROR=""
     local EXTRA=""
     local PLUGIN=""
+    local PRIORITY=""
     local URL=""
 
     CWD="$(pwd)"
     #shellcheck disable=SC2162
     while read REPO; do
+        # ignore commented lines
         CHAR1=$(echo "${REPO}" | sed 's/ *$//g' | cut -c1)
         if [ "${CHAR1}" == "#" ]; then
             continue
         fi
-        URL="$(echo "${REPO}" | cut -d'/' -f1-5)"
-        AUTHOR="$(echo "${REPO}" | cut -d'/' -f4)"
-        PLUGIN="$(echo "${REPO}" | cut -d'/' -f5)"
-        BRANCH="$(echo "${REPO}" | cut -d'/' -f6)"
+
+        # ignore auxillary plugins if instructed to build only then essential plugins
+        PRIORITY="$(echo "${REPO}" | cut -d',' -f2 | sed 's/ //g')"
+        if [ "${PLUGIN_LIST}" == "essential" ] && [ "${PRIORITY}" == "auxiliary" ]; then
+            continue
+        fi
+
+        URL="$(echo "${REPO}" | cut -d',' -f1 | cut -d'/' -f1-5)"
+        AUTHOR="$(echo "${REPO}" | cut -d',' -f1  | cut -d'/' -f4)"
+        PLUGIN="$(echo "${REPO}" | cut -d',' -f1  | cut -d'/' -f5)"
+        BRANCH="$(echo "${REPO}" | cut -d',' -f1  | cut -d'/' -f6)"
 
         # obs-face-tracker requires that QT_VERSION is set
         local QT_VER="6"
@@ -565,7 +580,7 @@ function stage_06_plugins() {
             cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
             cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
         fi
-    done < ./plugins-"${OBS_MAJ_VER}".txt
+    done < ./plugins-"${OBS_MAJ_VER}".csv
     
     # Re-organise misplaced plugins
     mv -v "${BASE_DIR}/${INSTALL_DIR}/lib/obs-plugins/"*.so "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/"

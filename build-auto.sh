@@ -30,12 +30,17 @@ else
     exit 1
 fi
 
+case "${3}" in
+  essential) PLUGIN_LIST="${3}";;
+  *) PLUGIN_LIST="auxiliary";;
+esac
+
 for DISTRO in ${DISTROS}; do
     for OBS_VER in ${OBS_VERS}; do
         ./build-validate.sh "${DISTRO}" "${OBS_VER}" || continue
         ./build-trash.sh "${DISTRO}"
         ./build-bootstrap.sh "${DISTRO}"
-        ./build-enter.sh "${DISTRO}" "/root/obs-build.sh ${OBS_VER}"
+        ./build-enter.sh "${DISTRO}" "/root/obs-build.sh ${OBS_VER}" "${PLUGIN_LIST}"
         ./build-get-artefacts.sh "${DISTRO}" "${OBS_VER}"
     done
 done
