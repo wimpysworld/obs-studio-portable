@@ -17,8 +17,10 @@ DISTRO="${1}"
 
 if [ -n "${2}" ]; then
     CMD="${2}"
+    OPT="${3}"
 else
     CMD="/bin/bash"
+    OPT=""
 fi
 
 . "$(dirname "$0")/build-config"
@@ -46,7 +48,7 @@ systemd-nspawn \
     --hostname="${DISTRO}" \
     --machine="${DISTRO}" \
     --resolv-conf=off \
-    ${CMD}
+    ${CMD} ${OPT}
 
 if [ -e "${R}/etc/apt/apt.conf.d/90cache" ]; then
     rm -f "${R}/etc/apt/apt.conf.d/90cache"
