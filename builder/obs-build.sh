@@ -35,11 +35,6 @@ case ${OBS_MAJ_VER} in
         exit 1;;
 esac
 
-case "${2}" in
-  essential) PLUGIN_LIST="${2}";;
-  *) PLUGIN_LIST="auxiliary";;
-esac
-
 if [ -e /etc/os-release ] && grep --quiet UBUNTU_CODENAME /etc/os-release; then
     DISTRO_CODENAME=$(grep VERSION_CODENAME /etc/os-release | cut -d'=' -f2 | sed 's/"//g')
     DISTRO_VERSION=$(grep VERSION_ID /etc/os-release | cut -d'=' -f2 | sed 's/"//g')
@@ -56,7 +51,13 @@ fi
 # Make the directories
 mkdir -p "${BASE_DIR}"/{build,build_portable,build_system,plugins,source,tarballs}
 STAMP=$(date +%y%j)
+
 INSTALL_DIR="obs-portable-${OBS_VER}-r${STAMP}-ubuntu-${DISTRO_VERSION}"
+PLUGIN_LIST="auxiliary"
+if [ "${2}" == "essential" ]; then
+    INSTALL_DIR="obs-portable-${OBS_VER}-r${STAMP}-ubuntu-${DISTRO_VERSION}-essential"
+    PLUGIN_LIST="essential"
+fi
 
 #shellcheck disable=SC1091
 if [ -e ./obs-options.sh ]; then
@@ -675,14 +676,10 @@ function stage_09_make_scripts() {
 }
 
 function stage_10_make_tarball() {
-    local TARBALL_NAME="${INSTALL_DIR}"
-    if [ "${PLUGIN_LIST}" == "essential" ]; then
-        TARBALL_NAME+="-essential"
-    fi
     cd "${BASE_DIR}"
-    tar cjf "${TARBALL_NAME}.tar.bz2" --exclude cmake --exclude include --exclude lib/pkgconfig "${INSTALL_DIR}"
-    sha256sum "${TARBALL_NAME}.tar.bz2" > "${BASE_DIR}/${TARBALL_NAME}.tar.bz2.sha256"
-    sed -i -r "s/ .*\/(.+)/  \1/g" "${BASE_DIR}/${TARBALL_NAME}.tar.bz2.sha256"
+    tar cjf "${INSTALL_DIR}.tar.bz2" --exclude cmake --exclude include --exclude lib/pkgconfig "${INSTALL_DIR}"
+    sha256sum "${INSTALL_DIR}.tar.bz2" > "${BASE_DIR}/${INSTALL_DIR}.tar.bz2.sha256"
+    sed -i -r "s/ .*\/(.+)/  \1/g" "${BASE_DIR}/${INSTALL_DIR}.tar.bz2.sha256"
 }
 
 stage_01_get_apt

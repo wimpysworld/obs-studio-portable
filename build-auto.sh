@@ -30,10 +30,10 @@ else
     exit 1
 fi
 
-case "${3}" in
-  essential) PLUGIN_LIST="${3}";;
-  *) PLUGIN_LIST="auxiliary";;
-esac
+PLUGIN_LIST="auxiliary"
+if [ "${3}" == "essential" ]; then
+    PLUGIN_LIST="essential"
+fi
 
 for DISTRO in ${DISTROS}; do
     for OBS_VER in ${OBS_VERS}; do
@@ -41,6 +41,6 @@ for DISTRO in ${DISTROS}; do
         ./build-trash.sh "${DISTRO}"
         ./build-bootstrap.sh "${DISTRO}"
         ./build-enter.sh "${DISTRO}" "/root/obs-build.sh ${OBS_VER}" "${PLUGIN_LIST}"
-        ./build-get-artefacts.sh "${DISTRO}" "${OBS_VER}"
+        ./build-get-artefacts.sh "${DISTRO}" "${OBS_VER}" "${PLUGIN_LIST}"
     done
 done
