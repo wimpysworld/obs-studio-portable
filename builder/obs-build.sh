@@ -143,44 +143,32 @@ function clone_source() {
 }
 
 function stage_01_get_apt() {
+    local PKG_LIST="binutils bzip2 clang-format clang-tidy cmake curl file git libarchive-tools libc6-dev make meson ninja-build patch pkg-config tree unzip wget"
+    
     if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
         # Newer cmake, ninja-build, meson for Ubuntu 20.04
         apt-get -y update
-        apt-get -y install software-properties-common
-        add-apt-repository -y ppa:flexiondotorg/build-tools
-        COMPILERS="gcc-10 g++-10 golang-1.16-go"
+        apt-get -y install --no-install-recoomends software-properties-common
+        add-apt-repository -y --no-update ppa:flexiondotorg/build-tools
+        PKG_LIST+=" gcc-10 g++-10 golang-1.16-go"
     elif [ "${DISTRO_CMP_VER}" -ge 2310 ]; then
-        apt-get -y update
-        COMPILERS="gcc-12 g++-12 golang-go"
+        PKG_LIST+=" gcc-12 g++-12 golang-go"
     else
-        apt-get -y update
-        COMPILERS="gcc g++ golang-go"
-    fi
-
-    apt-get -y upgrade
-
-    PKG_TOOLCHAIN="binutils bzip2 clang-format clang-tidy cmake curl ${COMPILERS} file git libarchive-tools libc6-dev make meson ninja-build patch pkg-config tree unzip wget"
-    #shellcheck disable=SC2086
-    apt-get -y install --no-install-recommends ${PKG_TOOLCHAIN}
-
-    if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
-        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 800 --slave /usr/bin/g++ g++ /usr/bin/g++-10
-        update-alternatives --install /usr/bin/go go /usr/lib/go-1.16/bin/go 10
-    elif [ "${DISTRO_CMP_VER}" -ge 2310 ]; then
-        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 800 --slave /usr/bin/g++ g++ /usr/bin/g++-12
+        PKG_LIST+=" gcc g++ golang-go"
     fi
 
     if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
-        PKG_OBS_QT="qt6-base-dev qt6-base-private-dev qt6-wayland libqt6svg6-dev"
+        PKG_LIST+=" qt6-base-dev qt6-base-private-dev qt6-wayland libqt6svg6-dev"
+    elif [ "${DISTRO_CMP_VER}" -ge 2304 ]; then
+        PKG_LIST+=" qt6-base-dev qt6-base-private-dev qt6-svg-dev qt6-wayland"
     else
-        PKG_OBS_QT="qtbase5-dev qtbase5-private-dev qtwayland5 libqt5svg5-dev libqt5x11extras5-dev"
+        PKG_LIST+=" qtbase5-dev qtbase5-private-dev qtwayland5 libqt5svg5-dev libqt5x11extras5-dev"
     fi
-    #shellcheck disable=SC2086
-    apt-get -y install --no-install-recommends ${PKG_OBS_QT}
 
+    # Core OBS
     # libvulkan-dev and libxdamage-dev are not documented as dependencies in
     # the upstream OBS build instructions
-    PKG_OBS_CORE="libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev \
+    PKG_LIST+=" libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev \
 libavutil-dev libswresample-dev libswscale-dev libcmocka-dev libcurl4-openssl-dev \
 libgl1-mesa-dev libgles2-mesa-dev libglvnd-dev libjansson-dev libluajit-5.1-dev \
 libmbedtls-dev libpci-dev libvulkan-dev libwayland-dev libx11-dev libx11-xcb-dev \
@@ -190,88 +178,82 @@ libxss-dev python3-dev swig"
 
     # SRT & RIST Protocol Support
     if [ "${DISTRO_CMP_VER}" -ge 2210 ]; then
-        PKG_OBS_CORE+=" librist-dev libsrt-openssl-dev"
+        PKG_LIST+=" librist-dev libsrt-openssl-dev"
     fi
 
-    #shellcheck disable=SC2086
-    apt-get -y install --no-install-recommends ${PKG_OBS_CORE}
-
-    PKG_OBS_PLUGINS="libasound2-dev libdrm-dev libfdk-aac-dev libfontconfig-dev \
+    # OBS Core Plugins
+    PKG_LIST+=" libasound2-dev libdrm-dev libfdk-aac-dev libfontconfig-dev \
 libfreetype6-dev libjack-jackd2-dev libpulse-dev libsndio-dev libspeexdsp-dev \
 libudev-dev libv4l-dev libva-dev libvlc-dev"
 
     # CEF Browser runtime requirements
-    PKG_OBS_PLUGINS+=" libatk-bridge2.0-0 libcups2 libnspr4 libnss3 libxtst6"
+    PKG_LIST+=" libatk-bridge2.0-0 libcups2 libnspr4 libnss3 libxtst6"
 
-    # For OBS Studio 29.1.0 and newer, mostly OBS Websocket 5.2 support related
+    # OBS Studio 29.1.0 new deps, mostly related to OBS Websocket 5.2 support
     # - https://github.com/obsproject/obs-studio/pull/8194
     if [ "${OBS_MAJ_VER}" -ge 29 ]; then
-        PKG_OBS_PLUGINS+=" libasio-dev libwebsocketpp-dev nlohmann-json3-dev"
+        PKG_LIST+=" libasio-dev libwebsocketpp-dev nlohmann-json3-dev"
     fi
 
+    # OBS Studio 30.0.0 added qrcode and oneVPL
     if [ "${OBS_MAJ_VER}" -ge 30 ]; then
         # https://github.com/obsproject/obs-studio/pull/8943
-        PKG_OBS_PLUGINS+=" libqrcodegencpp-dev"
+        PKG_LIST+=" libqrcodegencpp-dev"
         if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
             # Intel® oneAPI Video Processing Library (oneVPL)
-            PKG_OBS_PLUGINS+=" libvpl-dev libvpl2"
+            PKG_LIST+=" libvpl-dev libvpl2"
         fi
     fi
 
     # Pipewire
     if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
-        PKG_OBS_PLUGINS+=" libpipewire-0.3-dev"
+        PKG_LIST+=" libpipewire-0.3-dev"
     else
-        PKG_OBS_PLUGINS+=" libpipewire-0.2-dev"
+        PKG_LIST+=" libpipewire-0.2-dev"
     fi
 
-    #shellcheck disable=SC2086
-    apt-get -y install --no-install-recommends ${PKG_OBS_PLUGINS}
-
-    # 3rd party plugin dependencies:
-    PKG_OBS_SCENESWITCHER="libopencv-dev libxss-dev libxtst-dev"
+    # Screne Switcher
+    PKG_LIST+=" libopencv-dev libxss-dev libxtst-dev"
     case "${DISTRO_CMP_VER}" in
-        23*) PKG_OBS_SCENESWITCHER+=" libproc2-dev";;
-        *)   PKG_OBS_SCENESWITCHER+=" libprocps-dev";;
+        23*) PKG_LIST+=" libproc2-dev";;
+        *)   PKG_LIST+=" libprocps-dev";;
     esac
 
-    #shellcheck disable=SC2086
-    apt-get -y install --no-install-recommends ${PKG_OBS_SCENESWITCHER}
-
-    PKG_OBS_WAVEFORM="libfftw3-dev"
-    apt-get -y install --no-install-recommends ${PKG_OBS_WAVEFORM}
-
-    PKG_OBS_FACETRACKER="libatlas-base-dev libblas-dev libblas64-dev libgsl-dev liblapack-dev libopenblas-dev"
-    #shellcheck disable=SC2086
-    apt-get -y install --no-install-recommends ${PKG_OBS_FACETRACKER}
-
-    PKG_OBS_TEXT="libcairo2-dev libpango1.0-dev libpng-dev"
-    #shellcheck disable=SC2086
-    apt-get -y install --no-install-recommends ${PKG_OBS_TEXT}
-
-    PKG_OBS_GSTREAMER="libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-good1.0-dev libgstreamer-plugins-bad1.0-dev"
-    #shellcheck disable=SC2086
-    apt-get -y install --no-install-recommends ${PKG_OBS_GSTREAMER}
-
-    download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5_5.5.3-1_amd64.deb"
-    download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5-dev_5.5.3-1_amd64.deb"
-    apt-get -y install --no-install-recommends ${TARBALL_DIR}/*.deb
-
-    PKG_OBS_TUNA="libdbus-1-dev libmpdclient-dev libtag1-dev"
-    #shellcheck disable=SC2086
-    apt-get -y install --no-install-recommends ${PKG_OBS_TUNA}
+    # Waveform
+    PKG_LIST+=" libfftw3-dev"
+    # Facetracker
+    PKG_LIST+=" libatlas-base-dev libblas-dev libblas64-dev libgsl-dev liblapack-dev libopenblas-dev"
+    # Pthread Text
+    PKG_LIST+=" libcairo2-dev libpango1.0-dev libpng-dev"
+    # Gstreamer
+    PKG_LIST+=" libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-good1.0-dev libgstreamer-plugins-bad1.0-dev"
+    # Tuna
+    PKG_LIST+=" libdbus-1-dev libmpdclient-dev libtag1-dev"
 
     if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
-        PKG_OBS_VKCAPTURE="glslang-dev glslang-tools"
-        #shellcheck disable=SC2086
-        apt-get -y install --no-install-recommends ${PKG_OBS_VKCAPTURE}
+        # VKCapture
+        PKG_LIST+=" glslang-dev glslang-tools"
+        #AV1
+        PKG_LIST+=" libaom-dev"
+        # URL Source
+        PKG_LIST+=" libidn2-dev libpsl-dev libpugixml-dev libssl-dev"
+    fi
 
-        PKG_OBS_AV1="libaom-dev"
-        apt-get -y install --no-install-recommends ${PKG_OBS_AV1}
-
-        PKG_OBS_URL_SOURCE="libidn2-dev libpsl-dev  libpugixml-dev libssl-dev"
-        #shellcheck disable=SC2086
-        apt-get -y install --no-install-recommends ${PKG_OBS_URL_SOURCE}
+    apt-get -y update
+    apt-get -y upgrade
+    #shellcheck disable=SC2086
+    apt-get -y install --no-install-recommends ${PKG_LIST}
+    
+    # NDI
+    download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5_5.5.3-1_amd64.deb"
+    download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5-dev_5.5.3-1_amd64.deb"
+    apt-get -y install --no-install-recommends "${TARBALL_DIR}"/*.deb
+    
+    if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
+        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 800 --slave /usr/bin/g++ g++ /usr/bin/g++-10
+        update-alternatives --install /usr/bin/go go /usr/lib/go-1.16/bin/go 10
+    elif [ "${DISTRO_CMP_VER}" -ge 2310 ]; then
+        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 800 --slave /usr/bin/g++ g++ /usr/bin/g++-12
     fi
 }
 
