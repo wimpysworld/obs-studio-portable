@@ -632,23 +632,19 @@ function stage_09_make_scripts() {
     #shellcheck disable=SC2162
     while read PKG; do
         if [ -n "${PKG}" ]; then
-            echo -e "\t${PKG} \\" >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
-            echo -e "\t${PKG} \\" >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
+            echo -e "\t${PKG} \\" | tee -a "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies" "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
         fi
     done < <(sort -u obs-pkgs.txt)
 
     # Provide additional runtime requirements
     #shellcheck disable=SC1003
     if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
-        echo -e '\tqt6-image-formats-plugins \\\n\tqt6-qpa-plugins \\\n\tqt6-wayland \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
-        echo -e '\tqt6-image-formats-plugins \\\n\tqt6-qpa-plugins \\\n\tqt6-wayland \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
+        echo -e '\tqt6-image-formats-plugins \\\n\tqt6-qpa-plugins \\\n\tqt6-wayland \\' | tee -a "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies" "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
     else
-        echo -e '\tqtwayland5 \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
-        echo -e '\tqtwayland5 \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
+        echo -e '\tqtwayland5 \\' | tee -a "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies" "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
     fi
-    echo -e '\tgstreamer1.0-plugins-good \\\n\tgstreamer1.0-plugins-bad \\\n\tgstreamer1.0-plugins-ugly \\\n\tgstreamer1.0-x \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
-    echo -e '\tgstreamer1.0-plugins-good \\\n\tgstreamer1.0-plugins-bad \\\n\tgstreamer1.0-plugins-ugly \\\n\tgstreamer1.0-x \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
-    echo -e '\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tstterm'  >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
+    echo -e '\tgstreamer1.0-plugins-good \\\n\tgstreamer1.0-plugins-bad \\\n\tgstreamer1.0-plugins-ugly \\\n\tgstreamer1.0-x \\' | tee -a "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies" "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
+    echo -e '\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tstterm' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
     echo -e '\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tstterm \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
     echo -e '\tmesa-vdpau-drivers \\\n\tmesa-va-drivers && \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
     echo -e 'apt-get -y clean && rm -rd /var/lib/apt/lists/*' >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
