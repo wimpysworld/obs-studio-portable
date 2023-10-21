@@ -109,34 +109,27 @@ function download_tarball() {
         FILE="${PROJECT}-${FILE}"
     fi
 
-    if [ ! -d "${DIR}" ]; then
-        mkdir -p "${DIR}"
-    fi
-
+    mkdir -p "${DIR}"
     # Only download and extract if the directory is empty
-    if [ -d "${DIR}" ] && [ -z "$(ls -A "${DIR}")" ]; then
+    if [ -z "$(ls -A "${DIR}")" ]; then
         download_file "${URL}"
         bsdtar --strip-components=1 -xf "${TARBALL_DIR}/${FILE}" -C "${DIR}"
-    else
-        echo " - ${DIR} already exists. Skipping..."
     fi
 }
 
 function clone_source() {
     local REPO="${1}"
     local BRANCH="${2}"
-    local CWD=""
     local BRANCH_LEN=""
     local DIR="${3}"
 
     if [ ! -d "${DIR}/.git" ]; then
         BRANCH_LEN=$(echo -n "${BRANCH}" | wc -m);
         if [ "${BRANCH_LEN}" -eq 40 ]; then
-            CWD=$(pwd)
             git clone "${REPO}" --filter=tree:0 --recurse-submodules --shallow-submodules "${DIR}"
-            cd "${DIR}"
+            pushd "${DIR}"
             git checkout "${BRANCH}"
-            cd "${CWD}"
+            popd
         else
             git clone "${REPO}" --filter=tree:0 --recurse-submodules --shallow-submodules --branch "${BRANCH}" "${DIR}"
         fi
@@ -280,20 +273,19 @@ function stage_04_build_aja() {
 function stage_05_build_obs() {
     local OPTIONS=""
     local TARGET="system"
-    if [ -n "${1}" ]; then
-        TARGET="${1}"
+    if [ "${1}" == "portable" ]; then
+        TARGET="portable"
     fi
 
     case "${TARGET}" in
       portable)
         BUILD_TO="${BUILD_PORTABLE}"
         INSTALL_TO="${BASE_DIR}/${INSTALL_DIR}"
-        OPTIONS="-DLINUX_PORTABLE=ON"
-        ;;
+        OPTIONS="-DLINUX_PORTABLE=ON";;
       system)
         BUILD_TO="${BUILD_SYSTEM}"
         INSTALL_TO="/usr"
-        OPTIONS="-DLINUX_PORTABLE=OFF"
+        OPTIONS="-DLINUX_PORTABLE=OFF";;
     esac
 
     if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
@@ -317,17 +309,16 @@ function stage_05_build_obs() {
     fi
 
     local TWITCH_OPTIONS=""
-    local RESTREAM_OPTIONS=""
-    local YOUTUBE_OPTIONS=""
-
     if [ "${TWITCH_CLIENTID}" ] && [ "${TWITCH_HASH}" ]; then
         TWITCH_OPTIONS="-DTWITCH_CLIENTID='${TWITCH_CLIENTID}' -DTWITCH_HASH='${TWITCH_HASH}'"
     fi
 
+    local RESTREAM_OPTIONS=""
     if [ "${RESTREAM_CLIENTID}" ] && [ "${RESTREAM_HASH}" ]; then
         RESTREAM_OPTIONS="-DRESTREAM_CLIENTID='${RESTREAM_CLIENTID}' -DRESTREAM_HASH='${RESTREAM_HASH}'"
     fi
 
+    local YOUTUBE_OPTIONS=""
     if [ "${YOUTUBE_CLIENTID}" ] && [ "${YOUTUBE_CLIENTID_HASH}" ] && [ "${YOUTUBE_SECRET}" ] && [ "{YOUTUBE_SECRET_HASH}" ]; then
         YOUTUBE_OPTIONS="-DYOUTUBE_CLIENTID='${YOUTUBE_CLIENTID}' -DYOUTUBE_CLIENTID_HASH='${YOUTUBE_CLIENTID_HASH}' -DYOUTUBE_SECRET='${YOUTUBE_SECRET}' -DYOUTUBE_SECRET_HASH='${YOUTUBE_SECRET_HASH}'"
     fi
@@ -370,14 +361,12 @@ function stage_05_build_obs() {
 function stage_06_plugins() {
     local BRANCH=""
     local CHAR1=""
-    local CWD=""
     local ERROR=""
     local EXTRA=""
     local PLUGIN=""
     local PRIORITY=""
     local URL=""
 
-    CWD="$(pwd)"
     #shellcheck disable=SC2162
     while read REPO; do
         # ignore commented lines
@@ -477,10 +466,10 @@ function stage_06_plugins() {
             export CGO_CXXFLAGS="${CXXFLAGS}"
             export CGO_LDFLAGS="${LDFLAGS} -ljpeg -lobs -lobs-frontend-api"
             export GOFLAGS="-buildmode=c-shared -trimpath -mod=readonly -modcacherw"
-            cd "${PLUGIN_DIR}/${PLUGIN}"
+            pushd "${PLUGIN_DIR}/${PLUGIN}"
             go build -ldflags "-linkmode external -X main.version=${BRANCH}" -v -o "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/${PLUGIN}.so" .
             mv "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/${PLUGIN}.h" "${BASE_DIR}/${INSTALL_DIR}/include/" || true
-            cd "${CWD}"
+            popd
         elif [ "${PLUGIN}" == "obs-gstreamer" ] || [ "${PLUGIN}" == "obs-vaapi" ]; then
             if [ "${DISTRO_CMP_VER}" -le 2204 ]; then
                 meson --buildtype=${BUILD_TYPE,,} --prefix="${BASE_DIR}/${INSTALL_DIR}" --libdir="${BASE_DIR}/${INSTALL_DIR}" "${PLUGIN_DIR}/${PLUGIN}" "${PLUGIN_DIR}/${PLUGIN}/build"
