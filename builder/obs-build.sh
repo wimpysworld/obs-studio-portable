@@ -245,11 +245,6 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_LIST}
     
-    # NDI
-    download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5_5.5.3-1_amd64.deb"
-    download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5-dev_5.5.3-1_amd64.deb"
-    apt-get -y install --no-install-recommends "${TARBALL_DIR}"/*.deb
-    
     if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
         update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 800 --slave /usr/bin/g++ g++ /usr/bin/g++-10
         update-alternatives --install /usr/bin/go go /usr/lib/go-1.16/bin/go 10
@@ -504,6 +499,29 @@ function stage_06_plugins() {
                 EXTRA="-DBUILD_OUT_OF_TREE=ON"
             fi
             case "${PLUGIN}" in
+                obs-backgroundremoval)
+                    EXTRA="--preset linux-x86_64";;
+                obs-face-tracker)
+                    # Add face detection models for face tracker plugin
+                    mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker"
+                    wget --quiet --show-progress --progress=bar:force:noscroll "https://github.com/norihiro/obs-face-tracker/releases/download/0.7.0-hogdata/frontal_face_detector.dat.bz2" -O "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/frontal_face_detector.dat.bz2"
+                    wget --quiet --show-progress --progress=bar:force:noscroll "https://github.com/davisking/dlib-models/raw/master/shape_predictor_5_face_landmarks.dat.bz2" -O "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/shape_predictor_5_face_landmarks.dat.bz2"
+                    bunzip2 -f "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/frontal_face_detector.dat.bz2"
+                    bunzip2 -f "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/shape_predictor_5_face_landmarks.dat.bz2";;
+                obs-localvocal)
+                    EXTRA="--preset linux-x86_64 -DUSE_SYSTEM_CURL=ON";;
+                obs-ndi)
+                    download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5_5.5.3-1_amd64.deb"
+                    download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5-dev_5.5.3-1_amd64.deb"
+                    apt-get -y install --no-install-recommends "${TARBALL_DIR}"/*.deb
+                    cp -v /usr/lib/libndi.so "${BASE_DIR}/${INSTALL_DIR}/lib/";;
+                obs-source-dock)
+                    ERROR="-Wno-error=switch";;
+                obs-stroke-glow-shadow)
+                    ERROR="-Wno-error=stringop-overflow";;
+                obs-urlsource)
+                    EXTRA="--preset linux-x86_64 -DUSE_SYSTEM_CURL=ON -DUSE_SYSTEM_PUGIXML=ON"
+                    ERROR="-Wno-error=conversion -Wno-error=shadow";;
                 SceneSwitcher)
                     # Adjust cmake VERSION SceneSwitch on Ubuntu 20.04
                     if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
@@ -517,19 +535,7 @@ function stage_06_plugins() {
                     wget -q "https://aur.archlinux.org/cgit/aur.git/plain/deps_CMakeLists.txt?h=obs-tuna" -O "${PLUGIN_DIR}/${PLUGIN}/deps/CMakeLists.txt"
                     sed -i '13 a find_package(LibMPDClient REQUIRED)\nfind_package(Taglib REQUIRED)' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
                     EXTRA="-DCREDS=MISSING -DLASTFM_CREDS=MISSING";;
-                obs-localvocal)
-                    EXTRA="--preset linux-x86_64 -DUSE_SYSTEM_CURL=ON";;
-                obs-urlsource)
-                    EXTRA="--preset linux-x86_64 -DUSE_SYSTEM_CURL=ON -DUSE_SYSTEM_PUGIXML=ON"
-                    ERROR="-Wno-error=conversion -Wno-error=shadow";;
-                obs-backgroundremoval)
-                    EXTRA="--preset linux-x86_64";;
-                obs-source-dock)
-                    ERROR="-Wno-error=switch";;
-                obs-stroke-glow-shadow)
-                    ERROR="-Wno-error=stringop-overflow";;
             esac
-            
             # Build process for OBS Studio 28 and newer
             # -Wno-error=deprecated-declarations is for some plugins that use deprecated OBS APIs such as obs_frontend_add_dock()
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
@@ -555,12 +561,6 @@ function stage_06_plugins() {
     rm -rf "${BASE_DIR}/${INSTALL_DIR}/waveform/"
     # Re-organsise libonnxruntime
     mv -v "${BASE_DIR}/${INSTALL_DIR}/lib/obs-plugins/obs-backgroundremoval/libonnxruntime"* "${BASE_DIR}/${INSTALL_DIR}/lib/" || true
-    # Add face detection models for face tracker plugin
-    mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker"
-    wget --quiet --show-progress --progress=bar:force:noscroll "https://github.com/norihiro/obs-face-tracker/releases/download/0.7.0-hogdata/frontal_face_detector.dat.bz2" -O "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/frontal_face_detector.dat.bz2"
-    wget --quiet --show-progress --progress=bar:force:noscroll "https://github.com/davisking/dlib-models/raw/master/shape_predictor_5_face_landmarks.dat.bz2" -O "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/shape_predictor_5_face_landmarks.dat.bz2"
-    bunzip2 -f "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/frontal_face_detector.dat.bz2"
-    bunzip2 -f "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/shape_predictor_5_face_landmarks.dat.bz2"
 }
 
 function stage_07_themes() {
@@ -574,9 +574,6 @@ function stage_07_themes() {
 }
 
 function stage_08_finalise() {
-    # NDI
-    cp -v /usr/lib/libndi.so "${BASE_DIR}/${INSTALL_DIR}/lib/" || true
-
     # Remove CEF files that are lumped in with obs-plugins
     # Prevents OBS from enumating the .so files to determine if they can be loaded as a plugin
     rm -rf "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/locales" || true
