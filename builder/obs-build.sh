@@ -344,18 +344,6 @@ function stage_05_build_obs() {
       -Wno-dev --log-level=ERROR ${OPTIONS} | tee "${BUILD_DIR}/cmake-obs-${TARGET}.log"
     cmake --build "${BUILD_TO}/"
     cmake --install "${BUILD_TO}/" --prefix "${INSTALL_TO}"
-
-    # Make sure the libcaption headers are discoverable for 3rd party out-of-tree plugins
-    if [ "${TARGET}" == "system" ] && [ -d "${SOURCE_DIR}/deps/libcaption/caption" ]; then
-      mkdir -p /usr/include/caption/ || true
-      cp "${SOURCE_DIR}/deps/libcaption/caption/"*.h "/usr/include/caption/"
-    fi
-
-    # Make sure the uthash headers are discoverable for 3rd party out-of-tree plugins
-    if [ "${TARGET}" == "system" ] && [ -d "${SOURCE_DIR}/deps/uthash/uthash" ]; then
-      mkdir -p /usr/include/uthash/ || true
-      cp "${SOURCE_DIR}/deps/uthash/uthash/"*.h "/usr/include/uthash/"
-    fi
 }
 
 function stage_06_plugins() {
@@ -504,6 +492,11 @@ function stage_06_plugins() {
                     download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5-dev_5.5.3-1_amd64.deb"
                     apt-get -y install --no-install-recommends "${TARBALL_DIR}"/*.deb
                     cp -v /usr/lib/libndi.so "${BASE_DIR}/${INSTALL_DIR}/lib/";;
+                obs-replay-source)
+                    # Make uthash and libcaption headers discoverable by obs-replay-source
+                    cp "${SOURCE_DIR}/deps/uthash/uthash/uthash.h" /usr/include/obs/util/
+                    mkdir -p /usr/include/caption/
+                    cp "${SOURCE_DIR}/deps/libcaption/caption/"*.h /usr/include/caption/;;
                 obs-source-dock)
                     ERROR="-Wno-error=switch";;
                 obs-stroke-glow-shadow)
