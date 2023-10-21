@@ -138,7 +138,7 @@ function clone_source() {
 
 function stage_01_get_apt() {
     local PKG_LIST="binutils bzip2 clang-format clang-tidy cmake curl file git libarchive-tools libc6-dev make meson ninja-build patch pkg-config tree unzip wget"
-    
+
     if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
         # Newer cmake, ninja-build, meson for Ubuntu 20.04
         apt-get -y update
@@ -237,7 +237,7 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     apt-get -y upgrade
     #shellcheck disable=SC2086
     apt-get -y install --no-install-recommends ${PKG_LIST}
-    
+
     if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
         update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 800 --slave /usr/bin/g++ g++ /usr/bin/g++-10
         update-alternatives --install /usr/bin/go go /usr/lib/go-1.16/bin/go 10
@@ -302,7 +302,7 @@ function stage_05_build_obs() {
     fi
     OPTIONS+=" -DENABLE_BROWSER=ON"
     OPTIONS+=" -DENABLE_VST=ON"
-    
+
     # libdatachannel is not available in any Ubuntu release
     if [ "${OBS_MAJ_VER}" -ge 30 ]; then
         OPTIONS+=" -DENABLE_WEBRTC=OFF"
