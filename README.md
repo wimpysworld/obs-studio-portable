@@ -40,7 +40,7 @@ Running OBS Studio in Portable Mode means all settings (Profiles and Scene Colle
 | Ubuntu 22.04 (Jammy)   | 29.1.3 (Qt 6) | 30.0.0-rc1    |
 | Ubuntu 23.04 (Lunar)   | 29.1.3 (Qt 6) | 30.0.0-rc1    |
 | Ubuntu 23.10 (Mantic)  | 29.1.3 (Qt 6) | 30.0.0-rc1    |
-| Plugins                | 52            | 50            |
+| Plugins                | 54            | 52            |
 
 # Install
 

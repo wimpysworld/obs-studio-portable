@@ -1,6 +1,0 @@
-https://github.com/exeldro/obs-scene-collection-manager/0.0.8
-https://github.com/iamscottxu/obs-rtspserver/v3.0.0
-https://github.com/norihiro/obs-async-source-duplication/0.4.1
-https://github.com/norihiro/obs-color-monitor/0.6.1
-https://github.com/Ayowel/dvds3/c177440488d716e950bbb042654d9de1f18fffdc
-https://github.com/Xaymar/obs-StreamFX/0.12.0b299
