@@ -180,84 +180,84 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ub
 
 ## Audio 🔉
 
-- **[Audio Pan](https://github.com/norihiro/obs-audio-pan-filter)** plugin; control stereo pan of audio sources.
-- **[Local Vocal](https://github.com/obs-ai/obs-localvocal)** plugin; local speech and text AI processing routines and  AI transcription.
-- **[Mute Filter](https://github.com/norihiro/obs-mute-filter)** plugin; to mute audio from a source.
-- **[PipeWire Audio Capture](https://github.com/dimtpap/obs-pipewire-audio-capture)** plugin; capture application audio from PipeWire.
-- **[Scale to Sound](https://github.com/Qufyy/obs-scale-to-sound)** plugin; adds a filter which makes a source scale based on the audio levels of any audio source you choose
-- **[Soundboard](https://github.com/cg2121/obs-soundboard)** plugin; adds a soundboard dock.
-- **[Tuna](https://github.com/univrsal/tuna)** plugin; get song information from various sources.
-- **[Waveform](https://github.com/phandasm/waveform)** plugin; audio spectral analysis.
+- [**Audio Pan**](https://github.com/norihiro/obs-audio-pan-filter) plugin; control stereo pan of audio sources.
+- [**Local Vocal**](https://github.com/obs-ai/obs-localvocal) plugin; local speech and text AI processing routines and  AI transcription.
+- [**Mute Filter**](https://github.com/norihiro/obs-mute-filter) plugin; to mute audio from a source.
+- [**PipeWire Audio Capture**](https://github.com/dimtpap/obs-pipewire-audio-capture) plugin; capture application audio from PipeWire.
+- [**Scale to Sound**](https://github.com/Qufyy/obs-scale-to-sound) plugin; adds a filter which makes a source scale based on the audio levels of any audio source you choose
+- [**Soundboard**](https://github.com/cg2121/obs-soundboard) plugin; adds a soundboard dock.
+- [**Tuna**](https://github.com/univrsal/tuna) plugin; get song information from various sources.
+- [**Waveform**](https://github.com/phandasm/waveform) plugin; audio spectral analysis.
 
 ## Automation 🎛
 
-- **[Advanced Scene Switcher](https://github.com/WarmUpTill/SceneSwitcher)** plugin; an automated scene switcher.
-- **[Directory Watch Media](https://github.com/exeldro/obs-dir-watch-media)** plugin; filter you can add to a media source to load the oldest or newest file in a directory.
-- **[Dummy Source](https://github.com/norihiro/obs-command-source)** plugin; provides a dummy source to execute arbitrary commands when a scene is switched.
-- **[Source Switcher](https://github.com/exeldro/obs-source-switcher)** plugin; to switch between a list of sources.
-- **[Transition Table](https://github.com/exeldro/obs-transition-table)** plugin; customize scene transitions.
-- **[Websockets](https://github.com/Palakis/obs-websocket)** plugin; remote-control OBS Studio through WebSockets.
+- [**Advanced Scene Switcher**](https://github.com/WarmUpTill/SceneSwitcher) plugin; an automated scene switcher.
+- [**Directory Watch Media**](https://github.com/exeldro/obs-dir-watch-media) plugin; filter you can add to a media source to load the oldest or newest file in a directory.
+- [**Dummy Source**](https://github.com/norihiro/obs-command-source) plugin; provides a dummy source to execute arbitrary commands when a scene is switched.
+- [**Source Switcher**](https://github.com/exeldro/obs-source-switcher) plugin; to switch between a list of sources.
+- [**Transition Table**](https://github.com/exeldro/obs-transition-table) plugin; customize scene transitions.
+- [**Websockets**](https://github.com/Palakis/obs-websocket) plugin; remote-control OBS Studio through WebSockets.
 
 ## Effects ✨
 
-- **[3D Effect](https://github.com/exeldro/obs-3d-effect)** plugin; 3D effect filter.
-- **[Advanced Masks](https://github.com/FiniteSingularity/obs-advanced-masks)** plugin; Advanced Masking.
-- **[Background Removal](https://github.com/obs-ai/obs-backgroundremoval)** plugin; portrait background removal, virtual green-screen and low-light enhancement
-- **[Browser Transition](https://github.com/exeldro/obs-browser-transition)** plugin; show a browser source during scene transition.
-- **[Composite Blur](https://github.com/FiniteSingularity/obs-composite-blur)** plugin; comprehensive blur plugin that provides several different blur algorithms, and proper compositing.
-- **[DVD Screensaver](https://github.com/univrsal/dvds3)** plugin; a DVD screen saver source type.
-- **[Downstream Keyer](https://github.com/exeldro/obs-downstream-keyer)** plugin; add a Downstream Keyer dock.
-- **[Dynamic Delay](https://github.com/exeldro/obs-dynamic-delay)** plugin; filter for dynamic delaying a video source.
-- **[Face Tracker](https://github.com/norihiro/obs-face-tracker)** plugin; face tracking plugin
-- **[Freeze Filter](https://github.com/exeldro/obs-freeze-filter)** plugin; freeze a source using a filter.
-- **[Gradient](https://github.com/exeldro/obs-gradient-source)** plugin; adding gradients as a source.
-- **[Move Transition](https://github.com/exeldro/obs-move-transition)** plugin; move source to a new position during a scene transition.
-- **[Multi Source Effect](https://github.com/norihiro/obs-multisource-effect)** plugin; provides a custom effect to render multiple sources.
-- **[Pixel Art](https://github.com/dspstanky/pixel-art)** plugin; create retro-inspired pixel art visuals.
-- **[Recursion Effect](https://github.com/exeldro/obs-recursion-effect)** plugin; recursion effect filter.
-- **[Replay Source](https://github.com/exeldro/obs-replay-source)** plugin; slow motion replay async sources from memory.
-- **[RGB Levels](https://github.com/wimpysworld/obs-rgb-levels-filter)** plugin; simple filter to adjust RGB levels.
-- **[Scene as Transition](https://github.com/andilippi/obs-scene-as-transition)** plugin; use scenes as transitions.
-- **[Shader Filter](https://github.com/exeldro/obs-shaderfilter)** plugin; for applying an arbitrary shader to a source.
-- **[Stroke Glow Shadow](https://github.com/FiniteSingularity/obs-stroke-glow-shadow)** plugin; provide efficient Stroke, Glow, and Shadow effects on masked sources.
-- **[Time Shift](https://github.com/exeldro/obs-time-shift)** plugin;  time shift a source using a filter.
-- **[Time Warp Scan](https://github.com/exeldro/obs-time-warp-scan)** plugin; a time warp scan filter.
-- **[Vintage Filter](https://github.com/cg2121/obs-vintage-filter)** plugin; a filter to make source black & white or sepia.
+- [**3D Effect**](https://github.com/exeldro/obs-3d-effect) plugin; 3D effect filter.
+- [**Advanced Masks**](https://github.com/FiniteSingularity/obs-advanced-masks) plugin; Advanced Masking.
+- [**Background Removal**](https://github.com/obs-ai/obs-backgroundremoval) plugin; portrait background removal, virtual green-screen and low-light enhancement
+- [**Browser Transition**](https://github.com/exeldro/obs-browser-transition) plugin; show a browser source during scene transition.
+- [**Composite Blur**](https://github.com/FiniteSingularity/obs-composite-blur) plugin; comprehensive blur plugin that provides several different blur algorithms, and proper compositing.
+- [**Downstream Keyer**](https://github.com/exeldro/obs-downstream-keyer) plugin; add a Downstream Keyer dock.
+- [**DVD Screensaver**](https://github.com/univrsal/dvds3) plugin; a DVD screen saver source type.
+- [**Dynamic Delay**](https://github.com/exeldro/obs-dynamic-delay) plugin; filter for dynamic delaying a video source.
+- [**Face Tracker**](https://github.com/norihiro/obs-face-tracker) plugin; face tracking plugin
+- [**Freeze Filter**](https://github.com/exeldro/obs-freeze-filter) plugin; freeze a source using a filter.
+- [**Gradient**](https://github.com/exeldro/obs-gradient-source) plugin; adding gradients as a source.
+- [**Move Transition**](https://github.com/exeldro/obs-move-transition) plugin; move source to a new position during a scene transition.
+- [**Multi Source Effect**](https://github.com/norihiro/obs-multisource-effect) plugin; provides a custom effect to render multiple sources.
+- [**Pixel Art**](https://github.com/dspstanky/pixel-art) plugin; create retro-inspired pixel art visuals.
+- [**Recursion Effect**](https://github.com/exeldro/obs-recursion-effect) plugin; recursion effect filter.
+- [**Replay Source**](https://github.com/exeldro/obs-replay-source) plugin; slow motion replay async sources from memory.
+- [**RGB Levels**](https://github.com/wimpysworld/obs-rgb-levels-filter) plugin; simple filter to adjust RGB levels.
+- [**Scene as Transition**](https://github.com/andilippi/obs-scene-as-transition) plugin; use scenes as transitions.
+- [**Shader Filter**](https://github.com/exeldro/obs-shaderfilter) plugin; for applying an arbitrary shader to a source.
+- [**Stroke Glow Shadow**](https://github.com/FiniteSingularity/obs-stroke-glow-shadow) plugin; provide efficient Stroke, Glow, and Shadow effects on masked sources.
+- [**Time Shift**](https://github.com/exeldro/obs-time-shift) plugin;  time shift a source using a filter.
+- [**Time Warp Scan**](https://github.com/exeldro/obs-time-warp-scan) plugin; a time warp scan filter.
+- [**Vintage Filter**](https://github.com/cg2121/obs-vintage-filter) plugin; a filter to make source black & white or sepia.
 
 ## Encoding & Output 🎞
 
-- **[Game Capture](https://github.com/nowrep/obs-vkcapture)** plugin; Vulkan/OpenGL game capture.
-- **[GStreamer](https://github.com/fzwoch/obs-gstreamer)** plugin; feed GStreamer launch pipelines into OBS Studio.
-- **[NDI](https://github.com/obs-ndi/obs-ndi)** plugin; Network A/V in OBS Studio with NewTek's NDI technology.
-- **[Source Record](https://github.com/exeldro/obs-source-record)** plugin; make sources available to record via a filter.
-- **[Teleport](https://github.com/fzwoch/obs-teleport)** plugin; open NDI-like replacement. (*not NDI compatible*)
-- **[VA-API](https://github.com/exeldro/obs-transition-table)** plugin; GStreamer-based VA-API encoder implementation.
-- **[Vertical Canvas](https://github.com/Aitum/obs-vertical-canvas)** plugin; make content for TikTok, YouTube Shorts, Instagram Live, and more without the fuss.
+- [**Game Capture**](https://github.com/nowrep/obs-vkcapture) plugin; Vulkan/OpenGL game capture.
+- [**GStreamer**](https://github.com/fzwoch/obs-gstreamer) plugin; feed GStreamer launch pipelines into OBS Studio.
+- [**NDI**](https://github.com/obs-ndi/obs-ndi) plugin; Network A/V in OBS Studio with NewTek's NDI technology.
+- [**Source Record**](https://github.com/exeldro/obs-source-record) plugin; make sources available to record via a filter.
+- [**Teleport**](https://github.com/fzwoch/obs-teleport) plugin; open NDI-like replacement. (*not NDI compatible*)
+- [**VA-API**](https://github.com/exeldro/obs-transition-table) plugin; GStreamer-based VA-API encoder implementation.
+- [**Vertical Canvas**](https://github.com/Aitum/obs-vertical-canvas) plugin; make content for TikTok, YouTube Shorts, Instagram Live, and more without the fuss.
 
 ## Tools 🛠
 
-- **[Scene Notes Dock](https://github.com/exeldro/obs-scene-notes-dock)** plugin; create a Dock for showing and editing notes for the currently active scene.
-- **[Source Clone](https://github.com/exeldro/obs-source-clone)** plugin; add source cloning
-- **[Source Copy](https://github.com/exeldro/obs-source-copy)** plugin; adds copy-and-paste options to the tools menu.
-- **[Source Dock](https://github.com/exeldro/obs-source-dock)** plugin; adds browser sources as custom docks.
+- [**Scene Notes Dock**](https://github.com/exeldro/obs-scene-notes-dock) plugin; create a Dock for showing and editing notes for the currently active scene.
+- [**Source Clone**](https://github.com/exeldro/obs-source-clone) plugin; add source cloning
+- [**Source Copy**](https://github.com/exeldro/obs-source-copy) plugin; adds copy-and-paste options to the tools menu.
+- [**Source Dock**](https://github.com/exeldro/obs-source-dock) plugin; adds browser sources as custom docks.
 
 ## Text 📝
 
-- **[Countdown](https://github.com/ashmanix/obs-plugin-countdown)** plugin; creates a countdown timer.
-- **[Markdown](https://github.com/exeldro/obs-markdown)** plugin; add Markdown sources
-- **[Text PThread](https://github.com/norihiro/obs-text-pthread)** plugin; Rich text source plugin with many advanced features, including multi-language support, emoji support, vertical rendering and RTL support.
-- **[URL Source](https://github.com/obs-ai/obs-urlsource)** plugin; fetch data from a URL (API), parse and display live update in scene.
+- [**Countdown**](https://github.com/ashmanix/obs-plugin-countdown) plugin; creates a countdown timer.
+- [**Markdown**](https://github.com/exeldro/obs-markdown) plugin; add Markdown sources
+- [**Text PThread**](https://github.com/norihiro/obs-text-pthread) plugin; Rich text source plugin with many advanced features, including multi-language support, emoji support, vertical rendering and RTL support.
+- [**URL Source**](https://github.com/obs-ai/obs-urlsource) plugin; fetch data from a URL (API), parse and display live update in scene.
 
 ### Removed 🗑️
 
 These plugins were previously bundled with OBS Studio, but have since been removed.
 
-- **[Asynchronous Source Duplication](https://github.com/norihiro/obs-async-source-duplication)** - The Source Clone plugin does the same thing.
-- **[Color Monitor](https://github.com/norihiro/obs-color-monitor)** - name collisions with other plugins.
-- **[NvFBC](https://gitlab.com/fzwoch/obs-nvfbc)** - no longer functional since OBS Studio 28 due to the removal of GLX.
-- **[RTSP Server](https://github.com/iamscottxu/obs-rtspserver/)** - introduced a large number of memory leaks.
-- **[Scene Collection Manager](https://github.com/exeldro/obs-scene-collection-manager)** - can silently revert configurations to an older version.
-- **[StreamFX](https://github.com/Xaymar/obs-StreamFX)** - dropped from OBS 30 onward, StreamFX development has fallen way behind OBS Studio release cadence. StreamFX is incompatible with Vertical Plugin, 0.12.0b366 onward forcibly includes pointless UI elements and component inclusion is no longer configurable. Many StreamFX features are now provided via superior plugins from other authors:
+- [**Asynchronous Source Duplication**](https://github.com/norihiro/obs-async-source-duplication) - The Source Clone plugin does the same thing.
+- [**Color Monitor**](https://github.com/norihiro/obs-color-monitor) - name collisions with other plugins.
+- [**NvFBC**](https://gitlab.com/fzwoch/obs-nvfbc) - no longer functional since OBS Studio 28 due to the removal of GLX.
+- [**RTSP Server**](https://github.com/iamscottxu/obs-rtspserver/) - introduced a large number of memory leaks.
+- [**Scene Collection Manager**](https://github.com/exeldro/obs-scene-collection-manager) - can silently revert configurations to an older version.
+- [**StreamFX**](https://github.com/Xaymar/obs-StreamFX) - dropped from OBS 30 onward, StreamFX development has fallen way behind OBS Studio release cadence. StreamFX is incompatible with Vertical Plugin, 0.12.0b366 onward forcibly includes pointless UI elements and component inclusion is no longer configurable. Many StreamFX features are now provided via superior plugins from other authors:
   - Dynamic Masks is replaced with [**Advanced Masks**](https://github.com/FiniteSingularity/obs-advanced-masks) by [*FiniteSingularity*](https://github.com/FiniteSingularity).
   - 3D Transform is replaced with [**3D Effects**](https://github.com/exeldro/obs-3d-effect) by [*exeldro*](https://github.com/exeldro/).
   - Blur is replaced with [**Composite Blur**](https://github.com/FiniteSingularity/obs-composite-blur) by [*FiniteSingularity*](https://github.com/FiniteSingularity).
