@@ -365,52 +365,7 @@ function stage_06_plugins() {
 
         ERROR=""
         EXTRA=""
-        if [ "${PLUGIN}" == "obs-StreamFX" ]; then
-            # Monkey patch the needlessly exagerated and inconsistent cmake version requirements
-            if [ "${OBS_MAJ_VER}" -ge 29 ]; then
-                sed -i 's/VERSION 3\.26/VERSION 3\.18/' "${DIR_PLUGIN}/${PLUGIN}/CMakeLists.txt" || true
-                sed -i 's/VERSION 3\.20/VERSION 3\.18/' "${DIR_PLUGIN}/${PLUGIN}/cmake/clang/Clang.cmake" || true
-            fi
-            # Only enable stable features supported on Linux; see README.md for more details
-            cmake -S "${DIR_PLUGIN}/${PLUGIN}" -B "${DIR_PLUGIN}/${PLUGIN}/build" \
-              -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
-              -DENABLE_ENCODER_AOM_AV1=OFF \
-              -DENABLE_ENCODER_FFMPEG=ON \
-              -DENABLE_ENCODER_FFMPEG_AMF=OFF \
-              -DENABLE_ENCODER_FFMPEG_NVENC=ON \
-              -DENABLE_ENCODER_FFMPEG_PRORES=ON \
-              -DENABLE_ENCODER_FFMPEG_DNXHR=ON \
-              -DENABLE_ENCODER_FFMPEG_CFHD=ON \
-              -DENABLE_FILTER_AUTOFRAMING=OFF \
-              -DENABLE_FILTER_AUTOFRAMING_NVIDIA=OFF \
-              -DENABLE_FILTER_BLUR=OFF \
-              -DENABLE_FILTER_COLOR_GRADE=ON \
-              -DENABLE_FILTER_DENOISING=OFF \
-              -DENABLE_FILTER_DENOISING_NVIDIA=OFF \
-              -DENABLE_FILTER_DYNAMIC_MASK=ON \
-              -DENABLE_FILTER_SDF_EFFECTS=OFF \
-              -DENABLE_FILTER_SHADER=OFF \
-              -DENABLE_FILTER_TRANSFORM=OFF \
-              -DENABLE_FILTER_UPSCALING=OFF \
-              -DENABLE_FILTER_UPSCALING_NVIDIA=OFF \
-              -DENABLE_FILTER_VIRTUAL_GREENSCREEN=OFF \
-              -DENABLE_FILTER_VIRTUAL_GREENSCREEN_NVIDIA=OFF \
-              -DENABLE_SOURCE_MIRROR=OFF \
-              -DENABLE_SOURCE_SHADER=OFF \
-              -DENABLE_TRANSITION_SHADER=OFF \
-              -DENABLE_CLANG=OFF \
-              -DENABLE_LTO=ON \
-              -DENABLE_FRONTEND=OFF \
-              -DENABLE_UPDATER=OFF \
-              -DCMAKE_INSTALL_PREFIX="${DIR_INSTALL}" | tee "${DIR_BUILD}/cmake-${PLUGIN}.log"
-            cmake --build "${DIR_PLUGIN}/${PLUGIN}/build"
-            cmake --install "${DIR_PLUGIN}/${PLUGIN}/build" --prefix "${DIR_INSTALL}/"
-            # Reorganise the StreamFX plugin files to match the OBS plugin directory structure
-            mv "${DIR_INSTALL}/plugins/StreamFX/bin/64bit/"* "${DIR_INSTALL}/obs-plugins/64bit/" || true
-            mkdir -p "${DIR_INSTALL}/data/obs-plugins/StreamFX"
-            cp -a "${DIR_INSTALL}/plugins/StreamFX/data/"* "${DIR_INSTALL}/data/obs-plugins/StreamFX/" || true
-            rm -rf "${DIR_INSTALL}/plugins"
-        elif [ "${PLUGIN}" == "obs-teleport" ]; then
+        if [ "${PLUGIN}" == "obs-teleport" ]; then
             # Requires Go 1.17, which is not available in Ubuntu 20.04
             export CGO_CPPFLAGS="${CPPFLAGS}"
             export CGO_CFLAGS="${CFLAGS} -I/usr/include/obs"
@@ -482,11 +437,46 @@ function stage_06_plugins() {
                     ERROR+=" -Wno-error=stringop-overflow";;
                 obs-urlsource)
                     ERROR+=" -Wno-error=conversion -Wno-error=shadow";;
-                SceneSwitcher)
-                    # Adjust cmake VERSION SceneSwitch on Ubuntu 20.04
-                    if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
-                        sed -i 's/VERSION 3\.21/VERSION 3\.18/' "${DIR_SOURCE}/UI/frontend-plugins/SceneSwitcher/CMakeLists.txt" || true
-                    fi;;
+                #SceneSwitcher)
+                #    # Adjust cmake VERSION SceneSwitch on Ubuntu 20.04
+                #    if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
+                #        sed -i 's/VERSION 3\.21/VERSION 3\.18/' "${DIR_PLUGIN}/${PLUGIN}/UI/frontend-plugins/SceneSwitcher/CMakeLists.txt" || true
+                #    fi;;
+                obs-StreamFX)
+                    # Monkey patch the needlessly exagerated and inconsistent cmake version requirements
+                    if [ "${OBS_MAJ_VER}" -ge 29 ]; then
+                        sed -i 's/VERSION 3\.26/VERSION 3\.18/' "${DIR_PLUGIN}/${PLUGIN}/CMakeLists.txt" || true
+                        sed -i 's/VERSION 3\.20/VERSION 3\.18/' "${DIR_PLUGIN}/${PLUGIN}/cmake/clang/Clang.cmake" || true
+                    fi
+                    # Only enable stable features supported on Linux; see README.md for more details
+                    EXTRA+=" -DENABLE_ENCODER_AOM_AV1=OFF \
+                    -DENABLE_ENCODER_FFMPEG=ON \
+                    -DENABLE_ENCODER_FFMPEG_AMF=OFF \
+                    -DENABLE_ENCODER_FFMPEG_NVENC=ON \
+                    -DENABLE_ENCODER_FFMPEG_PRORES=ON \
+                    -DENABLE_ENCODER_FFMPEG_DNXHR=ON \
+                    -DENABLE_ENCODER_FFMPEG_CFHD=ON \
+                    -DENABLE_FILTER_AUTOFRAMING=OFF \
+                    -DENABLE_FILTER_AUTOFRAMING_NVIDIA=OFF \
+                    -DENABLE_FILTER_BLUR=OFF \
+                    -DENABLE_FILTER_COLOR_GRADE=ON \
+                    -DENABLE_FILTER_DENOISING=OFF \
+                    -DENABLE_FILTER_DENOISING_NVIDIA=OFF \
+                    -DENABLE_FILTER_DYNAMIC_MASK=OFF \
+                    -DENABLE_FILTER_SDF_EFFECTS=OFF \
+                    -DENABLE_FILTER_SHADER=OFF \
+                    -DENABLE_FILTER_TRANSFORM=OFF \
+                    -DENABLE_FILTER_UPSCALING=OFF \
+                    -DENABLE_FILTER_UPSCALING_NVIDIA=OFF \
+                    -DENABLE_FILTER_VIRTUAL_GREENSCREEN=OFF \
+                    -DENABLE_FILTER_VIRTUAL_GREENSCREEN_NVIDIA=OFF \
+                    -DENABLE_SOURCE_MIRROR=OFF \
+                    -DENABLE_SOURCE_SHADER=OFF \
+                    -DENABLE_TRANSITION_SHADER=OFF \
+                    -DENABLE_CLANG=OFF \
+                    -DENABLE_LTO=ON \
+                    -DENABLE_FRONTEND=OFF \
+                    -DENABLE_UPDATER=OFF";;
                 tuna)
                     # Use system libmpdclient and taglib
                     # https://aur.archlinux.org/packages/obs-tuna
@@ -513,10 +503,19 @@ function stage_06_plugins() {
     cp -av "${DIR_INSTALL}/share/obs/obs-plugins/"* "${DIR_INSTALL}/data/obs-plugins/"
     rm -rf "${DIR_INSTALL}/share/obs/obs-plugins"
     # Re-organsise waveform plugin
-    mv -v "${DIR_INSTALL}/waveform/bin/64bit/"*.so "${DIR_INSTALL}/obs-plugins/64bit/"
-    mkdir -p "${DIR_INSTALL}/data/obs-plugins/waveform"
-    mv -v "${DIR_INSTALL}/waveform/data/"* "${DIR_INSTALL}/data/obs-plugins/waveform/" || true
-    rm -rf "${DIR_INSTALL}/waveform/"
+    if [ -d "${DIR_INSTALL}/waveform" ]; then
+        mv -v "${DIR_INSTALL}/waveform/bin/64bit/"*.so "${DIR_INSTALL}/obs-plugins/64bit/" || true
+        mkdir -p "${DIR_INSTALL}/data/obs-plugins/waveform"
+        mv -v "${DIR_INSTALL}/waveform/data/"* "${DIR_INSTALL}/data/obs-plugins/waveform/" || true
+        rm -rf "${DIR_INSTALL}/waveform/"
+    fi
+    # Reorganise the StreamFX plugin
+    if [ -d "${DIR_INSTALL}/plugins/StreamFX" ]; then
+        mv "${DIR_INSTALL}/plugins/StreamFX/bin/64bit/"* "${DIR_INSTALL}/obs-plugins/64bit/" || true
+        mkdir -p "${DIR_INSTALL}/data/obs-plugins/StreamFX"
+        cp -a "${DIR_INSTALL}/plugins/StreamFX/data/"* "${DIR_INSTALL}/data/obs-plugins/StreamFX/" || true
+        rm -rf "${DIR_INSTALL}/plugins"
+    fi
     # Re-organsise libonnxruntime
     mv -v "${DIR_INSTALL}/lib/obs-plugins/obs-backgroundremoval/libonnxruntime"* "${DIR_INSTALL}/lib/" || true
 }
