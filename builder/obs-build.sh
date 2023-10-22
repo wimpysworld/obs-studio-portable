@@ -13,10 +13,10 @@ BUILD_DIR="${BASE_DIR}/build"
 BUILD_PORTABLE="${BASE_DIR}/build_portable"
 BUILD_SYSTEM="${BASE_DIR}/build_system"
 BUILD_TYPE="Release"
+DOWNLOAD_DIR="${BASE_DIR}/downloads"
 PLUGIN_LIST="auxiliary"
 PLUGIN_DIR="${BASE_DIR}/plugins"
 SOURCE_DIR="${BASE_DIR}/source"
-TARBALL_DIR="${BASE_DIR}/tarballs"
 
 case ${OBS_MAJ_VER} in
     29|30)
@@ -41,7 +41,7 @@ else
 fi
 
 # Make the directories
-mkdir -p "${BASE_DIR}"/{build,build_portable,build_system,plugins,source,tarballs}
+mkdir -p "${BASE_DIR}"/{build,build_portable,build_system,plugins,source,downloads}
 STAMP=$(date +%y%j)
 
 INSTALL_DIR="obs-portable-${OBS_VER}-r${STAMP}-ubuntu-${DISTRO_VERSION}"
@@ -59,53 +59,35 @@ fi
 function download_file() {
     local URL="${1}"
     local FILE="${URL##*/}"
-    local PROJECT=""
+    local FILE_EXTENSION="${FILE##*.}"
+    local FILE_OUTPUT="${DOWNLOAD_DIR}/${FILE}"
+    local FILE_TEST=""
 
-    if [[ "${URL}" == *"github"* ]]; then
-      PROJECT=$(echo "${URL}" | cut -d'/' -f5)
-      FILE="${PROJECT}-${FILE}"
+    # Use the second argument as the output file if provided
+    if [ -n "${2}" ]; then
+        FILE_OUTPUT="${2}"
+        mkdir -p "$(dirname "${FILE_OUTPUT}")"
     fi
+
+    until wget --continue --quiet --show-progress --progress=bar:force:noscroll "${URL}" -O "${FILE_OUTPUT}"; do
+        echo "Failed to download ${URL}. Deleting ${FILE}..."
+        rm "${FILE_OUTPUT}" 2>/dev/null
+    done
 
     # Check the file passes decompression test
-    if [ -e "${TARBALL_DIR}/${FILE}" ]; then
-        EXT="${FILE##*.}"
-        case "${EXT}" in
-            bzip2|bz2) FILE_TEST="bzip2 -t";;
-            gzip|gz) FILE_TEST="gzip -t";;
-            xz) FILE_TEST="xz -t";;
-            zip) FILE_TEST="unzip -qq -t";;
-            *) FILE_TEST="";;
-        esac
-        if [ -n "${FILE_TEST}" ]; then
-            if ! ${FILE_TEST} "${TARBALL_DIR}/${FILE}"; then
-                echo "Testing ${TARBALL_DIR}/${FILE} integrity failed. Deleting it."
-                rm "${TARBALL_DIR}/${FILE}" 2>/dev/null
-                exit 1
-            fi
+    case "${FILE_EXTENSION}" in
+        bzip2|bz2) FILE_TEST="bzip2 -t";;
+        gzip|gz) FILE_TEST="gzip -t";;
+        xz) FILE_TEST="xz -t";;
+        zip) FILE_TEST="unzip -qq -t";;
+    esac
+
+    if [ -n "${FILE_TEST}" ]; then
+        if ! ${FILE_TEST} "${FILE_OUTPUT}"; then
+            echo "Testing ${FILE} integrity failed. Deleting it."
+            rm "${FILE_OUTPUT}" 2>/dev/null
+            download_file "${URL}"
         fi
-    elif ! wget --quiet --show-progress --progress=bar:force:noscroll "${URL}" -O "${TARBALL_DIR}/${FILE}"; then
-        echo "Failed to download ${URL}. Deleting ${TARBALL_DIR}/${FILE}..."
-        rm "${TARBALL_DIR}/${FILE}" 2>/dev/null
-        exit 1
-    fi
-}
-
-function download_tarball() {
-    local URL="${1}"
-    local DIR="${2}"
-    local FILE="${URL##*/}"
-    local PROJECT=""
-
-    if [[ "${URL}" == *"github"* ]]; then
-        PROJECT=$(echo "${URL}" | cut -d'/' -f5)
-        FILE="${PROJECT}-${FILE}"
-    fi
-
-    mkdir -p "${DIR}"
-    # Only download and extract if the directory is empty
-    if [ -z "$(ls -A "${DIR}")" ]; then
-        download_file "${URL}"
-        bsdtar --strip-components=1 -xf "${TARBALL_DIR}/${FILE}" -C "${DIR}"
     fi
 }
 
@@ -118,18 +100,24 @@ function clone_source() {
     if [ ! -d "${DIR}/.git" ]; then
         BRANCH_LEN=$(echo -n "${BRANCH}" | wc -m);
         if [ "${BRANCH_LEN}" -eq 40 ]; then
-            git clone "${REPO}" --filter=tree:0 --recurse-submodules --shallow-submodules "${DIR}"
+            until git clone "${REPO}" --filter=tree:0 --recurse-submodules --shallow-submodules "${DIR}"; do
+                echo "Retrying git clone ${REPO}..."
+                rm -rf "${DIR}"
+            done
             pushd "${DIR}"
             git checkout "${BRANCH}"
             popd
         else
-            git clone "${REPO}" --filter=tree:0 --recurse-submodules --shallow-submodules --branch "${BRANCH}" "${DIR}"
+            until git clone "${REPO}" --filter=tree:0 --recurse-submodules --shallow-submodules --branch "${BRANCH}" "${DIR}"; do
+                echo "Retrying git clone ${REPO}..."
+                rm -rf "${DIR}"
+            done
         fi
     fi
 }
 
 function stage_01_get_apt() {
-    local PKG_LIST="binutils bzip2 clang-format clang-tidy cmake curl file git libarchive-tools libc6-dev make meson ninja-build patch pkg-config tree unzip wget"
+    local PKG_LIST="binutils bzip2 clang-format clang-tidy cmake curl file git gzip libarchive-tools libc6-dev make meson ninja-build patch pkg-config tree unzip wget xz-utils"
 
     if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
         # Newer cmake, ninja-build, meson for Ubuntu 20.04
@@ -243,7 +231,9 @@ function stage_02_get_obs() {
 }
 
 function stage_03_get_cef() {
-    download_tarball "https://cdn-fastly.obsproject.com/downloads/cef_binary_${CEF_VER}_linux_x86_64_v3.tar.xz" "${BUILD_DIR}/cef"
+    download_file "https://cdn-fastly.obsproject.com/downloads/cef_binary_${CEF_VER}_linux_x86_64_v3.tar.xz"
+    mkdir -p "${BUILD_DIR}/cef"
+    bsdtar --strip-components=1 -xf "${DOWNLOAD_DIR}/cef_binary_${CEF_VER}_linux_x86_64_v3.tar.xz" -C "${BUILD_DIR}/cef"
     mkdir -p "${BASE_DIR}/${INSTALL_DIR}/cef"
     cp -a "${BUILD_DIR}/cef/Release/"* "${BASE_DIR}/${INSTALL_DIR}/cef/"
     cp -a "${BUILD_DIR}/cef/Resources/"* "${BASE_DIR}/${INSTALL_DIR}/cef/"
@@ -252,7 +242,9 @@ function stage_03_get_cef() {
 }
 
 function stage_04_build_aja() {
-    download_tarball "https://github.com/aja-video/ntv2/archive/refs/tags/${AJA_VER}.tar.gz" "${SOURCE_DIR}/ntv2"
+    download_file "https://github.com/aja-video/ntv2/archive/refs/tags/${AJA_VER}.tar.gz" 
+    mkdir -p "${SOURCE_DIR}/ntv2"
+    bsdtar --strip-components=1 -xf "${DOWNLOAD_DIR}/${AJA_VER}.tar.gz" -C "${SOURCE_DIR}/ntv2"
     cmake -S "${SOURCE_DIR}/ntv2/" -B "${SOURCE_DIR}/ntv2/build/" -G Ninja \
         -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
         -DAJA_BUILD_OPENSOURCE=ON \
@@ -466,6 +458,10 @@ function stage_06_plugins() {
             if grep '"name": "linux-x86_64"' "${PLUGIN_DIR}/${PLUGIN}/CMakePresets.json"; then
                 EXTRA+=" --preset linux-x86_64"
             fi
+            # Some plugins use deprecated OBS APIs such as obs_frontend_add_dock()
+            if grep -R obs_frontend_add_dock "${PLUGIN_DIR}/${PLUGIN}"/* || grep -R obs_service_get_output_type "${PLUGIN_DIR}/${PLUGIN}"/*; then
+                ERROR+=" -Wno-error=deprecated-declarations"
+            fi
             case "${PLUGIN}" in
                 obs-face-tracker)
                     if [ "${DISTRO_CMP_VER}" -le 2004 ]; then
@@ -475,14 +471,16 @@ function stage_06_plugins() {
                     fi
                     # Add face detection models for face tracker plugin
                     mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker"
-                    wget --quiet --show-progress --progress=bar:force:noscroll "https://github.com/norihiro/obs-face-tracker/releases/download/0.7.0-hogdata/frontal_face_detector.dat.bz2" -O "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/frontal_face_detector.dat.bz2"
-                    wget --quiet --show-progress --progress=bar:force:noscroll "https://github.com/davisking/dlib-models/raw/master/shape_predictor_5_face_landmarks.dat.bz2" -O "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/shape_predictor_5_face_landmarks.dat.bz2"
+                    download_file "https://github.com/norihiro/obs-face-tracker/releases/download/0.7.0-hogdata/frontal_face_detector.dat.bz2"
+                    download_file "https://github.com/davisking/dlib-models/raw/master/shape_predictor_5_face_landmarks.dat.bz2"
+                    cp "${DOWNLOAD_DIR}/frontal_face_detector.dat.bz2" "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/frontal_face_detector.dat.bz2"
+                    cp "${DOWNLOAD_DIR}/shape_predictor_5_face_landmarks.dat.bz2" "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/shape_predictor_5_face_landmarks.dat.bz2"
                     bunzip2 -f "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/frontal_face_detector.dat.bz2"
                     bunzip2 -f "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/shape_predictor_5_face_landmarks.dat.bz2";;
                 obs-ndi)
                     download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5_5.5.3-1_amd64.deb"
                     download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5-dev_5.5.3-1_amd64.deb"
-                    apt-get -y install --no-install-recommends "${TARBALL_DIR}"/*.deb
+                    apt-get -y install --no-install-recommends "${DOWNLOAD_DIR}"/*.deb
                     cp -v /usr/lib/libndi.so "${BASE_DIR}/${INSTALL_DIR}/lib/";;
                 obs-replay-source)
                     # Make uthash and libcaption headers discoverable by obs-replay-source
@@ -503,18 +501,17 @@ function stage_06_plugins() {
                 tuna)
                     # Use system libmpdclient and taglib
                     # https://aur.archlinux.org/packages/obs-tuna
-                    wget -q "https://aur.archlinux.org/cgit/aur.git/plain/FindLibMPDClient.cmake?h=obs-tuna" -O "${PLUGIN_DIR}/${PLUGIN}/cmake/external/FindLibMPDClient.cmake"
-                    wget -q "https://aur.archlinux.org/cgit/aur.git/plain/FindTaglib.cmake?h=obs-tuna" -O "${PLUGIN_DIR}/${PLUGIN}/cmake/external/FindTaglib.cmake"
-                    wget -q "https://aur.archlinux.org/cgit/aur.git/plain/deps_CMakeLists.txt?h=obs-tuna" -O "${PLUGIN_DIR}/${PLUGIN}/deps/CMakeLists.txt"
+                    download_file "https://aur.archlinux.org/cgit/aur.git/plain/FindLibMPDClient.cmake?h=obs-tuna" "${PLUGIN_DIR}/${PLUGIN}/cmake/external/FindLibMPDClient.cmake"
+                    download_file "https://aur.archlinux.org/cgit/aur.git/plain/FindTaglib.cmake?h=obs-tuna" "${PLUGIN_DIR}/${PLUGIN}/cmake/external/FindTaglib.cmake"
+                    download_file "https://aur.archlinux.org/cgit/aur.git/plain/deps_CMakeLists.txt?h=obs-tuna" "${PLUGIN_DIR}/${PLUGIN}/deps/CMakeLists.txt"
                     sed -i '13 a find_package(LibMPDClient REQUIRED)\nfind_package(Taglib REQUIRED)' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
                     EXTRA+=" -DCREDS=MISSING -DLASTFM_CREDS=MISSING";;
             esac
             # Build process for OBS Studio 28 and newer
-            # -Wno-error=deprecated-declarations is for some plugins that use deprecated OBS APIs such as obs_frontend_add_dock()
             cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
-              -DCMAKE_CXX_FLAGS="-Wno-error=deprecated-declarations ${ERROR}" \
-              -DCMAKE_C_FLAGS="-Wno-error=deprecated-declarations ${ERROR}" \
+              -DCMAKE_CXX_FLAGS="${ERROR}" \
+              -DCMAKE_C_FLAGS="${ERROR}" \
               -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
               ${EXTRA} -Wno-dev | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
             cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
@@ -536,13 +533,8 @@ function stage_06_plugins() {
 }
 
 function stage_07_themes() {
-    local FILE=""
-    local URL=""
-
-    URL="https://obsproject.com/forum/resources/yami-resized.1611/version/4885/download"
-    FILE="Yami-Resized-1.1.1.zip"
-    wget --quiet --show-progress --progress=bar:force:noscroll "${URL}" -O "${TARBALL_DIR}/${FILE}"
-    unzip -o -qq "${TARBALL_DIR}/${FILE}" -d "${BASE_DIR}/${INSTALL_DIR}/data/obs-studio/themes"
+    download_file "https://obsproject.com/forum/resources/yami-resized.1611/version/4885/download" "${DOWNLOAD_DIR}/Yami-Resized-1.1.1.zip"
+    unzip -o -qq "${DOWNLOAD_DIR}/Yami-Resized-1.1.1.zip" -d "${BASE_DIR}/${INSTALL_DIR}/data/obs-studio/themes"
 }
 
 function stage_08_finalise() {
