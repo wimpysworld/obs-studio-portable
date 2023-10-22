@@ -358,21 +358,23 @@ function stage_06_plugins() {
     #shellcheck disable=SC2162
     while read REPO; do
         # ignore commented lines
-        CHAR1=$(echo "${REPO}" | sed 's/ *$//g' | cut -c1)
+        CHAR1=$(echo "${REPO}" | sed 's/ *$//g' | cut -c 1)
         if [ "${CHAR1}" == "#" ]; then
             continue
         fi
 
-        # ignore auxillary plugins if instructed to build only then essential plugins
-        PRIORITY="$(echo "${REPO}" | cut -d',' -f2 | sed 's/ //g')"
-        if [ "${PLUGIN_LIST}" == "essential" ] && [ "${PRIORITY}" == "auxiliary" ]; then
+        URL="$(echo "${REPO}" | cut -d',' -f 1)"
+        BRANCH="$(echo "${REPO}" | cut -d',' -f 2)"
+        PRIORITY="$(echo "${REPO}" | cut -d',' -f 3 | sed 's/ //g')"
+        AUTHOR="$(echo "${URL}" | cut -d'/' -f 4)"
+        PLUGIN="$(echo "${URL}" | cut -d'/' -f 5)"
+
+        # Ignore disabled or auxillary plugins if instructed to build only the essential plugins
+        if [ "${PRIORITY}" == "disabled" ]; then
+            continue
+        elif [ "${PLUGIN_LIST}" == "essential" ] && [ "${PRIORITY}" == "auxiliary" ]; then
             continue
         fi
-
-        URL="$(echo "${REPO}" | cut -d',' -f1 | cut -d'/' -f1-5)"
-        AUTHOR="$(echo "${REPO}" | cut -d',' -f1  | cut -d'/' -f4)"
-        PLUGIN="$(echo "${REPO}" | cut -d',' -f1  | cut -d'/' -f5)"
-        BRANCH="$(echo "${REPO}" | cut -d',' -f1  | cut -d'/' -f6)"
 
         # obs-face-tracker requires that QT_VERSION is set
         local QT_VER="6"
