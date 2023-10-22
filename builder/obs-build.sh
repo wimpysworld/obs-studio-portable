@@ -2,21 +2,13 @@
 set -ex
 LC_ALL=C
 
+BUILD_TYPE="Release"
 OBS_VER=""
+STAMP=$(date +%y%j)
 if [ -n "${1}" ]; then
     OBS_VER="${1}"
     OBS_MAJ_VER="${OBS_VER%%.*}"
 fi
-
-BASE_DIR="${HOME}/obs-${OBS_MAJ_VER}"
-BUILD_DIR="${BASE_DIR}/build"
-BUILD_PORTABLE="${BASE_DIR}/build_portable"
-BUILD_SYSTEM="${BASE_DIR}/build_system"
-BUILD_TYPE="Release"
-DOWNLOAD_DIR="${BASE_DIR}/downloads"
-PLUGIN_LIST="auxiliary"
-PLUGIN_DIR="${BASE_DIR}/plugins"
-SOURCE_DIR="${BASE_DIR}/source"
 
 case ${OBS_MAJ_VER} in
     29|30)
@@ -40,14 +32,21 @@ else
     exit 1
 fi
 
-# Make the directories
-mkdir -p "${BASE_DIR}"/{build,build_portable,build_system,plugins,source,downloads}
-STAMP=$(date +%y%j)
+DIR_BASE="${HOME}/obs-${OBS_MAJ_VER}"
+DIR_BUILD="${DIR_BASE}/build"
+DIR_DOWNLOAD="${DIR_BASE}/downloads"
+DIR_PLUGIN="${DIR_BASE}/plugins"
+DIR_PORTABLE="${DIR_BASE}/build_portable"
+DIR_SOURCE="${DIR_BASE}/source"
+DIR_SYSTEM="${DIR_BASE}/build_system"
+for DIRECTORY in "${DIR_BUILD}" "${DIR_PORTABLE}" "${DIR_SYSTEM}" "${DIR_DOWNLOAD}" "${DIR_PLUGIN}" "${DIR_SOURCE}"; do
+    mkdir -p "${DIRECTORY}"
+done
 
-INSTALL_DIR="obs-portable-${OBS_VER}-r${STAMP}-ubuntu-${DISTRO_VERSION}"
+DIR_INSTALL="${DIR_BASE}/obs-portable-${OBS_VER}-r${STAMP}-ubuntu-${DISTRO_VERSION}"
 PLUGIN_LIST="auxiliary"
 if [ "${2}" == "essential" ]; then
-    INSTALL_DIR+="-essential"
+    DIR_INSTALL+="-essential"
     PLUGIN_LIST="essential"
 fi
 
@@ -60,7 +59,7 @@ function download_file() {
     local URL="${1}"
     local FILE="${URL##*/}"
     local FILE_EXTENSION="${FILE##*.}"
-    local FILE_OUTPUT="${DOWNLOAD_DIR}/${FILE}"
+    local FILE_OUTPUT="${DIR_DOWNLOAD}/${FILE}"
     local FILE_TEST=""
 
     # Use the second argument as the output file if provided
@@ -227,50 +226,45 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
 }
 
 function stage_02_get_obs() {
-    clone_source "https://github.com/obsproject/obs-studio.git" "${OBS_VER}" "${SOURCE_DIR}"
+    clone_source "https://github.com/obsproject/obs-studio.git" "${OBS_VER}" "${DIR_SOURCE}"
 }
 
 function stage_03_get_cef() {
     download_file "https://cdn-fastly.obsproject.com/downloads/cef_binary_${CEF_VER}_linux_x86_64_v3.tar.xz"
-    mkdir -p "${BUILD_DIR}/cef"
-    bsdtar --strip-components=1 -xf "${DOWNLOAD_DIR}/cef_binary_${CEF_VER}_linux_x86_64_v3.tar.xz" -C "${BUILD_DIR}/cef"
-    mkdir -p "${BASE_DIR}/${INSTALL_DIR}/cef"
-    cp -a "${BUILD_DIR}/cef/Release/"* "${BASE_DIR}/${INSTALL_DIR}/cef/"
-    cp -a "${BUILD_DIR}/cef/Resources/"* "${BASE_DIR}/${INSTALL_DIR}/cef/"
-    cp "${BUILD_DIR}/cef/"{LICENSE.txt,README.txt} "${BASE_DIR}/${INSTALL_DIR}/cef/"
-    chmod 755 "${BASE_DIR}/${INSTALL_DIR}/cef/locales"
+    mkdir -p "${DIR_BUILD}/cef"
+    bsdtar --strip-components=1 -xf "${DIR_DOWNLOAD}/cef_binary_${CEF_VER}_linux_x86_64_v3.tar.xz" -C "${DIR_BUILD}/cef"
+    mkdir -p "${DIR_INSTALL}/cef"
+    cp -a "${DIR_BUILD}/cef/Release/"* "${DIR_INSTALL}/cef/"
+    cp -a "${DIR_BUILD}/cef/Resources/"* "${DIR_INSTALL}/cef/"
+    cp "${DIR_BUILD}/cef/"{LICENSE.txt,README.txt} "${DIR_INSTALL}/cef/"
+    chmod 755 "${DIR_INSTALL}/cef/locales"
 }
 
 function stage_04_build_aja() {
     download_file "https://github.com/aja-video/ntv2/archive/refs/tags/${AJA_VER}.tar.gz" 
-    mkdir -p "${SOURCE_DIR}/ntv2"
-    bsdtar --strip-components=1 -xf "${DOWNLOAD_DIR}/${AJA_VER}.tar.gz" -C "${SOURCE_DIR}/ntv2"
-    cmake -S "${SOURCE_DIR}/ntv2/" -B "${SOURCE_DIR}/ntv2/build/" -G Ninja \
+    mkdir -p "${DIR_SOURCE}/ntv2"
+    bsdtar --strip-components=1 -xf "${DIR_DOWNLOAD}/${AJA_VER}.tar.gz" -C "${DIR_SOURCE}/ntv2"
+    cmake -S "${DIR_SOURCE}/ntv2/" -B "${DIR_SOURCE}/ntv2/build/" -G Ninja \
         -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
         -DAJA_BUILD_OPENSOURCE=ON \
         -DAJA_BUILD_APPS=OFF \
-        -DAJA_INSTALL_HEADERS=ON | tee "${BUILD_DIR}/cmake-aja.log"
-    cmake --build "${SOURCE_DIR}/ntv2/build/"
-    cmake --install "${SOURCE_DIR}/ntv2/build/" --prefix "${BUILD_DIR}/aja"
+        -DAJA_INSTALL_HEADERS=ON | tee "${DIR_BUILD}/cmake-aja.log"
+    cmake --build "${DIR_SOURCE}/ntv2/build/"
+    cmake --install "${DIR_SOURCE}/ntv2/build/" --prefix "${DIR_BUILD}/aja"
 }
 
 function stage_05_build_obs() {
-    local OPTIONS=""
-    local TARGET="system"
-    if [ "${1}" == "portable" ]; then
-        TARGET="portable"
-    fi
+    local BUILD_TO="${DIR_SYSTEM}"
+    local INSTALL_TO="/usr"
+    local OPTIONS="-DENABLE_BROWSER=ON -DENABLE_RTMPS=ON -DENABLE_VST=ON"
 
-    case "${TARGET}" in
-      portable)
-        BUILD_TO="${BUILD_PORTABLE}"
-        INSTALL_TO="${BASE_DIR}/${INSTALL_DIR}"
-        OPTIONS="-DLINUX_PORTABLE=ON";;
-      system)
-        BUILD_TO="${BUILD_SYSTEM}"
-        INSTALL_TO="/usr"
-        OPTIONS="-DLINUX_PORTABLE=OFF";;
-    esac
+    if [ "${1}" == "portable" ]; then
+        BUILD_TO="${DIR_PORTABLE}"
+        INSTALL_TO="${DIR_INSTALL}"
+        OPTIONS+=" -DLINUX_PORTABLE=ON"
+    else
+        OPTIONS+=" -DLINUX_PORTABLE=OFF"
+    fi
 
     if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
         OPTIONS+=" -DENABLE_PIPEWIRE=ON"
@@ -278,14 +272,11 @@ function stage_05_build_obs() {
         OPTIONS+=" -DENABLE_PIPEWIRE=OFF"
     fi
 
-    OPTIONS+=" -DENABLE_RTMPS=ON"
     if [ "${DISTRO_CMP_VER}" -ge 2210 ]; then
         OPTIONS+=" -DENABLE_NEW_MPEGTS_OUTPUT=ON"
     else
         OPTIONS+=" -DENABLE_NEW_MPEGTS_OUTPUT=OFF"
     fi
-    OPTIONS+=" -DENABLE_BROWSER=ON"
-    OPTIONS+=" -DENABLE_VST=ON"
 
     # libdatachannel is not available in any Ubuntu release
     if [ "${OBS_MAJ_VER}" -ge 30 ]; then
@@ -308,24 +299,22 @@ function stage_05_build_obs() {
     fi
 
     #shellcheck disable=SC2086,SC2090
-    cmake -S "${SOURCE_DIR}/" -B "${BUILD_TO}/" -G Ninja \
+    cmake -S "${DIR_SOURCE}/" -B "${BUILD_TO}/" -G Ninja \
       -DCALM_DEPRECATION=ON \
       -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
       -DCMAKE_INSTALL_PREFIX="${INSTALL_TO}" \
       -DENABLE_AJA=ON \
-      -DAJA_LIBRARIES_INCLUDE_DIR="${BUILD_DIR}"/aja/include/ \
-      -DAJA_NTV2_LIB="${BUILD_DIR}"/aja/lib/libajantv2.a \
-      -DCEF_ROOT_DIR="${BUILD_DIR}/cef" \
+      -DAJA_LIBRARIES_INCLUDE_DIR="${DIR_BUILD}"/aja/include/ \
+      -DAJA_NTV2_LIB="${DIR_BUILD}"/aja/lib/libajantv2.a \
+      -DCEF_ROOT_DIR="${DIR_BUILD}/cef" \
       -DENABLE_ALSA=OFF \
       -DENABLE_JACK=ON \
       -DENABLE_LIBFDK=ON \
       -DENABLE_PULSEAUDIO=ON \
       -DENABLE_VLC=ON \
       -DENABLE_WAYLAND=ON \
-      ${RESTREAM_OPTIONS} \
-      ${TWITCH_OPTIONS} \
-      ${YOUTUBE_OPTIONS} \
-      -Wno-dev --log-level=ERROR ${OPTIONS} | tee "${BUILD_DIR}/cmake-obs-${TARGET}.log"
+      ${OPTIONS} ${RESTREAM_OPTIONS} ${TWITCH_OPTIONS} ${YOUTUBE_OPTIONS} \
+      -Wno-dev --log-level=ERROR | tee "${DIR_BUILD}/cmake-obs-${TARGET}.log"
     cmake --build "${BUILD_TO}/"
     cmake --install "${BUILD_TO}/" --prefix "${INSTALL_TO}"
 }
@@ -372,18 +361,18 @@ function stage_06_plugins() {
             fi
         fi
 
-        clone_source "${URL}.git" "${BRANCH}" "${PLUGIN_DIR}/${PLUGIN}"
+        clone_source "${URL}.git" "${BRANCH}" "${DIR_PLUGIN}/${PLUGIN}"
 
         ERROR=""
         EXTRA=""
         if [ "${PLUGIN}" == "obs-StreamFX" ]; then
             # Monkey patch the needlessly exagerated and inconsistent cmake version requirements
             if [ "${OBS_MAJ_VER}" -ge 29 ]; then
-                sed -i 's/VERSION 3\.26/VERSION 3\.18/' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt" || true
-                sed -i 's/VERSION 3\.20/VERSION 3\.18/' "${PLUGIN_DIR}/${PLUGIN}/cmake/clang/Clang.cmake" || true
+                sed -i 's/VERSION 3\.26/VERSION 3\.18/' "${DIR_PLUGIN}/${PLUGIN}/CMakeLists.txt" || true
+                sed -i 's/VERSION 3\.20/VERSION 3\.18/' "${DIR_PLUGIN}/${PLUGIN}/cmake/clang/Clang.cmake" || true
             fi
             # Only enable stable features supported on Linux; see README.md for more details
-            cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" \
+            cmake -S "${DIR_PLUGIN}/${PLUGIN}" -B "${DIR_PLUGIN}/${PLUGIN}/build" \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
               -DENABLE_ENCODER_AOM_AV1=OFF \
               -DENABLE_ENCODER_FFMPEG=ON \
@@ -413,14 +402,14 @@ function stage_06_plugins() {
               -DENABLE_LTO=ON \
               -DENABLE_FRONTEND=OFF \
               -DENABLE_UPDATER=OFF \
-              -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
-            cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
-            cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
+              -DCMAKE_INSTALL_PREFIX="${DIR_INSTALL}" | tee "${DIR_BUILD}/cmake-${PLUGIN}.log"
+            cmake --build "${DIR_PLUGIN}/${PLUGIN}/build"
+            cmake --install "${DIR_PLUGIN}/${PLUGIN}/build" --prefix "${DIR_INSTALL}/"
             # Reorganise the StreamFX plugin files to match the OBS plugin directory structure
-            mv "${BASE_DIR}/${INSTALL_DIR}/plugins/StreamFX/bin/64bit/"* "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true
-            mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/StreamFX"
-            cp -a "${BASE_DIR}/${INSTALL_DIR}/plugins/StreamFX/data/"* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/StreamFX/" || true
-            rm -rf "${BASE_DIR}/${INSTALL_DIR}/plugins"
+            mv "${DIR_INSTALL}/plugins/StreamFX/bin/64bit/"* "${DIR_INSTALL}/obs-plugins/64bit/" || true
+            mkdir -p "${DIR_INSTALL}/data/obs-plugins/StreamFX"
+            cp -a "${DIR_INSTALL}/plugins/StreamFX/data/"* "${DIR_INSTALL}/data/obs-plugins/StreamFX/" || true
+            rm -rf "${DIR_INSTALL}/plugins"
         elif [ "${PLUGIN}" == "obs-teleport" ]; then
             # Requires Go 1.17, which is not available in Ubuntu 20.04
             export CGO_CPPFLAGS="${CPPFLAGS}"
@@ -428,38 +417,38 @@ function stage_06_plugins() {
             export CGO_CXXFLAGS="${CXXFLAGS}"
             export CGO_LDFLAGS="${LDFLAGS} -ljpeg -lobs -lobs-frontend-api"
             export GOFLAGS="-buildmode=c-shared -trimpath -mod=readonly -modcacherw"
-            pushd "${PLUGIN_DIR}/${PLUGIN}"
-            go build -ldflags "-linkmode external -X main.version=${BRANCH}" -v -o "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/${PLUGIN}.so" .
-            mv "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/${PLUGIN}.h" "${BASE_DIR}/${INSTALL_DIR}/include/" || true
+            pushd "${DIR_PLUGIN}/${PLUGIN}"
+            go build -ldflags "-linkmode external -X main.version=${BRANCH}" -v -o "${DIR_INSTALL}/obs-plugins/64bit/${PLUGIN}.so" .
+            mv "${DIR_INSTALL}/obs-plugins/64bit/${PLUGIN}.h" "${DIR_INSTALL}/include/" || true
             popd
         elif [ "${PLUGIN}" == "obs-gstreamer" ] || [ "${PLUGIN}" == "obs-vaapi" ]; then
             if [ "${DISTRO_CMP_VER}" -le 2204 ]; then
-                meson --buildtype=${BUILD_TYPE,,} --prefix="${BASE_DIR}/${INSTALL_DIR}" --libdir="${BASE_DIR}/${INSTALL_DIR}" "${PLUGIN_DIR}/${PLUGIN}" "${PLUGIN_DIR}/${PLUGIN}/build"
+                meson --buildtype=${BUILD_TYPE,,} --prefix="${DIR_INSTALL}" --libdir="${DIR_INSTALL}" "${DIR_PLUGIN}/${PLUGIN}" "${DIR_PLUGIN}/${PLUGIN}/build"
             else
-                meson setup --buildtype=${BUILD_TYPE,,} --prefix="${BASE_DIR}/${INSTALL_DIR}" --libdir="${BASE_DIR}/${INSTALL_DIR}" "${PLUGIN_DIR}/${PLUGIN}" "${PLUGIN_DIR}/${PLUGIN}/build"
+                meson setup --buildtype=${BUILD_TYPE,,} --prefix="${DIR_INSTALL}" --libdir="${DIR_INSTALL}" "${DIR_PLUGIN}/${PLUGIN}" "${DIR_PLUGIN}/${PLUGIN}/build"
             fi
-            ninja -C "${PLUGIN_DIR}/${PLUGIN}/build"
-            ninja -C "${PLUGIN_DIR}/${PLUGIN}/build" install
-            if [ -e "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/${PLUGIN}.so" ]; then
-                mv "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/${PLUGIN}.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true
-            elif [ -e "${BASE_DIR}/${INSTALL_DIR}/${PLUGIN}.so" ]; then
-                mv "${BASE_DIR}/${INSTALL_DIR}/${PLUGIN}.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true
+            ninja -C "${DIR_PLUGIN}/${PLUGIN}/build"
+            ninja -C "${DIR_PLUGIN}/${PLUGIN}/build" install
+            if [ -e "${DIR_INSTALL}/obs-plugins/${PLUGIN}.so" ]; then
+                mv "${DIR_INSTALL}/obs-plugins/${PLUGIN}.so" "${DIR_INSTALL}/obs-plugins/64bit/" || true
+            elif [ -e "${DIR_INSTALL}/${PLUGIN}.so" ]; then
+                mv "${DIR_INSTALL}/${PLUGIN}.so" "${DIR_INSTALL}/obs-plugins/64bit/" || true
             fi
         else
-            if grep 'BUILD_OUT_OF_TREE' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"; then
+            if grep 'BUILD_OUT_OF_TREE' "${DIR_PLUGIN}/${PLUGIN}/CMakeLists.txt"; then
                 EXTRA+=" -DBUILD_OUT_OF_TREE=ON"
             fi
-            if grep 'USE_SYSTEM_CURL' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"; then
+            if grep 'USE_SYSTEM_CURL' "${DIR_PLUGIN}/${PLUGIN}/CMakeLists.txt"; then
                 EXTRA+=" -DUSE_SYSTEM_CURL=ON"
             fi
-            if grep 'USE_SYSTEM_PUGIXML' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"; then
+            if grep 'USE_SYSTEM_PUGIXML' "${DIR_PLUGIN}/${PLUGIN}/CMakeLists.txt"; then
                 EXTRA+=" -DUSE_SYSTEM_PUGIXML=ON"
             fi
-            if grep '"name": "linux-x86_64"' "${PLUGIN_DIR}/${PLUGIN}/CMakePresets.json"; then
+            if grep '"name": "linux-x86_64"' "${DIR_PLUGIN}/${PLUGIN}/CMakePresets.json"; then
                 EXTRA+=" --preset linux-x86_64"
             fi
             # Some plugins use deprecated OBS APIs such as obs_frontend_add_dock()
-            if grep -R obs_frontend_add_dock "${PLUGIN_DIR}/${PLUGIN}"/* || grep -R obs_service_get_output_type "${PLUGIN_DIR}/${PLUGIN}"/*; then
+            if grep -R obs_frontend_add_dock "${DIR_PLUGIN}/${PLUGIN}"/* || grep -R obs_service_get_output_type "${DIR_PLUGIN}/${PLUGIN}"/*; then
                 ERROR+=" -Wno-error=deprecated-declarations"
             fi
             case "${PLUGIN}" in
@@ -470,23 +459,23 @@ function stage_06_plugins() {
                         EXTRA+=" -DQT_VERSION=6"
                     fi
                     # Add face detection models for face tracker plugin
-                    mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker"
+                    mkdir -p "${DIR_INSTALL}/data/obs-plugins/obs-face-tracker"
                     download_file "https://github.com/norihiro/obs-face-tracker/releases/download/0.7.0-hogdata/frontal_face_detector.dat.bz2"
                     download_file "https://github.com/davisking/dlib-models/raw/master/shape_predictor_5_face_landmarks.dat.bz2"
-                    cp "${DOWNLOAD_DIR}/frontal_face_detector.dat.bz2" "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/frontal_face_detector.dat.bz2"
-                    cp "${DOWNLOAD_DIR}/shape_predictor_5_face_landmarks.dat.bz2" "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/shape_predictor_5_face_landmarks.dat.bz2"
-                    bunzip2 -f "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/frontal_face_detector.dat.bz2"
-                    bunzip2 -f "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/shape_predictor_5_face_landmarks.dat.bz2";;
+                    cp "${DIR_DOWNLOAD}/frontal_face_detector.dat.bz2" "${DIR_INSTALL}/data/obs-plugins/obs-face-tracker/frontal_face_detector.dat.bz2"
+                    cp "${DIR_DOWNLOAD}/shape_predictor_5_face_landmarks.dat.bz2" "${DIR_INSTALL}/data/obs-plugins/obs-face-tracker/shape_predictor_5_face_landmarks.dat.bz2"
+                    bunzip2 -f "${DIR_INSTALL}/data/obs-plugins/obs-face-tracker/frontal_face_detector.dat.bz2"
+                    bunzip2 -f "${DIR_INSTALL}/data/obs-plugins/obs-face-tracker/shape_predictor_5_face_landmarks.dat.bz2";;
                 obs-ndi)
                     download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5_5.5.3-1_amd64.deb"
                     download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5-dev_5.5.3-1_amd64.deb"
-                    apt-get -y install --no-install-recommends "${DOWNLOAD_DIR}"/*.deb
-                    cp -v /usr/lib/libndi.so "${BASE_DIR}/${INSTALL_DIR}/lib/";;
+                    apt-get -y install --no-install-recommends "${DIR_DOWNLOAD}"/*.deb
+                    cp -v /usr/lib/libndi.so "${DIR_INSTALL}/lib/";;
                 obs-replay-source)
                     # Make uthash and libcaption headers discoverable by obs-replay-source
-                    cp "${SOURCE_DIR}/deps/uthash/uthash/uthash.h" /usr/include/obs/util/
+                    cp "${DIR_SOURCE}/deps/uthash/uthash/uthash.h" /usr/include/obs/util/
                     mkdir -p /usr/include/caption/
-                    cp "${SOURCE_DIR}/deps/libcaption/caption/"*.h /usr/include/caption/;;
+                    cp "${DIR_SOURCE}/deps/libcaption/caption/"*.h /usr/include/caption/;;
                 obs-source-dock)
                     ERROR+=" -Wno-error=switch";;
                 obs-stroke-glow-shadow)
@@ -496,70 +485,70 @@ function stage_06_plugins() {
                 SceneSwitcher)
                     # Adjust cmake VERSION SceneSwitch on Ubuntu 20.04
                     if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
-                        sed -i 's/VERSION 3\.21/VERSION 3\.18/' "${SOURCE_DIR}/UI/frontend-plugins/SceneSwitcher/CMakeLists.txt" || true
+                        sed -i 's/VERSION 3\.21/VERSION 3\.18/' "${DIR_SOURCE}/UI/frontend-plugins/SceneSwitcher/CMakeLists.txt" || true
                     fi;;
                 tuna)
                     # Use system libmpdclient and taglib
                     # https://aur.archlinux.org/packages/obs-tuna
-                    download_file "https://aur.archlinux.org/cgit/aur.git/plain/FindLibMPDClient.cmake?h=obs-tuna" "${PLUGIN_DIR}/${PLUGIN}/cmake/external/FindLibMPDClient.cmake"
-                    download_file "https://aur.archlinux.org/cgit/aur.git/plain/FindTaglib.cmake?h=obs-tuna" "${PLUGIN_DIR}/${PLUGIN}/cmake/external/FindTaglib.cmake"
-                    download_file "https://aur.archlinux.org/cgit/aur.git/plain/deps_CMakeLists.txt?h=obs-tuna" "${PLUGIN_DIR}/${PLUGIN}/deps/CMakeLists.txt"
-                    sed -i '13 a find_package(LibMPDClient REQUIRED)\nfind_package(Taglib REQUIRED)' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
+                    download_file "https://aur.archlinux.org/cgit/aur.git/plain/FindLibMPDClient.cmake?h=obs-tuna" "${DIR_PLUGIN}/${PLUGIN}/cmake/external/FindLibMPDClient.cmake"
+                    download_file "https://aur.archlinux.org/cgit/aur.git/plain/FindTaglib.cmake?h=obs-tuna" "${DIR_PLUGIN}/${PLUGIN}/cmake/external/FindTaglib.cmake"
+                    download_file "https://aur.archlinux.org/cgit/aur.git/plain/deps_CMakeLists.txt?h=obs-tuna" "${DIR_PLUGIN}/${PLUGIN}/deps/CMakeLists.txt"
+                    sed -i '13 a find_package(LibMPDClient REQUIRED)\nfind_package(Taglib REQUIRED)' "${DIR_PLUGIN}/${PLUGIN}/CMakeLists.txt"
                     EXTRA+=" -DCREDS=MISSING -DLASTFM_CREDS=MISSING";;
             esac
             # Build process for OBS Studio 28 and newer
-            cmake -S "${PLUGIN_DIR}/${PLUGIN}" -B "${PLUGIN_DIR}/${PLUGIN}/build" -G Ninja \
+            cmake -S "${DIR_PLUGIN}/${PLUGIN}" -B "${DIR_PLUGIN}/${PLUGIN}/build" -G Ninja \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
               -DCMAKE_CXX_FLAGS="${ERROR}" \
               -DCMAKE_C_FLAGS="${ERROR}" \
-              -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
-              ${EXTRA} -Wno-dev | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
-            cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
-            cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
+              -DCMAKE_INSTALL_PREFIX="${DIR_INSTALL}" \
+              ${EXTRA} -Wno-dev | tee "${DIR_BUILD}/cmake-${PLUGIN}.log"
+            cmake --build "${DIR_PLUGIN}/${PLUGIN}/build"
+            cmake --install "${DIR_PLUGIN}/${PLUGIN}/build" --prefix "${DIR_INSTALL}/"
         fi
     done < ./plugins-"${OBS_MAJ_VER}".csv
     
     # Re-organise misplaced plugins
-    mv -v "${BASE_DIR}/${INSTALL_DIR}/lib/obs-plugins/"*.so "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/"
-    cp -av "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins/"* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/"
-    rm -rf "${BASE_DIR}/${INSTALL_DIR}/share/obs/obs-plugins"
+    mv -v "${DIR_INSTALL}/lib/obs-plugins/"*.so "${DIR_INSTALL}/obs-plugins/64bit/"
+    cp -av "${DIR_INSTALL}/share/obs/obs-plugins/"* "${DIR_INSTALL}/data/obs-plugins/"
+    rm -rf "${DIR_INSTALL}/share/obs/obs-plugins"
     # Re-organsise waveform plugin
-    mv -v "${BASE_DIR}/${INSTALL_DIR}/waveform/bin/64bit/"*.so "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/"
-    mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/waveform"
-    mv -v "${BASE_DIR}/${INSTALL_DIR}/waveform/data/"* "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/waveform/" || true
-    rm -rf "${BASE_DIR}/${INSTALL_DIR}/waveform/"
+    mv -v "${DIR_INSTALL}/waveform/bin/64bit/"*.so "${DIR_INSTALL}/obs-plugins/64bit/"
+    mkdir -p "${DIR_INSTALL}/data/obs-plugins/waveform"
+    mv -v "${DIR_INSTALL}/waveform/data/"* "${DIR_INSTALL}/data/obs-plugins/waveform/" || true
+    rm -rf "${DIR_INSTALL}/waveform/"
     # Re-organsise libonnxruntime
-    mv -v "${BASE_DIR}/${INSTALL_DIR}/lib/obs-plugins/obs-backgroundremoval/libonnxruntime"* "${BASE_DIR}/${INSTALL_DIR}/lib/" || true
+    mv -v "${DIR_INSTALL}/lib/obs-plugins/obs-backgroundremoval/libonnxruntime"* "${DIR_INSTALL}/lib/" || true
 }
 
 function stage_07_themes() {
-    download_file "https://obsproject.com/forum/resources/yami-resized.1611/version/4885/download" "${DOWNLOAD_DIR}/Yami-Resized-1.1.1.zip"
-    unzip -o -qq "${DOWNLOAD_DIR}/Yami-Resized-1.1.1.zip" -d "${BASE_DIR}/${INSTALL_DIR}/data/obs-studio/themes"
+    download_file "https://obsproject.com/forum/resources/yami-resized.1611/version/4885/download" "${DIR_DOWNLOAD}/Yami-Resized-1.1.1.zip"
+    unzip -o -qq "${DIR_DOWNLOAD}/Yami-Resized-1.1.1.zip" -d "${DIR_INSTALL}/data/obs-studio/themes"
 }
 
 function stage_08_finalise() {
     # Remove CEF files that are lumped in with obs-plugins
     # Prevents OBS from enumating the .so files to determine if they can be loaded as a plugin
-    rm -rf "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/locales" || true
-    rm -rf "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/swiftshader" || true
+    rm -rf "${DIR_INSTALL}/obs-plugins/64bit/locales" || true
+    rm -rf "${DIR_INSTALL}/obs-plugins/64bit/swiftshader" || true
     for CEF_FILE in chrome-sandbox *.pak icudtl.dat libcef.so libEGL.so \
         libGLESv2.so libvk_swiftshader.so libvulkan.so.1 snapshot_blob.bin \
         v8_context_snapshot.bin vk_swiftshader_icd.json; do
         #shellcheck disable=SC2086
-        rm -f "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/"${CEF_FILE} || true
+        rm -f "${DIR_INSTALL}/obs-plugins/64bit/"${CEF_FILE} || true
     done
 
     # Remove empty directories
-    find "${BASE_DIR}/${INSTALL_DIR}" -type d -empty -delete
+    find "${DIR_INSTALL}" -type d -empty -delete
 
     # Strip binaries and correct permissions
     if [ "${BUILD_TYPE}" == "Release" ]; then
-        for DIR in "${BASE_DIR}/${INSTALL_DIR}/cef" \
-            "${BASE_DIR}/${INSTALL_DIR}/bin/64bit" \
-            "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit" \
-            "${BASE_DIR}/${INSTALL_DIR}/data/obs-scripting/64bit" \
-            "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/StreamFX/" \
-            "${BASE_DIR}/${INSTALL_DIR}/lib"; do
+        for DIR in "${DIR_INSTALL}/cef" \
+            "${DIR_INSTALL}/bin/64bit" \
+            "${DIR_INSTALL}/obs-plugins/64bit" \
+            "${DIR_INSTALL}/data/obs-scripting/64bit" \
+            "${DIR_INSTALL}/data/obs-plugins/StreamFX/" \
+            "${DIR_INSTALL}/lib"; do
             #shellcheck disable=SC2162
             while read FILE; do
                 TYPE=$(file "${FILE}" | cut -d':' -f2 | awk '{print $1}')
@@ -582,18 +571,18 @@ function stage_09_make_scripts() {
 
     # Template scripts with correct Ubuntu versions
     for SCRIPT in ${SCRIPTS}; do
-        sed "s|TARGET_CODENAME|${DISTRO_CODENAME}|g" "./${SCRIPT}" > "${BASE_DIR}/${INSTALL_DIR}/${SCRIPT}"
-        sed -i "s|TARGET_VERSION|${DISTRO_VERSION}|g" "${BASE_DIR}/${INSTALL_DIR}/${SCRIPT}"
-        chmod 755 "${BASE_DIR}/${INSTALL_DIR}/${SCRIPT}"
+        sed "s|TARGET_CODENAME|${DISTRO_CODENAME}|g" "./${SCRIPT}" > "${DIR_INSTALL}/${SCRIPT}"
+        sed -i "s|TARGET_VERSION|${DISTRO_VERSION}|g" "${DIR_INSTALL}/${SCRIPT}"
+        chmod 755 "${DIR_INSTALL}/${SCRIPT}"
     done
 
     # Populate the dependencies file
-    echo "sudo apt-get --no-install-recommends install \\" >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
-    echo "DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install \\" >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
+    echo "sudo apt-get --no-install-recommends install \\" >> "${DIR_INSTALL}/obs-dependencies"
+    echo "DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install \\" >> "${DIR_INSTALL}/obs-container-dependencies"
 
     # Build a list of all the linked libraries
     rm -f obs-libs.txt 2>/dev/null || true
-    for DIR in "${BASE_DIR}/${INSTALL_DIR}/cef" "${BASE_DIR}/${INSTALL_DIR}/bin/64bit" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit" "${BASE_DIR}/${INSTALL_DIR}/data/obs-scripting/64bit"; do
+    for DIR in "${DIR_INSTALL}/cef" "${DIR_INSTALL}/bin/64bit" "${DIR_INSTALL}/obs-plugins/64bit" "${DIR_INSTALL}/data/obs-scripting/64bit"; do
         #shellcheck disable=SC2162
         while read FILE; do
             while read LIB; do
@@ -614,29 +603,29 @@ function stage_09_make_scripts() {
     #shellcheck disable=SC2162
     while read PKG; do
         if [ -n "${PKG}" ]; then
-            echo -e "\t${PKG} \\" | tee -a "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies" "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
+            echo -e "\t${PKG} \\" | tee -a "${DIR_INSTALL}/obs-dependencies" "${DIR_INSTALL}/obs-container-dependencies"
         fi
     done < <(sort -u obs-pkgs.txt)
 
     # Provide additional runtime requirements
     #shellcheck disable=SC1003
     if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
-        echo -e '\tqt6-image-formats-plugins \\\n\tqt6-qpa-plugins \\\n\tqt6-wayland \\' | tee -a "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies" "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
+        echo -e '\tqt6-image-formats-plugins \\\n\tqt6-qpa-plugins \\\n\tqt6-wayland \\' | tee -a "${DIR_INSTALL}/obs-dependencies" "${DIR_INSTALL}/obs-container-dependencies"
     else
-        echo -e '\tqtwayland5 \\' | tee -a "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies" "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
+        echo -e '\tqtwayland5 \\' | tee -a "${DIR_INSTALL}/obs-dependencies" "${DIR_INSTALL}/obs-container-dependencies"
     fi
-    echo -e '\tgstreamer1.0-plugins-good \\\n\tgstreamer1.0-plugins-bad \\\n\tgstreamer1.0-plugins-ugly \\\n\tgstreamer1.0-x \\' | tee -a "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies" "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
-    echo -e '\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tstterm' >> "${BASE_DIR}/${INSTALL_DIR}/obs-dependencies"
-    echo -e '\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tstterm \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
-    echo -e '\tmesa-vdpau-drivers \\\n\tmesa-va-drivers && \\' >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
-    echo -e 'apt-get -y clean && rm -rd /var/lib/apt/lists/*' >> "${BASE_DIR}/${INSTALL_DIR}/obs-container-dependencies"
+    echo -e '\tgstreamer1.0-plugins-good \\\n\tgstreamer1.0-plugins-bad \\\n\tgstreamer1.0-plugins-ugly \\\n\tgstreamer1.0-x \\' | tee -a "${DIR_INSTALL}/obs-dependencies" "${DIR_INSTALL}/obs-container-dependencies"
+    echo -e '\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tstterm' >> "${DIR_INSTALL}/obs-dependencies"
+    echo -e '\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tstterm \\' >> "${DIR_INSTALL}/obs-container-dependencies"
+    echo -e '\tmesa-vdpau-drivers \\\n\tmesa-va-drivers && \\' >> "${DIR_INSTALL}/obs-container-dependencies"
+    echo -e 'apt-get -y clean && rm -rd /var/lib/apt/lists/*' >> "${DIR_INSTALL}/obs-container-dependencies"
 }
 
 function stage_10_make_tarball() {
-    cd "${BASE_DIR}"
-    tar cjf "${INSTALL_DIR}.tar.bz2" --exclude cmake --exclude include --exclude lib/pkgconfig "${INSTALL_DIR}"
-    sha256sum "${INSTALL_DIR}.tar.bz2" > "${BASE_DIR}/${INSTALL_DIR}.tar.bz2.sha256"
-    sed -i -r "s/ .*\/(.+)/  \1/g" "${BASE_DIR}/${INSTALL_DIR}.tar.bz2.sha256"
+    cd "${DIR_BASE}"
+    tar cjf "${DIR_INSTALL}.tar.bz2" --exclude cmake --exclude include --exclude lib/pkgconfig "${DIR_INSTALL}"
+    sha256sum "${DIR_INSTALL}.tar.bz2" > "${DIR_INSTALL}.tar.bz2.sha256"
+    sed -i -r "s/ .*\/(.+)/  \1/g" "${DIR_INSTALL}.tar.bz2.sha256"
 }
 
 stage_01_get_apt
