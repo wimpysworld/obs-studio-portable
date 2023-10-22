@@ -201,6 +201,7 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ub
 ## Effects ✨
 
 - **[3D Effect](https://github.com/exeldro/obs-3d-effect)** plugin; 3D effect filter.
+- **[Advanced Masks](https://github.com/FiniteSingularity/obs-advanced-masks)** plugin; Advanced Masking.
 - **[Background Removal](https://github.com/obs-ai/obs-backgroundremoval)** plugin; portrait background removal, virtual green-screen and low-light enhancement
 - **[Browser Transition](https://github.com/exeldro/obs-browser-transition)** plugin; show a browser source during scene transition.
 - **[Composite Blur](https://github.com/FiniteSingularity/obs-composite-blur)** plugin; comprehensive blur plugin that provides several different blur algorithms, and proper compositing.
@@ -242,6 +243,7 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ub
 
 ## Text 📝
 
+- **[Countdown](https://github.com/ashmanix/obs-plugin-countdown)** plugin; creates a countdown timer.
 - **[Markdown](https://github.com/exeldro/obs-markdown)** plugin; add Markdown sources
 - **[Text PThread](https://github.com/norihiro/obs-text-pthread)** plugin; Rich text source plugin with many advanced features, including multi-language support, emoji support, vertical rendering and RTL support.
 - **[URL Source](https://github.com/obs-ai/obs-urlsource)** plugin; fetch data from a URL (API), parse and display live update in scene.
@@ -256,7 +258,7 @@ These plugins were previously bundled with OBS Studio, but have since been remov
 - **[RTSP Server](https://github.com/iamscottxu/obs-rtspserver/)** - introduced a large number of memory leaks.
 - **[Scene Collection Manager](https://github.com/exeldro/obs-scene-collection-manager)** - can silently revert configurations to an older version.
 - **[StreamFX](https://github.com/Xaymar/obs-StreamFX)** - dropped from OBS 30 onward, StreamFX development has fallen way behind OBS Studio release cadence. StreamFX is incompatible with Vertical Plugin, 0.12.0b366 onward forcibly includes pointless UI elements and component inclusion is no longer configurable. Many StreamFX features are now provided via superior plugins from other authors:
-  - Dynamic Masks will is replaced with [**Advanced Masks**](https://github.com/FiniteSingularity/obs-advanced-masks) by [*FiniteSingularity*](https://github.com/FiniteSingularity).
+  - Dynamic Masks is replaced with [**Advanced Masks**](https://github.com/FiniteSingularity/obs-advanced-masks) by [*FiniteSingularity*](https://github.com/FiniteSingularity).
   - 3D Transform is replaced with [**3D Effects**](https://github.com/exeldro/obs-3d-effect) by [*exeldro*](https://github.com/exeldro/).
   - Blur is replaced with [**Composite Blur**](https://github.com/FiniteSingularity/obs-composite-blur) by [*FiniteSingularity*](https://github.com/FiniteSingularity).
   - SDF Effects is replaced with [**Stroke, Glow, and Shadow**](https://github.com/FiniteSingularity/obs-stroke-glow-shadow) by [*FiniteSingularity*](https://github.com/FiniteSingularity).
@@ -268,11 +270,9 @@ These plugins were previously bundled with OBS Studio, but have since been remov
 
 Here are some additional plugins that look useful that I might add in the future:
 
-- [Advanced Masks](https://github.com/FiniteSingularity/obs-advanced-masks) - *keenly waiting for a stable release*
 - [Async Audio Filter](https://github.com/norihiro/obs-async-audio-filter)
 - [Durchblick](https://git.vrsal.xyz/alex/Durchblick) - *needs testing, user reports indicate stability issues*
 - [Clean Stream](https://github.com/obs-ai/obs-cleanstream) - *currently experimental*
-- [Countdown](https://github.com/ashmanix/obs-plugin-countdown)
 - [Input Overlay](https://github.com/univrsal/input-overlay)
 - [LiveSplit](https://github.com/LiveSplit/obs-livesplit-one)
 - [Main View Source](https://github.com/norihiro/obs-main-view-source)
