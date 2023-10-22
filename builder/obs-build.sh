@@ -351,20 +351,20 @@ function stage_06_plugins() {
     local ERROR=""
     local EXTRA=""
     local PLUGIN=""
-    local PRIORITY=""
+    local STATUS=""
     local URL=""
 
     #shellcheck disable=SC2162
     while read REPO; do
         URL="$(echo "${REPO}" | cut -d',' -f 1)"
         BRANCH="$(echo "${REPO}" | cut -d',' -f 2)"
-        PRIORITY="$(echo "${REPO}" | cut -d',' -f 3 | sed 's/ //g')"
+        STATUS="$(echo "${REPO}" | cut -d',' -f 3 | sed 's/ //g')"
         PLUGIN="$(echo "${URL}" | cut -d'/' -f 5)"
 
         # Ignore disabled or auxillary plugins if instructed to build only the essential plugins
-        if [ "${PRIORITY}" == "disabled" ]; then
+        if [ "${STATUS}" == "disabled" ]; then
             continue
-        elif [ "${PLUGIN_LIST}" == "essential" ] && [ "${PRIORITY}" == "auxiliary" ]; then
+        elif [ "${PLUGIN_LIST}" == "essential" ] && [ "${STATUS}" == "auxiliary" ]; then
             continue
         fi
 
