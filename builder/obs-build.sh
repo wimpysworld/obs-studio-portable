@@ -359,7 +359,6 @@ function stage_06_plugins() {
         URL="$(echo "${REPO}" | cut -d',' -f 1)"
         BRANCH="$(echo "${REPO}" | cut -d',' -f 2)"
         PRIORITY="$(echo "${REPO}" | cut -d',' -f 3 | sed 's/ //g')"
-        AUTHOR="$(echo "${URL}" | cut -d'/' -f 4)"
         PLUGIN="$(echo "${URL}" | cut -d'/' -f 5)"
 
         # Ignore disabled or auxillary plugins if instructed to build only the essential plugins
@@ -369,12 +368,8 @@ function stage_06_plugins() {
             continue
         fi
 
-        # obs-face-tracker requires that QT_VERSION is set
-        local QT_VER="6"
-
         # Insufficient Golang or PipeWire or Qt support in Ubuntu 20.04 to build these plugins
         if [ "${DISTRO_CMP_VER}" -le 2004 ]; then
-            QT_VER="5"
             if [ "${PLUGIN}" == "obs-backgroundremoval" ] || \
                [ "${PLUGIN}" == "obs-localvocal" ] || \
                [ "${PLUGIN}" == "obs-pipewire-audio-capture" ] || \
@@ -467,21 +462,31 @@ function stage_06_plugins() {
                 mv "${BASE_DIR}/${INSTALL_DIR}/${PLUGIN}.so" "${BASE_DIR}/${INSTALL_DIR}/obs-plugins/64bit/" || true
             fi
         else
-            if [ "${AUTHOR}" == "ujifgc" ] || [ "${AUTHOR}" == "exeldro" ] || [ "${AUTHOR}" == "Aitum" ] || [ "${AUTHOR}" == "andilippi" ] || [ "${AUTHOR}" == "FiniteSingularity" ] || [ "${PLUGIN}" == "obs-scale-to-sound" ]; then
-                EXTRA="-DBUILD_OUT_OF_TREE=ON"
+            if grep 'BUILD_OUT_OF_TREE' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"; then
+                EXTRA+=" -DBUILD_OUT_OF_TREE=ON"
+            fi
+            if grep 'USE_SYSTEM_CURL' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"; then
+                EXTRA+=" -DUSE_SYSTEM_CURL=ON"
+            fi
+            if grep 'USE_SYSTEM_PUGIXML' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"; then
+                EXTRA+=" -DUSE_SYSTEM_PUGIXML=ON"
+            fi
+            if grep '"name": "linux-x86_64"' "${PLUGIN_DIR}/${PLUGIN}/CMakePresets.json"; then
+                EXTRA+=" --preset linux-x86_64"
             fi
             case "${PLUGIN}" in
-                obs-backgroundremoval)
-                    EXTRA="--preset linux-x86_64";;
                 obs-face-tracker)
+                    if [ "${DISTRO_CMP_VER}" -le 2004 ]; then
+                        EXTRA+=" -DQT_VERSION=5"
+                    else
+                        EXTRA+=" -DQT_VERSION=6"
+                    fi
                     # Add face detection models for face tracker plugin
                     mkdir -p "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker"
                     wget --quiet --show-progress --progress=bar:force:noscroll "https://github.com/norihiro/obs-face-tracker/releases/download/0.7.0-hogdata/frontal_face_detector.dat.bz2" -O "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/frontal_face_detector.dat.bz2"
                     wget --quiet --show-progress --progress=bar:force:noscroll "https://github.com/davisking/dlib-models/raw/master/shape_predictor_5_face_landmarks.dat.bz2" -O "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/shape_predictor_5_face_landmarks.dat.bz2"
                     bunzip2 -f "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/frontal_face_detector.dat.bz2"
                     bunzip2 -f "${BASE_DIR}/${INSTALL_DIR}/data/obs-plugins/obs-face-tracker/shape_predictor_5_face_landmarks.dat.bz2";;
-                obs-localvocal)
-                    EXTRA="--preset linux-x86_64 -DUSE_SYSTEM_CURL=ON";;
                 obs-ndi)
                     download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5_5.5.3-1_amd64.deb"
                     download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5-dev_5.5.3-1_amd64.deb"
@@ -493,12 +498,11 @@ function stage_06_plugins() {
                     mkdir -p /usr/include/caption/
                     cp "${SOURCE_DIR}/deps/libcaption/caption/"*.h /usr/include/caption/;;
                 obs-source-dock)
-                    ERROR="-Wno-error=switch";;
+                    ERROR+=" -Wno-error=switch";;
                 obs-stroke-glow-shadow)
-                    ERROR="-Wno-error=stringop-overflow";;
+                    ERROR+=" -Wno-error=stringop-overflow";;
                 obs-urlsource)
-                    EXTRA="--preset linux-x86_64 -DUSE_SYSTEM_CURL=ON -DUSE_SYSTEM_PUGIXML=ON"
-                    ERROR="-Wno-error=conversion -Wno-error=shadow";;
+                    ERROR+=" -Wno-error=conversion -Wno-error=shadow";;
                 SceneSwitcher)
                     # Adjust cmake VERSION SceneSwitch on Ubuntu 20.04
                     if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
@@ -511,7 +515,7 @@ function stage_06_plugins() {
                     wget -q "https://aur.archlinux.org/cgit/aur.git/plain/FindTaglib.cmake?h=obs-tuna" -O "${PLUGIN_DIR}/${PLUGIN}/cmake/external/FindTaglib.cmake"
                     wget -q "https://aur.archlinux.org/cgit/aur.git/plain/deps_CMakeLists.txt?h=obs-tuna" -O "${PLUGIN_DIR}/${PLUGIN}/deps/CMakeLists.txt"
                     sed -i '13 a find_package(LibMPDClient REQUIRED)\nfind_package(Taglib REQUIRED)' "${PLUGIN_DIR}/${PLUGIN}/CMakeLists.txt"
-                    EXTRA="-DCREDS=MISSING -DLASTFM_CREDS=MISSING";;
+                    EXTRA+=" -DCREDS=MISSING -DLASTFM_CREDS=MISSING";;
             esac
             # Build process for OBS Studio 28 and newer
             # -Wno-error=deprecated-declarations is for some plugins that use deprecated OBS APIs such as obs_frontend_add_dock()
@@ -520,8 +524,7 @@ function stage_06_plugins() {
               -DCMAKE_CXX_FLAGS="-Wno-error=deprecated-declarations ${ERROR}" \
               -DCMAKE_C_FLAGS="-Wno-error=deprecated-declarations ${ERROR}" \
               -DCMAKE_INSTALL_PREFIX="${BASE_DIR}/${INSTALL_DIR}" \
-              -DQT_VERSION="${QT_VER}" ${EXTRA} \
-              -Wno-dev | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
+              ${EXTRA} -Wno-dev | tee "${BUILD_DIR}/cmake-${PLUGIN}.log"
             cmake --build "${PLUGIN_DIR}/${PLUGIN}/build"
             cmake --install "${PLUGIN_DIR}/${PLUGIN}/build" --prefix "${BASE_DIR}/${INSTALL_DIR}/"
         fi
