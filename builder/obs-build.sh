@@ -19,18 +19,10 @@ SOURCE_DIR="${BASE_DIR}/source"
 TARBALL_DIR="${BASE_DIR}/tarballs"
 
 case ${OBS_MAJ_VER} in
-    clean)
-        rm -rf "${BASE_DIR}/"{build,build_portable,build_system,plugins}
-        rm -rf "${SOURCE_DIR}/ntv2/build/"
-        exit 0;;
-    veryclean)
-        rm -rf "${BASE_DIR}/"{build,build_portable,build_system,plugins,source}
-        rm -rf "${SOURCE_DIR}/ntv2/build/"
-        exit 0;;
     29|30)
         AJA_VER="v16.2-bugfix5"
         CEF_VER="5060";;
-  *)
+    *)
         echo "ERROR! Unsupported version: ${OBS_MAJ_VER}"
         exit 1;;
 esac
@@ -55,7 +47,7 @@ STAMP=$(date +%y%j)
 INSTALL_DIR="obs-portable-${OBS_VER}-r${STAMP}-ubuntu-${DISTRO_VERSION}"
 PLUGIN_LIST="auxiliary"
 if [ "${2}" == "essential" ]; then
-    INSTALL_DIR="obs-portable-${OBS_VER}-r${STAMP}-ubuntu-${DISTRO_VERSION}-essential"
+    INSTALL_DIR+="-essential"
     PLUGIN_LIST="essential"
 fi
 
