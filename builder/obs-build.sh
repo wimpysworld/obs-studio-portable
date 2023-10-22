@@ -348,7 +348,6 @@ function stage_05_build_obs() {
 
 function stage_06_plugins() {
     local BRANCH=""
-    local CHAR1=""
     local ERROR=""
     local EXTRA=""
     local PLUGIN=""
@@ -357,12 +356,6 @@ function stage_06_plugins() {
 
     #shellcheck disable=SC2162
     while read REPO; do
-        # ignore commented lines
-        CHAR1=$(echo "${REPO}" | sed 's/ *$//g' | cut -c 1)
-        if [ "${CHAR1}" == "#" ]; then
-            continue
-        fi
-
         URL="$(echo "${REPO}" | cut -d',' -f 1)"
         BRANCH="$(echo "${REPO}" | cut -d',' -f 2)"
         PRIORITY="$(echo "${REPO}" | cut -d',' -f 3 | sed 's/ //g')"
