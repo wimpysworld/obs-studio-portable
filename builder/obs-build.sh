@@ -121,7 +121,7 @@ function stage_01_get_apt() {
     if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
         # Newer cmake, ninja-build, meson for Ubuntu 20.04
         apt-get -y update
-        apt-get -y install --no-install-recoomends software-properties-common
+        apt-get -y install --no-install-recommends software-properties-common
         add-apt-repository -y --no-update ppa:flexiondotorg/build-tools
         PKG_LIST+=" gcc-10 g++-10 golang-1.16-go"
     elif [ "${DISTRO_CMP_VER}" -ge 2310 ]; then
@@ -437,16 +437,10 @@ function stage_06_plugins() {
                     ERROR+=" -Wno-error=stringop-overflow";;
                 obs-urlsource)
                     ERROR+=" -Wno-error=conversion -Wno-error=shadow";;
-                #SceneSwitcher)
-                #    # Adjust cmake VERSION SceneSwitch on Ubuntu 20.04
-                #    if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
-                #        sed -i 's/VERSION 3\.21/VERSION 3\.18/' "${DIR_PLUGIN}/${PLUGIN}/UI/frontend-plugins/SceneSwitcher/CMakeLists.txt" || true
-                #    fi;;
                 obs-StreamFX)
-                    # Monkey patch the needlessly exagerated and inconsistent cmake version requirements
+                    # Monkey patch the needlessly exagerated cmake requirements
                     if [ "${OBS_MAJ_VER}" -ge 29 ]; then
-                        sed -i 's/VERSION 3\.26/VERSION 3\.18/' "${DIR_PLUGIN}/${PLUGIN}/CMakeLists.txt" || true
-                        sed -i 's/VERSION 3\.20/VERSION 3\.18/' "${DIR_PLUGIN}/${PLUGIN}/cmake/clang/Clang.cmake" || true
+                        sed -i 's/VERSION 3\.26/VERSION 3\.22/' "${DIR_PLUGIN}/${PLUGIN}/CMakeLists.txt" || true
                     fi
                     # Only enable stable features supported on Linux; see README.md for more details
                     EXTRA+=" -DENABLE_ENCODER_AOM_AV1=OFF \
