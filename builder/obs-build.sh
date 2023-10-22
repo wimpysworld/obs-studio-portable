@@ -589,13 +589,13 @@ function stage_09_make_scripts() {
     #shellcheck disable=SC2162
     while read LIB; do
         #shellcheck disable=SC2005
-        echo "$(dpkg -S "${LIB}" 2>/dev/null | cut -d ':' -f1 | grep -Fv -e '-dev' -e 'i386' -e 'libc' -e 'pulseaudio' | sort -u)" >> obs-pkgs.txt
+        echo "$(dpkg -S "${LIB}" 2>/dev/null | cut -d ':' -f1 | grep -Fv -e '-dev' -e 'i386' -e 'pulseaudio' | sort -u)" >> obs-pkgs.txt
     done < <(sort -u obs-libs.txt)
 
     # Add the packages to the dependencies file
     #shellcheck disable=SC2162
     while read PKG; do
-        if [ -n "${PKG}" ]; then
+        if [ -n "${PKG}" ] && [ "${PKG}" != "libc6" ]; then
             echo -e "\t${PKG} \\" | tee -a "${DIR_INSTALL}/obs-dependencies" "${DIR_INSTALL}/obs-container-dependencies"
         fi
     done < <(sort -u obs-pkgs.txt)
