@@ -491,7 +491,7 @@ function stage_06_plugins() {
             cmake --install "${DIR_PLUGIN}/${PLUGIN}/build" --prefix "${DIR_INSTALL}/"
         fi
     done < ./plugins-"${OBS_MAJ_VER}".csv
-    
+
     # Re-organise misplaced plugins
     mv -v "${DIR_INSTALL}/lib/obs-plugins/"*.so "${DIR_INSTALL}/obs-plugins/64bit/"
     cp -av "${DIR_INSTALL}/share/obs/obs-plugins/"* "${DIR_INSTALL}/data/obs-plugins/"
