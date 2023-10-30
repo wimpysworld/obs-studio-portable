@@ -49,7 +49,7 @@ https://github.com/obs-ndi/obs-ndi,4.11.1,auxiliary
 https://github.com/obsproject/obs-websocket,4.9.1-compat,essential
 https://github.com/phandasm/waveform,v1.7.0,essential
 https://github.com/univrsal/tuna,v1.9.7,disabled
-https://github.com/wimpysworld/obs-dvd-screensaver,0.0.2,auxiliary
+https://github.com/wimpysworld/obs-dvd-screensaver,0.0.2,essential
 https://github.com/wimpysworld/obs-rgb-levels,1.0.2,essential
 https://github.com/FiniteSingularity/obs-advanced-masks,v0.0.2a,essential
 https://github.com/FiniteSingularity/obs-composite-blur,v1.0.6,essential
