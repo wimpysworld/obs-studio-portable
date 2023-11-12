@@ -186,7 +186,7 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     fi
 
     # Screne Switcher
-    PKG_LIST+=" libopencv-dev libxss-dev libxtst-dev"
+    PKG_LIST+=" libleptonica-dev libopencv-dev libxss-dev libxtst-dev"
     case "${DISTRO_CMP_VER}" in
         23*) PKG_LIST+=" libproc2-dev";;
         *)   PKG_LIST+=" libprocps-dev";;
