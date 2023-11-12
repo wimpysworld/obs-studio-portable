@@ -34,13 +34,13 @@ Running OBS Studio in Portable Mode means all settings (Profiles and Scene Colle
 
 ## Supported Software
 
-|                        | OBS Studio 29 | OBS Studio 30 |
-| ---------------------- | ------------- | ------------- |
-| Ubuntu 20.04 (Focal)   | 29.1.3 (Qt 5) | EOL           |
-| Ubuntu 22.04 (Jammy)   | 29.1.3 (Qt 6) | 30.0.0-rc1    |
-| Ubuntu 23.04 (Lunar)   | 29.1.3 (Qt 6) | 30.0.0-rc1    |
-| Ubuntu 23.10 (Mantic)  | 29.1.3 (Qt 6) | 30.0.0-rc1    |
-| Plugins                | 54            | 52            |
+|                        | OBS Studio 30 |
+| ---------------------- | ------------- |
+| Ubuntu 20.04 (Focal)   | EOL           |
+| Ubuntu 22.04 (Jammy)   | 30.0.0        |
+| Ubuntu 23.04 (Lunar)   | 30.0.0        |
+| Ubuntu 23.10 (Mantic)  | 30.0.0        |
+| Plugins                | 52            |
 
 # Install
 
@@ -58,11 +58,11 @@ The installation process is simple:
   - **You must use the `obs-portable` launcher** to ensure OBS Studio finds all the associated libraries and add-ons.
 
 ```bash
-wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23287/obs-portable-29.1.3-r23287-ubuntu-$(lsb_release -rs).tar.bz2"
-wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23287/obs-portable-29.1.3-r23287-ubuntu-$(lsb_release -rs).tar.bz2.sha256"
-sha256sum -c obs-portable-29.1.3-r23287-ubuntu-$(lsb_release -rs).tar.bz2.sha256
-tar xvf obs-portable-29.1.3-r23287-ubuntu-$(lsb_release -rs).tar.bz2
-cd obs-portable-29.1.3-r23287-ubuntu-$(lsb_release -rs)
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23316/obs-portable-30.0.0-r23316-ubuntu-$(lsb_release -rs).tar.bz2"
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23316/obs-portable-30.0.0-r23316-ubuntu-$(lsb_release -rs).tar.bz2.sha256"
+sha256sum -c obs-portable-30.0.0-r23316-ubuntu-$(lsb_release -rs).tar.bz2.sha256
+tar xvf obs-portable-30.0.0-r23316-ubuntu-$(lsb_release -rs).tar.bz2
+cd obs-portable-30.0.0-r23316-ubuntu-$(lsb_release -rs)
 sudo ./obs-dependencies
 ./obs-portable
 ```
@@ -137,9 +137,9 @@ For example:
 ```bash
 mkdir ~/OBS-Studio-again
 cd ~/OBS-Studio-again
-wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23287/obs-portable-29.1.3-r23287-ubuntu-$(lsb_release -rs).tar.bz2"
-tar xvf obs-portable-29.1.3-r23287-ubuntu-$(lsb_release -rs).tar.bz2
-cd obs-portable-29.1.3-r23287-ubuntu-$(lsb_release -rs)
+wget "https://github.com/wimpysworld/obs-studio-portable/releases/download/r23316/obs-portable-30.0.0-r23316-ubuntu-$(lsb_release -rs).tar.bz2"
+tar xvf obs-portable-30.0.0-r23316-ubuntu-$(lsb_release -rs).tar.bz2
+cd obs-portable-30.0.0-r23316-ubuntu-$(lsb_release -rs)
 ```
 
 To launch the second instance of OBS Studio Portable in Distrobox, run the following command:
@@ -329,13 +329,13 @@ The actual build script, [`obs-build.sh`](builder/obs-build.sh), gets injected i
 
 ## Release numbers
 
-An OBS Studio Portable for Linux release number will be something like r23287, and the filename will indicate the version of OBS Studio and which Ubuntu release it is for:
+An OBS Studio Portable for Linux release number will be something like r23316, and the filename will indicate the version of OBS Studio and which Ubuntu release it is for:
 
 ```text
                      +-- OBS Portable for Ubuntu revision
                      |
                      v
-obs-portable-29.1.3-r23287-ubuntu-22.04.tar.bz2
+obs-portable-30.0.0-r23316-ubuntu-22.04.tar.bz2
               ^                    ^
               |                    |
               +-- OBS version      +-- Supported Ubuntu release
