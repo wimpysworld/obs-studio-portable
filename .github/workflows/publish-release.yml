@@ -9,7 +9,7 @@ jobs:
     name: Create release
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Create release ${{ github.ref }} as a draft
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -19,7 +19,7 @@ jobs:
     name: Generate matrix
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Install required packages
       run: |
         sudo apt-get update
@@ -56,7 +56,7 @@ jobs:
         exclude: ${{ fromJson(needs.matrix.outputs.exclude) }}
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Build OBS ${{ matrix.version }} for ${{ matrix.distro }}
       env:
         TWITCH_CLIENTID: ${{ secrets.TWITCH_CLIENTID }}
@@ -83,7 +83,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [create-release, build]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Publish release ${{ github.ref }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
