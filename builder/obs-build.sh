@@ -628,10 +628,11 @@ function stage_09_make_scripts() {
 }
 
 function stage_10_make_tarball() {
+    local DIR_TARBALL="$(basename ${DIR_INSTALL})"
     cd "${DIR_BASE}"
-    tar cjf "${DIR_INSTALL}.tar.bz2" --exclude cmake --exclude include --exclude lib/pkgconfig "${DIR_INSTALL}"
-    sha256sum "${DIR_INSTALL}.tar.bz2" > "${DIR_INSTALL}.tar.bz2.sha256"
-    sed -i -r "s/ .*\/(.+)/  \1/g" "${DIR_INSTALL}.tar.bz2.sha256"
+    tar cjf "${DIR_TARBALL}.tar.bz2" --exclude cmake --exclude include --exclude lib/pkgconfig "${DIR_TARBALL}"
+    sha256sum "${DIR_TARBALL}.tar.bz2" > "${DIR_TARBALL}.tar.bz2.sha256"
+    sed -i -r "s/ .*\/(.+)/  \1/g" "${DIR_TARBALL}.tar.bz2.sha256"
 }
 
 stage_01_get_apt
