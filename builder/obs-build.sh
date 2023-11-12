@@ -186,11 +186,12 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     fi
 
     # Screne Switcher
-    PKG_LIST+=" libleptonica-dev libopencv-dev libxss-dev libxtst-dev"
-    case "${DISTRO_CMP_VER}" in
-        23*) PKG_LIST+=" libproc2-dev";;
-        *)   PKG_LIST+=" libprocps-dev";;
-    esac
+    PKG_LIST+=" libleptonica-dev libopencv-dev libtesseract-dev libxss-dev libxtst-dev"
+    if [ "${DISTRO_CMP_VER}" -ge 2304 ]; then
+        PKG_LIST+=" libproc2-dev"
+    else
+        PKG_LIST+=" libprocps-dev"
+    fi
 
     # Waveform
     PKG_LIST+=" libfftw3-dev"
