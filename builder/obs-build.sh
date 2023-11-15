@@ -435,6 +435,8 @@ function stage_06_plugins() {
                     cp "${DIR_DOWNLOAD}/shape_predictor_5_face_landmarks.dat.bz2" "${DIR_INSTALL}/data/obs-plugins/obs-face-tracker/shape_predictor_5_face_landmarks.dat.bz2"
                     bunzip2 -f "${DIR_INSTALL}/data/obs-plugins/obs-face-tracker/frontal_face_detector.dat.bz2"
                     bunzip2 -f "${DIR_INSTALL}/data/obs-plugins/obs-face-tracker/shape_predictor_5_face_landmarks.dat.bz2";;
+                obs-multi-rtmp)
+                    ERROR+=" -Wno-error=conversion -Wno-error=float-conversion -Wno-error=shadow -Wno-error=sign-compare";;
                 obs-ndi)
                     download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5_5.5.3-1_amd64.deb"
                     download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5-dev_5.5.3-1_amd64.deb"

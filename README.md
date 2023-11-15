@@ -40,7 +40,7 @@ Running OBS Studio in Portable Mode means all settings (Profiles and Scene Colle
 | Ubuntu 22.04 (Jammy)   | 30.0.0        |
 | Ubuntu 23.04 (Lunar)   | 30.0.0        |
 | Ubuntu 23.10 (Mantic)  | 30.0.0        |
-| Plugins                | 52            |
+| Plugins                | 53            |
 
 # Install
 
@@ -228,6 +228,7 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ub
 
 - [**Game Capture**](https://github.com/nowrep/obs-vkcapture) plugin; Vulkan/OpenGL game capture.
 - [**GStreamer**](https://github.com/fzwoch/obs-gstreamer) plugin; feed GStreamer launch pipelines into OBS Studio.
+- [**Multi RTMP**](https://github.com/sorayuki/obs-multi-rtmp) plugin; stream to multiple RTMP servers concurrently.
 - [**NDI**](https://github.com/obs-ndi/obs-ndi) plugin; Network A/V in OBS Studio with NewTek's NDI technology.
 - [**Source Record**](https://github.com/exeldro/obs-source-record) plugin; make sources available to record via a filter.
 - [**Teleport**](https://github.com/fzwoch/obs-teleport) plugin; open NDI-like replacement. (*not NDI compatible*)
