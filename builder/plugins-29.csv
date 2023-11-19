@@ -43,11 +43,11 @@ https://github.com/norihiro/obs-multisource-effect,0.2.1,auxiliary
 https://github.com/norihiro/obs-mute-filter,0.2.2,essential
 https://github.com/norihiro/obs-text-pthread,2.0.2,essential
 https://github.com/nowrep/obs-vkcapture,v1.4.3,auxiliary
-https://github.com/obs-ai/obs-backgroundremoval,1.1.7,auxiliary
-https://github.com/obs-ai/obs-localvocal,0.0.7,essential
-https://github.com/occ-ai/obs-urlsource/roy.fix_linux_build_lexbor,essential
 https://github.com/obs-ndi/obs-ndi,4.13.0,auxiliary
 https://github.com/obsproject/obs-websocket,4.9.1-compat,essential
+https://github.com/occ-ai/obs-backgroundremoval,1.1.7,auxiliary
+https://github.com/occ-ai/obs-localvocal,0.0.7,essential
+https://github.com/occ-ai/obs-urlsource/roy.fix_linux_build_lexbor,essential
 https://github.com/phandasm/waveform,v1.7.0,essential
 https://github.com/sorayuki/obs-multi-rtmp,0.5.0.3,essential
 https://github.com/univrsal/tuna,v1.9.7,essential
