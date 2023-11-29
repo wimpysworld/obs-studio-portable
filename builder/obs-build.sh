@@ -531,8 +531,8 @@ function stage_06_plugins() {
 }
 
 function stage_07_themes() {
-    download_file "https://obsproject.com/forum/resources/yami-resized.1611/version/4885/download" "${DIR_DOWNLOAD}/Yami-Resized-1.1.1.zip"
-    unzip -o -qq "${DIR_DOWNLOAD}/Yami-Resized-1.1.1.zip" -d "${DIR_INSTALL}/data/obs-studio/themes"
+    download_file "https://obsproject.com/forum/resources/yami-resized.1611/version/5246/download" "${DIR_DOWNLOAD}/Yami-Resized-1.2.zip"
+    unzip -o -qq "${DIR_DOWNLOAD}/Yami-Resized-1.2.zip" -d "${DIR_INSTALL}/data/obs-studio/themes"
 }
 
 function stage_08_finalise() {
