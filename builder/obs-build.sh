@@ -452,7 +452,7 @@ function stage_06_plugins() {
                 obs-stroke-glow-shadow)
                     ERROR+=" -Wno-error=stringop-overflow";;
                 obs-urlsource)
-                    ERROR+=" -Wno-error=conversion -Wno-error=shadow";;
+                    ERROR+=" -Wno-error=conversion -Wno-error=float-conversion -Wno-error=shadow";;
                 obs-StreamFX)
                     # Monkey patch the needlessly exagerated cmake requirements
                     if [ "${OBS_MAJ_VER}" -ge 29 ]; then
