@@ -120,8 +120,8 @@ function stage_01_get_apt() {
 
     if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
         # Newer cmake, ninja-build, meson for Ubuntu 20.04
-        apt-get -y update
-        apt-get -y install --no-install-recommends software-properties-common
+        DEBIAN_FRONTEND=noninteractive apt-get -y update
+        DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends software-properties-common
         add-apt-repository -y --no-update ppa:flexiondotorg/build-tools
         PKG_LIST+=" gcc-10 g++-10 golang-1.16-go"
     elif [ "${DISTRO_CMP_VER}" -ge 2310 ]; then
@@ -218,10 +218,10 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
         PKG_LIST+=" libboost-json1.81-dev libboost-url1.81-dev"
     fi
 
-    apt-get -y update
-    apt-get -y upgrade
+    DEBIAN_FRONTEND=noninteractive apt-get -y update
+    DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
     #shellcheck disable=SC2086
-    apt-get -y install --no-install-recommends ${PKG_LIST}
+    DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends ${PKG_LIST}
 
     if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
         update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 800 --slave /usr/bin/g++ g++ /usr/bin/g++-10
@@ -440,7 +440,7 @@ function stage_06_plugins() {
                 obs-ndi)
                     download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5_5.5.3-1_amd64.deb"
                     download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5-dev_5.5.3-1_amd64.deb"
-                    apt-get -y install --no-install-recommends "${DIR_DOWNLOAD}"/*.deb
+                    DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends "${DIR_DOWNLOAD}"/*.deb
                     cp -v /usr/lib/libndi.so "${DIR_INSTALL}/lib/";;
                 obs-replay-source)
                     # Make uthash and libcaption headers discoverable by obs-replay-source
