@@ -10,7 +10,7 @@ https://github.com/exeldro/obs-3d-effect,0.0.2,essential
 https://github.com/exeldro/obs-browser-transition,2d708bd8f09e3faed562bf2164c863af32aa7259,auxiliary
 https://github.com/exeldro/obs-device-switcher,add32e3b28fa8d1b3a1b91de926a65c56e8b179e,auxiliary
 https://github.com/exeldro/obs-dir-watch-media,be0c880d3fcd30a651b82eec4fbe74c096642ae6,auxiliary
-https://github.com/exeldro/obs-downstream-keyer,0.2.7,auxiliary
+https://github.com/exeldro/obs-downstream-keyer,0.3.0,auxiliary
 https://github.com/exeldro/obs-dynamic-delay,c6d4fbb7b7f30fb37c1e19738b37d4615df3f77a,auxiliary
 https://github.com/exeldro/obs-freeze-filter,be6770fa822a6cf45d9537ad2801e093b751a5ff,essential
 https://github.com/exeldro/obs-gradient-source,0.3.2,essential
