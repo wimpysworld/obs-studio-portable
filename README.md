@@ -68,7 +68,8 @@ sudo ./obs-dependencies
 ```
 ### Upgrades
 
-The upgrade process is the same as an install, and you can copy the `config` folder from your old OBS Studio Portable directory to the new one.
+The upgrade process is the same as an install; download and extract the new tarball and run `sudo ./obs-dependenciesand` to ensure all the dependencies are installed.
+Then copy the `config` folder from your old OBS Studio Portable directory to the new one.
 If anything doesn't work correctly when you start the new OBS Studio, continue using the previous OBS Studio Portable instance.
 
 ## Distrobox (*any Linux*)
