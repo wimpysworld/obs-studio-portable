@@ -24,9 +24,12 @@ if [ -x /etc/profile.d/99-obs-config-fix.sh ]; then
     /etc/profile.d/99-obs-config-fix.sh
 fi
 
-# If running in a Distrobox container, set up the environment
+# If running in a Distrobox container, set up the environment to use the container's libraries
 if [ -e /etc/profile.d/distrobox_profile.sh ]; then
-    # Make sure gstreamer find plugins from the container, not the host.
+    # Override the GIO modules path
+    export GIO_EXTRA_MODULES="/usr/lib/x86_64-linux-gnu/gio/modules/"
+
+    # Override GStreamer paths
     export GST_PLUGIN_PATH="/usr/lib/x86_64-linux-gnu/gstreamer-1.0"
     export GST_PLUGIN_SYSTEM_PATH="/usr/lib/x86_64-linux-gnu/gstreamer-1.0"
     export GST_PLUGIN_SYSTEM_PATH_1_0="/usr/lib/x86_64-linux-gnu/gstreamer-1.0"
