@@ -35,7 +35,11 @@ if [ -e /etc/profile.d/distrobox_profile.sh ]; then
     export GST_PLUGIN_SYSTEM_PATH_1_0="/usr/lib/x86_64-linux-gnu/gstreamer-1.0"
     export GST_PLUGIN_SCANNER="/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner"
 
-    # Make sure Qt finds plugins from the container, not the host.
+    # Override PipeWire and SPA modules directories
+    export PIPEWIRE_MODULE_DIR="/usr/lib/x86_64-linux-gnu/pipewire-0.3"
+    export SPA_PLUGIN_DIR="/usr/lib/x86_64-linux-gnu/spa-0.2/"
+
+    # Override QT plugin path
     if [ "${DISTRO_CODENAME}" == "focal" ]; then
         export QT_PLUGIN_PATH="/usr/lib/x86_64-linux-gnu/qt5/plugins"
     else
