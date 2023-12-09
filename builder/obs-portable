@@ -13,7 +13,6 @@ else
 fi
 
 PORTABLE_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
-export LD_LIBRARY_PATH="${PORTABLE_DIR}/bin/64bit":"${PORTABLE_DIR}/obs-plugins/64bit":"${PORTABLE_DIR}/data/obs-scripting/64bit":"${PORTABLE_DIR}/cef":"${PORTABLE_DIR}/lib"${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
 
 if [ ! -d "${PORTABLE_DIR}/bin/64bit" ]; then
     echo "ERROR! Could not find ${PORTABLE_DIR}/bin/64bit."
@@ -41,6 +40,9 @@ if [ -e /etc/profile.d/distrobox_profile.sh ]; then
     fi
     export QT_QPA_PLATFORMTHEME=""
     export QT_STYLE_OVERRIDE=""
+    export LD_LIBRARY_PATH="${PORTABLE_DIR}/bin/64bit":"${PORTABLE_DIR}/obs-plugins/64bit":"${PORTABLE_DIR}/data/obs-scripting/64bit":"${PORTABLE_DIR}/cef":"${PORTABLE_DIR}/lib"
+else
+    export LD_LIBRARY_PATH="${PORTABLE_DIR}/bin/64bit":"${PORTABLE_DIR}/obs-plugins/64bit":"${PORTABLE_DIR}/data/obs-scripting/64bit":"${PORTABLE_DIR}/cef":"${PORTABLE_DIR}/lib"${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
 fi
 
 # Purge the GPU cache to avoid issues with the host's GPU drivers
