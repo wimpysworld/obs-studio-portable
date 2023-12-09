@@ -586,7 +586,7 @@ function stage_09_make_scripts() {
     done
 
     # Populate the dependencies file
-    echo "sudo apt-get --no-install-recommends install \\" >> "${DIR_INSTALL}/obs-dependencies"
+    echo "DEBIAN_FRONTEND=noninteractive sudo apt-get -y --no-install-recommends install \\" >> "${DIR_INSTALL}/obs-dependencies"
     echo "DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install \\" >> "${DIR_INSTALL}/obs-container-dependencies"
 
     # Build a list of all the linked libraries

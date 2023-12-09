@@ -27,7 +27,7 @@ if [ -e /etc/profile.d/distrobox_profile.sh ]; then
     echo "#deb-src https://ppa.launchpadcontent.net/pipewire-debian/wireplumber-upstream/ubuntu TARGET_CODENAME main" | sudo tee -a /etc/apt/sources.list.d/pipewire-debian-ubuntu-wireplumber-upstream-TARGET_CODENAME.list
     sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys FC43B7352BCC0EC8AF2EEB8B25088A0359807596
     sudo apt-get -y update
-    sudo apt-get -y --no-install-recommends install \
+    DEBIAN_FRONTEND=noninteractive sudo apt-get -y --no-install-recommends install \
         gstreamer1.0-pipewire \
         libpipewire-0.3-0 \
         libpipewire-0.3-modules\
@@ -48,5 +48,5 @@ if [ -e /etc/profile.d/distrobox_profile.sh ]; then
         mesa-va-drivers
 else
     sudo apt-get -y update
-    sudo apt-get -y --no-install-recommends install v4l2loopback-dkms v4l2loopback-utils
+    DEBIAN_FRONTEND=noninteractive sudo apt-get -y --no-install-recommends install v4l2loopback-dkms v4l2loopback-utils
 fi
