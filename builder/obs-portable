@@ -59,3 +59,5 @@ fi
 
 cd "${PORTABLE_DIR}/bin/64bit" || exit 1
 exec ./obs --portable "${@}"
+killall obs-browser-page 2>/dev/null
+echo "Done"
