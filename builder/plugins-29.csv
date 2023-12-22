@@ -16,7 +16,7 @@ https://github.com/exeldro/obs-freeze-filter,be6770fa822a6cf45d9537ad2801e093b75
 https://github.com/exeldro/obs-gradient-source,0.3.2,essential
 https://github.com/exeldro/obs-markdown,be3826bdf1f56c621356ece65bd93c991c0ad7ac,essential
 https://github.com/exeldro/obs-media-controls,0ca9daadd55edf090ef07b8ebf29fd275a307a6c,auxiliary
-https://github.com/exeldro/obs-move-transition,2.9.6,essential
+https://github.com/exeldro/obs-move-transition,2.9.7,essential
 https://github.com/exeldro/obs-recursion-effect,bf726d0a3e9429c8c447fc1d87b3a932b2a6ad90,auxiliary
 https://github.com/exeldro/obs-replay-source,1.6.12,auxiliary
 https://github.com/exeldro/obs-scene-collection-manager,0.0.8,disabled
@@ -54,7 +54,7 @@ https://github.com/univrsal/tuna,v1.9.7,essential
 https://github.com/wimpysworld/obs-dvd-screensaver,0.0.2,essential
 https://github.com/wimpysworld/obs-rgb-levels,1.0.2,essential
 https://github.com/FiniteSingularity/obs-advanced-masks,v1.0.1,essential
-https://github.com/FiniteSingularity/obs-composite-blur,v1.0.6,essential
+https://github.com/FiniteSingularity/obs-composite-blur,v1.1.0,essential
 https://github.com/FiniteSingularity/obs-stroke-glow-shadow,v1.0.2,essential
-https://github.com/WarmUpTill/SceneSwitcher,1.24.0,essential
+https://github.com/WarmUpTill/SceneSwitcher,1.24.2,essential
 https://github.com/Xaymar/obs-StreamFX,0.12.0b299,auxiliary
