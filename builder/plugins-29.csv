@@ -32,7 +32,6 @@ https://github.com/exeldro/obs-transition-table,0.2.7,essential
 https://github.com/fzwoch/obs-gstreamer,v0.4.0,essential
 https://github.com/fzwoch/obs-teleport,0.6.6,essential
 https://github.com/fzwoch/obs-vaapi,0.4.1,essential
-https://github.com/gottagofaster236/RewardsTheater,1.0.5,disabled
 https://github.com/iamscottxu/obs-rtspserver,v3.0.0,disabled
 https://github.com/norihiro/obs-async-source-duplication,0.4.1,disabled
 https://github.com/norihiro/obs-audio-pan-filter,0.2.3,auxiliary
