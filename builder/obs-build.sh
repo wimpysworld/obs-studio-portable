@@ -203,6 +203,8 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     PKG_LIST+=" libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-good1.0-dev libgstreamer-plugins-bad1.0-dev"
     # Tuna
     PKG_LIST+=" libdbus-1-dev libmpdclient-dev libtag1-dev"
+    # Async Audio Filter
+    PKG_LIST+=" libsamplerate0-dev  libsndfile1-dev"
 
     if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
         # VKCapture
