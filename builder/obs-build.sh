@@ -503,9 +503,9 @@ function stage_06_plugins() {
     rm -rf "${DIR_INSTALL}/share/obs/obs-plugins"
     # Re-organsise waveform plugin
     if [ -d "${DIR_INSTALL}/waveform" ]; then
-        mv -v "${DIR_INSTALL}/waveform/bin/64bit/"*.so "${DIR_INSTALL}/obs-plugins/64bit/" || true
+        mv -v "${DIR_INSTALL}/waveform/bin/64bit/"*.so "${DIR_INSTALL}/obs-plugins/64bit/"
         mkdir -p "${DIR_INSTALL}/data/obs-plugins/waveform"
-        mv -v "${DIR_INSTALL}/waveform/data/"* "${DIR_INSTALL}/data/obs-plugins/waveform/" || true
+        mv -v "${DIR_INSTALL}/waveform/data/"* "${DIR_INSTALL}/data/obs-plugins/waveform/"
         rm -rf "${DIR_INSTALL}/waveform/"
     fi
     # Re-organise multi-rtmp plugin
@@ -517,9 +517,9 @@ function stage_06_plugins() {
     fi
     # Reorganise the StreamFX plugin
     if [ -d "${DIR_INSTALL}/plugins/StreamFX" ]; then
-        mv "${DIR_INSTALL}/plugins/StreamFX/bin/64bit/"* "${DIR_INSTALL}/obs-plugins/64bit/" || true
+        mv "${DIR_INSTALL}/plugins/StreamFX/bin/64bit/"* "${DIR_INSTALL}/obs-plugins/64bit/"
         mkdir -p "${DIR_INSTALL}/data/obs-plugins/StreamFX"
-        cp -a "${DIR_INSTALL}/plugins/StreamFX/data/"* "${DIR_INSTALL}/data/obs-plugins/StreamFX/" || true
+        cp -a "${DIR_INSTALL}/plugins/StreamFX/data/"* "${DIR_INSTALL}/data/obs-plugins/StreamFX/"
         rm -rf "${DIR_INSTALL}/plugins"
     fi
     # Re-organsise libonnxruntime
