@@ -40,7 +40,7 @@ Running OBS Studio in Portable Mode means all settings (Profiles and Scene Colle
 | Ubuntu 22.04 (Jammy)   | 30.0.2        |
 | Ubuntu 23.04 (Lunar)   | 30.0.2        |
 | Ubuntu 23.10 (Mantic)  | 30.0.2        |
-| Plugins                | 53            |
+| Plugins                | 54            |
 
 # Install
 
@@ -181,6 +181,7 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ub
 
 ## Audio 🔉
 
+- [Async Audio Filter](https://github.com/norihiro/obs-async-audio-filter) plugin; filter that aims to fix audio glitches caused by asynchronous audio.
 - [**Audio Pan**](https://github.com/norihiro/obs-audio-pan-filter) plugin; control stereo pan of audio sources.
 - [**Local Vocal**](https://github.com/obs-ai/obs-localvocal) plugin; local speech and text AI processing routines and  AI transcription.
 - [**Mute Filter**](https://github.com/norihiro/obs-mute-filter) plugin; to mute audio from a source.
@@ -272,7 +273,6 @@ These plugins were previously bundled with OBS Studio, but have since been remov
 
 Here are some additional plugins that look useful that I might add in the future:
 
-- [Async Audio Filter](https://github.com/norihiro/obs-async-audio-filter)
 - [Durchblick](https://git.vrsal.xyz/alex/Durchblick) - *needs testing, user reports indicate stability issues*
 - [Clean Stream](https://github.com/obs-ai/obs-cleanstream) - *currently experimental*
 - [Input Overlay](https://github.com/univrsal/input-overlay)
