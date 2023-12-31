@@ -380,15 +380,9 @@ function stage_06_plugins() {
                 obs-face-tracker)
                     EXTRA+=" -DQT_VERSION=6"
                     # Add face detection models for face tracker plugin
-                    mkdir -p "${DIR_INSTALL}/data/obs-plugins/obs-face-tracker/data/dlib_hog_model/"
-                    mkdir -p "${DIR_INSTALL}/data/obs-plugins/obs-face-tracker/data/dlib_cnn_model/"
-                    mkdir -p "${DIR_INSTALL}/data/obs-plugins/obs-face-tracker/data/dlib_face_landmark_model/"
-                    download_file "https://github.com/norihiro/obs-face-tracker/releases/download/0.7.0-hogdata/frontal_face_detector.dat.bz2"
-                    download_file "https://github.com/davisking/dlib-models/raw/master/mmod_human_face_detector.dat.bz2"
-                    download_file "https://github.com/davisking/dlib-models/raw/master/shape_predictor_5_face_landmarks.dat.bz2"
-                    cp "${DIR_DOWNLOAD}/frontal_face_detector.dat.bz2" "${DIR_INSTALL}/data/obs-plugins/obs-face-tracker/data/dlib_hog_model/frontal_face_detector.dat.bz2"
-                    cp "${DIR_DOWNLOAD}/shape_predictor_5_face_landmarks.dat.bz2" "${DIR_INSTALL}/data/obs-plugins/obs-face-tracker/data/dlib_cnn_model/mmod_human_face_detector.dat.bz2"
-                    cp "${DIR_DOWNLOAD}/shape_predictor_5_face_landmarks.dat.bz2" "${DIR_INSTALL}/data/obs-plugins/obs-face-tracker/data/dlib_face_landmark_model/shape_predictor_5_face_landmarks.dat.bz2"
+                    download_file "https://github.com/norihiro/obs-face-tracker/releases/download/0.7.0-hogdata/frontal_face_detector.dat.bz2" "${DIR_INSTALL}/data/obs-plugins/obs-face-tracker/data/dlib_hog_model/frontal_face_detector.dat.bz2"
+                    download_file "https://github.com/davisking/dlib-models/raw/master/mmod_human_face_detector.dat.bz2" "${DIR_INSTALL}/data/obs-plugins/obs-face-tracker/data/dlib_cnn_model/mmod_human_face_detector.dat.bz2"
+                    download_file "https://github.com/davisking/dlib-models/raw/master/shape_predictor_5_face_landmarks.dat.bz2" "${DIR_INSTALL}/data/obs-plugins/obs-face-tracker/data/dlib_face_landmark_model/shape_predictor_5_face_landmarks.dat.bz2"
                     bunzip2 -f "${DIR_INSTALL}/data/obs-plugins/obs-face-tracker/data/dlib_hog_model/frontal_face_detector.dat.bz2"
                     bunzip2 -f "${DIR_INSTALL}/data/obs-plugins/obs-face-tracker/data/dlib_cnn_model/mmod_human_face_detector.dat.bz2"
                     bunzip2 -f "${DIR_INSTALL}/data/obs-plugins/obs-face-tracker/data/dlib_face_landmark_model/shape_predictor_5_face_landmarks.dat.bz2";;
