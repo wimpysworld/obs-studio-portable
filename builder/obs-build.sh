@@ -124,12 +124,11 @@ function stage_01_get_apt() {
         PKG_LIST+=" gcc g++ golang-go"
     fi
 
+    PKG_LIST+=" qt6-base-dev qt6-base-private-dev qt6-wayland"
     if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
-        PKG_LIST+=" qt6-base-dev qt6-base-private-dev qt6-wayland libqt6svg6-dev"
+        PKG_LIST+=" libqt6svg6-dev"
     elif [ "${DISTRO_CMP_VER}" -ge 2304 ]; then
-        PKG_LIST+=" qt6-base-dev qt6-base-private-dev qt6-svg-dev qt6-wayland"
-    else
-        PKG_LIST+=" qtbase5-dev qtbase5-private-dev qtwayland5 libqt5svg5-dev libqt5x11extras5-dev"
+        PKG_LIST+=" qt6-svg-dev"
     fi
 
     # Core OBS
@@ -533,12 +532,7 @@ function stage_09_make_scripts() {
     done < <(sort -u obs-pkgs.txt)
 
     # Provide additional runtime requirements
-    #shellcheck disable=SC1003
-    if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
-        echo -e '\tqt6-image-formats-plugins \\\n\tqt6-qpa-plugins \\\n\tqt6-wayland \\' | tee -a "${DIR_INSTALL}/obs-dependencies" "${DIR_INSTALL}/obs-container-dependencies"
-    else
-        echo -e '\tqtwayland5 \\' | tee -a "${DIR_INSTALL}/obs-dependencies" "${DIR_INSTALL}/obs-container-dependencies"
-    fi
+    echo -e '\tqt6-image-formats-plugins \\\n\tqt6-qpa-plugins \\\n\tqt6-wayland \\' | tee -a "${DIR_INSTALL}/obs-dependencies" "${DIR_INSTALL}/obs-container-dependencies"
     echo -e '\tgstreamer1.0-plugins-good \\\n\tgstreamer1.0-plugins-bad \\\n\tgstreamer1.0-plugins-ugly \\\n\tgstreamer1.0-x \\' | tee -a "${DIR_INSTALL}/obs-dependencies" "${DIR_INSTALL}/obs-container-dependencies"
     echo -e '\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tstterm' >> "${DIR_INSTALL}/obs-dependencies"
     echo -e '\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tstterm \\' >> "${DIR_INSTALL}/obs-container-dependencies"
