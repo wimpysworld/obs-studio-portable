@@ -18,7 +18,7 @@
 - NVENC (NVIDIA) and VA-API (AMD & Intel) accelerated video encoding
 - Shader and GStreamer effects filters
 - Fraunhofer FDK AAC Codec
-- Pipewire application specific audio capture
+- Pipewire application-specific audio capture
 - VLC and GStreamer Media sources
 - AJA NTV2 SDK
 - [WebSockets](https://github.com/obsproject/obs-websocket) 5.x and 4.9.1-compat are both included
@@ -94,10 +94,10 @@ distrobox create --image ghcr.io/ublue-os/obs-studio-portable:latest --name obs 
 ```
 ### NVIDIA support
 
-The appropriate NVIDIA libraries on the host should be automatically be linked inside the container 🪄
+The appropriate NVIDIA libraries on the host should be automatically linked inside the container 🪄
 However, the capability for Distrobox to automatically connect NVIDIA libraries was added in Distrobox 1.5.0, and is also not supported on all distros; NixOS for example.
 
-Therefore, if your are running an older version of Distrobox or the NVIDIA drivers are not automatically linked inside the container you can install them as follows:
+Therefore, if you are running an older version of Distrobox or the NVIDIA drivers are not automatically linked inside the container you can install them as follows:
   - Change the version number (***535** in the example below*) to match the version of the NVIDIA drivers you have installed on the host.
 
 #### NVIDIA complete driver stack
@@ -110,7 +110,7 @@ distrobox create --image ghcr.io/ublue-os/obs-studio-portable:latest --name obs 
 
 #### NVIDIA compute only
 
-Suitable for multi-GPU systems where the NVIDIA GPU is not rendering the display and only being used for compute.
+Suitable for multi-GPU systems where the NVIDIA GPU is not rendering the display and is only being used for compute.
 
 ```bash
 distrobox create --image ghcr.io/ublue-os/obs-studio-portable:latest --name obs --pull --additional-packages libnvidia-encode-535 nvidia-headless-no-dkms-535
@@ -131,7 +131,7 @@ If the OBS Studio Portable container cannot connect to the host X11 server, add 
 
 ### Multiple OBS Studio Portable instances in Distrobox
 
-Should you require multiple instances of OBS Studio, each with its own configuration, follow the steps above to get OBS Studio Portable running in Distrobox.
+Should you require multiple instances of OBS Studio, each with its configuration, follow the steps above to get OBS Studio Portable running in Distrobox.
 Then, extract the OBS Studio tarball into a different directory in your home directory on the host.
 For example:
 
@@ -175,18 +175,18 @@ If any of the following are true for you, you might find these builds of OBS Stu
 # Batteries included 🔋
 
 I'm incredibly thankful to the OBS Studio developers and developers of the growing list of excellent plugins.
-These Portable builds of OBS Studio for Ubuntu celebrates the best of what's available. Thank you! 🙇
+These Portable builds of OBS Studio for Ubuntu celebrate the best of what's available. Thank you! 🙇
 
 Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ubuntu:
 
 ## Audio 🔉
 
 - [Async Audio Filter](https://github.com/norihiro/obs-async-audio-filter) plugin; filter that aims to fix audio glitches caused by asynchronous audio.
-- [**Audio Pan**](https://github.com/norihiro/obs-audio-pan-filter) plugin; control stereo pan of audio sources.
+- [**Audio Pan**](https://github.com/norihiro/obs-audio-pan-filter) plugin; controls stereo pan of audio sources.
 - [**Local Vocal**](https://github.com/obs-ai/obs-localvocal) plugin; local speech and text AI processing routines and  AI transcription.
 - [**Mute Filter**](https://github.com/norihiro/obs-mute-filter) plugin; to mute audio from a source.
 - [**PipeWire Audio Capture**](https://github.com/dimtpap/obs-pipewire-audio-capture) plugin; capture application audio from PipeWire.
-- [**Scale to Sound**](https://github.com/Qufyy/obs-scale-to-sound) plugin; adds a filter which makes a source scale based on the audio levels of any audio source you choose
+- [**Scale to Sound**](https://github.com/Qufyy/obs-scale-to-sound) plugin; adds a filter that makes a source scale based on the audio levels of any audio source you choose
 - [**Soundboard**](https://github.com/cg2121/obs-soundboard) plugin; adds a soundboard dock.
 - [**Tuna**](https://github.com/univrsal/tuna) plugin; get song information from various sources.
 - [**Waveform**](https://github.com/phandasm/waveform) plugin; audio spectral analysis.
@@ -221,7 +221,7 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ub
 - [**RGB Levels**](https://github.com/wimpysworld/obs-rgb-levels-filter) plugin; simple filter to adjust RGB levels.
 - [**Scene as Transition**](https://github.com/andilippi/obs-scene-as-transition) plugin; use scenes as transitions.
 - [**Shader Filter**](https://github.com/exeldro/obs-shaderfilter) plugin; for applying an arbitrary shader to a source.
-- [**Stroke Glow Shadow**](https://github.com/FiniteSingularity/obs-stroke-glow-shadow) plugin; provide efficient Stroke, Glow, and Shadow effects on masked sources.
+- [**Stroke Glow Shadow**](https://github.com/FiniteSingularity/obs-stroke-glow-shadow) plugin; provides efficient Stroke, Glow, and Shadow effects on masked sources.
 - [**Time Shift**](https://github.com/exeldro/obs-time-shift) plugin;  time shift a source using a filter.
 - [**Time Warp Scan**](https://github.com/exeldro/obs-time-warp-scan) plugin; a time warp scan filter.
 - [**Vintage Filter**](https://github.com/cg2121/obs-vintage-filter) plugin; a filter to make source black & white or sepia.
@@ -249,7 +249,7 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ub
 - [**Countdown**](https://github.com/ashmanix/obs-plugin-countdown) plugin; creates a countdown timer.
 - [**Markdown**](https://github.com/exeldro/obs-markdown) plugin; add Markdown sources
 - [**Text PThread**](https://github.com/norihiro/obs-text-pthread) plugin; Rich text source plugin with many advanced features, including multi-language support, emoji support, vertical rendering and RTL support.
-- [**URL Source**](https://github.com/obs-ai/obs-urlsource) plugin; fetch data from a URL (API), parse and display live update in scene.
+- [**URL Source**](https://github.com/obs-ai/obs-urlsource) plugin; fetches data from a URL (API), parses and displays live updates in the scene.
 
 ### Removed 🗑️
 
@@ -280,7 +280,7 @@ Here are some additional plugins that look useful that I might add in the future
 - [Main View Source](https://github.com/norihiro/obs-main-view-source)
 - [Output Filter](https://github.com/norihiro/obs-output-filter)
 - [Source Record Async](https://github.com/norihiro/obs-source-record-async)
-- [VNC](https://github.com/norihiro/obs-vnc) - *not compatible with current OBS Studio release*
+- [VNC](https://github.com/norihiro/obs-vnc) - *not compatible with the _current_ OBS Studio release*
 
 #### gPhoto
 
@@ -288,8 +288,8 @@ There isn't a definitive gPhoto plugin for current OBS Studio so I'm reluctant t
 
 - [Original obs-gphoto 0.3.0](https://github.com/Atterratio/obs-gphoto) - unmaintained and doesn't build against current OBS.
   - [Forked obs-gphoto 0.4.0](https://github.com/adlerweb/obs-gphoto) - unmaintained, updated for imagemagick7, I was using this with OBS 27.
-  - [Forked obs-gphoto 0.3.0](https://github.com/mika314/obs-gphoto) - look like build system updates to work with OBS 28, but I haven't tested it.
-  - [Forked obs-gphoto 0.3.0](https://github.com/christophehenry/obs-gphoto) - looks like build system and code updates to work with OBS 29, but I haven't tested it.
+  - [Forked obs-gphoto [0.3.0](https://github.com/mika314/obs-gphoto) - looks like build-system updates to work with OBS 28, but I haven't tested it.
+  - [Forked obs-gphoto 0.3.0](https://github.com/christophehenry/obs-gphoto) - looks like build-system and code updates to work with OBS 29, but I haven't tested it.
 
 ### Additional plugins
 
