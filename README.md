@@ -68,7 +68,7 @@ sudo ./obs-dependencies
 ```
 ### Upgrades
 
-The upgrade process is the same as an install; download and extract the new tarball and run `sudo ./obs-dependenciesand` to ensure all the dependencies are installed.
+The upgrade process is the same as an install; download and extract the new tarball and run `sudo ./obs-dependencies` to ensure all the dependencies are installed.
 Then copy the `config` folder from your old OBS Studio Portable directory to the new one.
 If anything doesn't work correctly when you start the new OBS Studio, continue using the previous OBS Studio Portable instance.
 
@@ -175,7 +175,7 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ub
 - [**Dummy Source**](https://github.com/norihiro/obs-command-source) plugin; provides a dummy source to execute arbitrary commands when a scene is switched.
 - [**Source Switcher**](https://github.com/exeldro/obs-source-switcher) plugin; to switch between a list of sources.
 - [**Transition Table**](https://github.com/exeldro/obs-transition-table) plugin; customize scene transitions.
-- [**Websockets**](https://github.com/Palakis/obs-websocket) plugin; remote-control OBS Studio through WebSockets.
+- [**WebSockets**](https://github.com/Palakis/obs-websocket) plugin; remote-control OBS Studio through WebSockets.
 
 ## Effects ✨
 
@@ -239,11 +239,11 @@ These plugins were previously bundled with OBS Studio, but have since been remov
 - [**Scene Collection Manager**](https://github.com/exeldro/obs-scene-collection-manager) - can silently revert configurations to an older version.
 - [**StreamFX**](https://github.com/Xaymar/obs-StreamFX) - dropped from OBS 30 onward, StreamFX development has fallen way behind OBS Studio release cadence. StreamFX is incompatible with Vertical Plugin, 0.12.0b366 onward forcibly includes pointless UI elements and component inclusion is no longer configurable. Many StreamFX features are now provided via superior plugins from other authors:
   - Dynamic Masks is replaced with [**Advanced Masks**](https://github.com/FiniteSingularity/obs-advanced-masks) by [*FiniteSingularity*](https://github.com/FiniteSingularity).
-  - 3D Transform is replaced with [**3D Effects**](https://github.com/exeldro/obs-3d-effect) by [*exeldro*](https://github.com/exeldro/).
+  - 3D Transform is replaced with [**3D Effects**](https://github.com/exeldro/obs-3d-effect) by [*Exeldro*](https://github.com/exeldro/).
   - Blur is replaced with [**Composite Blur**](https://github.com/FiniteSingularity/obs-composite-blur) by [*FiniteSingularity*](https://github.com/FiniteSingularity).
   - SDF Effects is replaced with [**Stroke, Glow, and Shadow**](https://github.com/FiniteSingularity/obs-stroke-glow-shadow) by [*FiniteSingularity*](https://github.com/FiniteSingularity).
-  - Shaders are replaced with [**Shader Filter**](https://github.com/exeldro/obs-shader-filter) by [*exeldro*](https://github.com/exeldro/) and [**GStreamer**](https://github.com/fzwoch/obs-gstreamer) by [*fzwoch*](https://github.com/fzwoch).
-  - Source Mirror is replaced with [**Source Clone**](https://github.com/exeldro/obs-source-clone) by [*exeldro*](https://github.com/exeldro/).
+  - Shaders are replaced with [**Shader Filter**](https://github.com/exeldro/obs-shader-filter) by [*Exeldro*](https://github.com/exeldro/) and [**GStreamer**](https://github.com/fzwoch/obs-gstreamer) by [*fzwoch*](https://github.com/fzwoch).
+  - Source Mirror is replaced with [**Source Clone**](https://github.com/exeldro/obs-source-clone) by [*Exeldro*](https://github.com/exeldro/).
   - The [**GStreamer**](https://github.com/fzwoch/obs-gstreamer) and [**VA-API**](https://github.com/fzwoch/obs-vaapi) plugins by [*fzwoch*](https://github.com/fzwoch/) offer advanced encoder tuning.
 
 ### To consider 🤔
@@ -265,7 +265,7 @@ There isn't a definitive gPhoto plugin for current OBS Studio so I'm reluctant t
 
 - [Original obs-gphoto 0.3.0](https://github.com/Atterratio/obs-gphoto) - unmaintained and doesn't build against current OBS.
   - [Forked obs-gphoto 0.4.0](https://github.com/adlerweb/obs-gphoto) - unmaintained, updated for imagemagick7, I was using this with OBS 27.
-  - [Forked obs-gphoto [0.3.0](https://github.com/mika314/obs-gphoto) - looks like build-system updates to work with OBS 28, but I haven't tested it.
+  - [Forked obs-gphoto 0.3.0](https://github.com/mika314/obs-gphoto) - looks like build-system updates to work with OBS 28, but I haven't tested it.
   - [Forked obs-gphoto 0.3.0](https://github.com/christophehenry/obs-gphoto) - looks like build-system and code updates to work with OBS 29, but I haven't tested it.
 
 ### Additional plugins
