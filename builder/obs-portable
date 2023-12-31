@@ -40,11 +40,7 @@ if [ -e /etc/profile.d/distrobox_profile.sh ]; then
     export SPA_PLUGIN_DIR="/usr/lib/x86_64-linux-gnu/spa-0.2/"
 
     # Override QT plugin path
-    if [ "${DISTRO_CODENAME}" == "focal" ]; then
-        export QT_PLUGIN_PATH="/usr/lib/x86_64-linux-gnu/qt5/plugins"
-    else
-        export QT_PLUGIN_PATH="/usr/lib/x86_64-linux-gnu/qt6/plugins"
-    fi
+    export QT_PLUGIN_PATH="/usr/lib/x86_64-linux-gnu/qt6/plugins"
     export QT_QPA_PLATFORMTHEME=""
     export QT_STYLE_OVERRIDE=""
     export LD_LIBRARY_PATH="${PORTABLE_DIR}/bin/64bit":"${PORTABLE_DIR}/obs-plugins/64bit":"${PORTABLE_DIR}/data/obs-scripting/64bit":"${PORTABLE_DIR}/cef":"${PORTABLE_DIR}/lib"
