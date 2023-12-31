@@ -11,7 +11,7 @@ if [ -n "${1}" ]; then
 fi
 
 case ${OBS_MAJ_VER} in
-    29|30)
+    30)
         AJA_VER="v16.2-bugfix5"
         CEF_VER="5060";;
     *)
@@ -156,20 +156,16 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     # CEF Browser runtime requirements
     PKG_LIST+=" libatk-bridge2.0-0 libcups2 libnspr4 libnss3 libxtst6"
 
-    # OBS Studio 29.1.0 new deps, mostly related to OBS Websocket 5.2 support
+    # New deps added in OBS Studio 29.1.0, mostly related to OBS Websocket 5.2 support
     # - https://github.com/obsproject/obs-studio/pull/8194
-    if [ "${OBS_MAJ_VER}" -ge 29 ]; then
-        PKG_LIST+=" libasio-dev libwebsocketpp-dev nlohmann-json3-dev"
-    fi
+    PKG_LIST+=" libasio-dev libwebsocketpp-dev nlohmann-json3-dev"
 
     # OBS Studio 30.0.0 added qrcode and oneVPL
-    if [ "${OBS_MAJ_VER}" -ge 30 ]; then
-        # https://github.com/obsproject/obs-studio/pull/8943
-        PKG_LIST+=" libqrcodegencpp-dev"
-        if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
-            # Intel® oneAPI Video Processing Library (oneVPL)
-            PKG_LIST+=" libvpl-dev libvpl2"
-        fi
+    # https://github.com/obsproject/obs-studio/pull/8943
+    PKG_LIST+=" libqrcodegencpp-dev"
+    if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
+        # Intel® oneAPI Video Processing Library (oneVPL)
+        PKG_LIST+=" libvpl-dev libvpl2"
     fi
 
     # Pipewire
@@ -411,9 +407,7 @@ function stage_06_plugins() {
                     ERROR+=" -Wno-error=conversion -Wno-error=float-conversion -Wno-error=shadow";;
                 obs-StreamFX)
                     # Monkey patch the needlessly exagerated cmake requirements
-                    if [ "${OBS_MAJ_VER}" -ge 29 ]; then
-                        sed -i 's/VERSION 3\.26/VERSION 3\.22/' "${DIR_PLUGIN}/${PLUGIN}/CMakeLists.txt" || true
-                    fi
+                    sed -i 's/VERSION 3\.26/VERSION 3\.22/' "${DIR_PLUGIN}/${PLUGIN}/CMakeLists.txt" || true
                     # Only enable stable features supported on Linux; see README.md for more details
                     EXTRA+=" -DENABLE_ENCODER_AOM_AV1=OFF \
                     -DENABLE_ENCODER_FFMPEG=ON \
