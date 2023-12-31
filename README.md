@@ -149,29 +149,6 @@ To launch the second instance of OBS Studio Portable in Distrobox, run the follo
 distrobox-enter --name obs -- ~/OBS-Studio-again/obs-portable
 ```
 
-# Why does this project exist?
-
-If any of the following are true for you, you might find these builds of OBS Studio useful.
-
-- **I want a version of OBS Studio for Ubuntu that has all the features enabled; *by default***
-  - I use lots of 3rd party OBS Studio plugins in my stream configuration.
-- **I stream from two different locations using multiple computers**
-  - [Syncthing](https://syncthing.net/) syncs my streaming configuration between sites. I'd also like to include OBS Studio itself.
-- **I make changes to my OBS Studio configuration from various computers**
-  - Keeping these changes in sync manually can be cumbersome.
-- **I stream to multiple channels**
-  - Discrete OBS Studio instances are easier to work with than switching between dozens of Profile and Scene Collection combinations.
-- **I don't want to deal with flag day releases of new software**
-  - New software is terrific, but I want to control when and how I upgrade each streaming configuration instance.
-- **My stream integrations are not (currently) compatible with packages of OBS Studio that use confinement**
-  - I have some funky stream integration;, and will likely create more. I don't want to limit my creative options.
-- **I sometimes stream OBS Studio how-tos and examples**
-  - Running demo instances of OBS Studio with isolated configurations is excellent for this.
-- **I want a stable OBS setup and an in-development OBS setup**
-  - When developing new features for my stream, I can freely experiment with new versions of OBS Studio and its plugins without fear of disrupting my stable setup.
-- **I sometimes need old versions of OBS Studio**
-  - I have some streaming projects that are archived and don't need upgrading. But I do want to reference them from time to time.
-
 # Batteries included 🔋
 
 I'm incredibly thankful to the OBS Studio developers and developers of the growing list of excellent plugins.
@@ -321,9 +298,30 @@ Alternatively, you can coerce OBS Studio to run via Xwayland without changing th
 env QT_QPA_PLATFORM=xcb ./obs-portable
 ```
 
+# Why does this project exist?
+
+If any of the following are true for you, you might find these builds of OBS Studio useful.
+
+- **I want a version of OBS Studio for Ubuntu that has all the features enabled; *by default***
+  - I use lots of 3rd party OBS Studio plugins in my stream configuration.
+- **I stream from two different locations using multiple computers**
+  - [Syncthing](https://syncthing.net/) syncs my streaming configuration between sites. I'd also like to include OBS Studio itself.
+- **I make changes to my OBS Studio configuration from various computers**
+  - Keeping these changes in sync manually can be cumbersome.
+- **I stream to multiple channels**
+  - Discrete OBS Studio instances are easier to work with than switching between dozens of Profile and Scene Collection combinations.
+- **I don't want to deal with flag day releases of new software**
+  - New software is terrific, but I want to control when and how I upgrade each streaming configuration instance.
+- **My stream integrations are not (currently) compatible with packages of OBS Studio that use confinement**
+  - I have some funky stream integrations, and will likely create more. I don't want to limit my creative options.
+- **I sometimes stream OBS Studio how-tos and examples**
+  - Running demo instances of OBS Studio with isolated configurations is excellent for this.
+- **I want a stable OBS setup and an in-development OBS setup**
+  - When developing new features for my stream, I can freely experiment with new versions of OBS Studio and its plugins without fear of disrupting my stable setup.
+
 # Build process 🏗
 
-Each build is compiled in a freshly provisioned systemd container. The somewhat hastily thrown-together *"build scripts"* are included in this repository.
+Each build is compiled in a freshly provisioned systemd container. The build scripts are included in this repository.
 
 The `build-*.sh` scripts are wrappers to help automate things, with [`build-auto.sh`](./build-auto.sh) being the main entry point.
 
