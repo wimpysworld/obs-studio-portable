@@ -405,38 +405,6 @@ function stage_06_plugins() {
                     ERROR+=" -Wno-error=stringop-overflow";;
                 obs-urlsource)
                     ERROR+=" -Wno-error=conversion -Wno-error=float-conversion -Wno-error=shadow";;
-                obs-StreamFX)
-                    # Monkey patch the needlessly exagerated cmake requirements
-                    sed -i 's/VERSION 3\.26/VERSION 3\.22/' "${DIR_PLUGIN}/${PLUGIN}/CMakeLists.txt" || true
-                    # Only enable stable features supported on Linux; see README.md for more details
-                    EXTRA+=" -DENABLE_ENCODER_AOM_AV1=OFF \
-                    -DENABLE_ENCODER_FFMPEG=ON \
-                    -DENABLE_ENCODER_FFMPEG_AMF=OFF \
-                    -DENABLE_ENCODER_FFMPEG_NVENC=ON \
-                    -DENABLE_ENCODER_FFMPEG_PRORES=ON \
-                    -DENABLE_ENCODER_FFMPEG_DNXHR=ON \
-                    -DENABLE_ENCODER_FFMPEG_CFHD=ON \
-                    -DENABLE_FILTER_AUTOFRAMING=OFF \
-                    -DENABLE_FILTER_AUTOFRAMING_NVIDIA=OFF \
-                    -DENABLE_FILTER_BLUR=OFF \
-                    -DENABLE_FILTER_COLOR_GRADE=ON \
-                    -DENABLE_FILTER_DENOISING=OFF \
-                    -DENABLE_FILTER_DENOISING_NVIDIA=OFF \
-                    -DENABLE_FILTER_DYNAMIC_MASK=OFF \
-                    -DENABLE_FILTER_SDF_EFFECTS=OFF \
-                    -DENABLE_FILTER_SHADER=OFF \
-                    -DENABLE_FILTER_TRANSFORM=OFF \
-                    -DENABLE_FILTER_UPSCALING=OFF \
-                    -DENABLE_FILTER_UPSCALING_NVIDIA=OFF \
-                    -DENABLE_FILTER_VIRTUAL_GREENSCREEN=OFF \
-                    -DENABLE_FILTER_VIRTUAL_GREENSCREEN_NVIDIA=OFF \
-                    -DENABLE_SOURCE_MIRROR=OFF \
-                    -DENABLE_SOURCE_SHADER=OFF \
-                    -DENABLE_TRANSITION_SHADER=OFF \
-                    -DENABLE_CLANG=OFF \
-                    -DENABLE_LTO=ON \
-                    -DENABLE_FRONTEND=OFF \
-                    -DENABLE_UPDATER=OFF";;
                 tuna)
                     # Use system libmpdclient and taglib
                     # https://aur.archlinux.org/packages/obs-tuna
@@ -476,13 +444,6 @@ function stage_06_plugins() {
         mv -v "${DIR_INSTALL}/dist/obs-multi-rtmp/data/"* "${DIR_INSTALL}/data/obs-plugins/obs-multi-rtmp/"
         rm -rf "${DIR_INSTALL}/dist/obs-multi-rtmp"
     fi
-    # Reorganise the StreamFX plugin
-    if [ -d "${DIR_INSTALL}/plugins/StreamFX" ]; then
-        mv "${DIR_INSTALL}/plugins/StreamFX/bin/64bit/"* "${DIR_INSTALL}/obs-plugins/64bit/"
-        mkdir -p "${DIR_INSTALL}/data/obs-plugins/StreamFX"
-        cp -a "${DIR_INSTALL}/plugins/StreamFX/data/"* "${DIR_INSTALL}/data/obs-plugins/StreamFX/"
-        rm -rf "${DIR_INSTALL}/plugins"
-    fi
     # Re-organsise libonnxruntime
     mv -v "${DIR_INSTALL}/lib/obs-plugins/obs-backgroundremoval/libonnxruntime"* "${DIR_INSTALL}/lib/" || true
 }
@@ -513,7 +474,6 @@ function stage_08_finalise() {
             "${DIR_INSTALL}/bin/64bit" \
             "${DIR_INSTALL}/obs-plugins/64bit" \
             "${DIR_INSTALL}/data/obs-scripting/64bit" \
-            "${DIR_INSTALL}/data/obs-plugins/StreamFX/" \
             "${DIR_INSTALL}/lib"; do
             #shellcheck disable=SC2162
             while read FILE; do
