@@ -274,16 +274,19 @@ function stage_05_build_obs() {
 
     local TWITCH_OPTIONS=""
     if [ "${TWITCH_CLIENTID}" ] && [ "${TWITCH_HASH}" ]; then
+        #shellcheck disable=SC2089
         TWITCH_OPTIONS="-DTWITCH_CLIENTID='${TWITCH_CLIENTID}' -DTWITCH_HASH='${TWITCH_HASH}'"
     fi
 
     local RESTREAM_OPTIONS=""
     if [ "${RESTREAM_CLIENTID}" ] && [ "${RESTREAM_HASH}" ]; then
+        #shellcheck disable=SC2089
         RESTREAM_OPTIONS="-DRESTREAM_CLIENTID='${RESTREAM_CLIENTID}' -DRESTREAM_HASH='${RESTREAM_HASH}'"
     fi
 
     local YOUTUBE_OPTIONS=""
     if [ "${YOUTUBE_CLIENTID}" ] && [ "${YOUTUBE_CLIENTID_HASH}" ] && [ "${YOUTUBE_SECRET}" ] && [ "${YOUTUBE_SECRET_HASH}" ]; then
+        #shellcheck disable=SC2089
         YOUTUBE_OPTIONS="-DYOUTUBE_CLIENTID='${YOUTUBE_CLIENTID}' -DYOUTUBE_CLIENTID_HASH='${YOUTUBE_CLIENTID_HASH}' -DYOUTUBE_SECRET='${YOUTUBE_SECRET}' -DYOUTUBE_SECRET_HASH='${YOUTUBE_SECRET_HASH}'"
     fi
 
@@ -413,6 +416,7 @@ function stage_06_plugins() {
                     EXTRA+=" -DCREDS=MISSING -DLASTFM_CREDS=MISSING";;
             esac
             # Build process for OBS Studio 28 and newer
+            #shellcheck disable=SC2086
             cmake -S "${DIR_PLUGIN}/${PLUGIN}" -B "${DIR_PLUGIN}/${PLUGIN}/build" -G Ninja \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
               -DCMAKE_CXX_FLAGS="${ERROR}" \
@@ -532,16 +536,23 @@ function stage_09_make_scripts() {
     done < <(sort -u obs-pkgs.txt)
 
     # Provide additional runtime requirements
+    #shellcheck disable=SC1003
     echo -e '\tqt6-image-formats-plugins \\\n\tqt6-qpa-plugins \\\n\tqt6-wayland \\' | tee -a "${DIR_INSTALL}/obs-dependencies" "${DIR_INSTALL}/obs-container-dependencies"
+    #shellcheck disable=SC1003
     echo -e '\tgstreamer1.0-plugins-good \\\n\tgstreamer1.0-plugins-bad \\\n\tgstreamer1.0-plugins-ugly \\\n\tgstreamer1.0-x \\' | tee -a "${DIR_INSTALL}/obs-dependencies" "${DIR_INSTALL}/obs-container-dependencies"
-    echo -e '\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tstterm' >> "${DIR_INSTALL}/obs-dependencies"
-    echo -e '\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tstterm \\' >> "${DIR_INSTALL}/obs-container-dependencies"
-    echo -e '\tmesa-vdpau-drivers \\\n\tmesa-va-drivers && \\' >> "${DIR_INSTALL}/obs-container-dependencies"
-    echo -e 'apt-get -y clean && rm -rd /var/lib/apt/lists/*' >> "${DIR_INSTALL}/obs-container-dependencies"
+    #shellcheck disable=SC1003
+    echo -e '\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tstterm' | tee -a "${DIR_INSTALL}/obs-dependencies"
+    #shellcheck disable=SC1003
+    echo -e '\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tstterm \\' | tee -a "${DIR_INSTALL}/obs-container-dependencies"
+    #shellcheck disable=SC1003
+    echo -e '\tmesa-vdpau-drivers \\\n\tmesa-va-drivers && \\' | tee -a "${DIR_INSTALL}/obs-container-dependencies"
+    #shellcheck disable=SC1003
+    echo -e 'apt-get -y clean && rm -rd /var/lib/apt/lists/*' | tee -a "${DIR_INSTALL}/obs-container-dependencies"
 }
 
 function stage_10_make_tarball() {
-    local DIR_TARBALL="$(basename ${DIR_INSTALL})"
+    local DIR_TARBALL=""
+    DIR_TARBALL=$(basename "${DIR_INSTALL}")
     cd "${DIR_BASE}"
     tar cjf "${DIR_TARBALL}.tar.bz2" --exclude cmake --exclude include --exclude lib/pkgconfig "${DIR_TARBALL}"
     sha256sum "${DIR_TARBALL}.tar.bz2" > "${DIR_TARBALL}.tar.bz2.sha256"

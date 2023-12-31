@@ -2,6 +2,7 @@
 
 DISTRO="${1}"
 OBS_VER="${2}"
+#shellcheck disable=SC2034
 OBS_MAJ_VER="${OBS_VER%%.*}"
 
 if [ "${DISTRO}" == "focal" ]; then
