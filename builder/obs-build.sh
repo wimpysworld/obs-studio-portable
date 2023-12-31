@@ -395,11 +395,6 @@ function stage_06_plugins() {
                     download_file "https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/libndi5-dev_5.5.3-1_amd64.deb"
                     DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends "${DIR_DOWNLOAD}"/*.deb
                     cp -v /usr/lib/libndi.so "${DIR_INSTALL}/lib/";;
-                obs-replay-source)
-                    # Make uthash and libcaption headers discoverable by obs-replay-source
-                    cp "${DIR_SOURCE}/deps/uthash/uthash/uthash.h" /usr/include/obs/util/
-                    mkdir -p /usr/include/caption/
-                    cp "${DIR_SOURCE}/deps/libcaption/caption/"*.h /usr/include/caption/;;
                 obs-source-dock)
                     ERROR+=" -Wno-error=switch";;
                 obs-stroke-glow-shadow)
