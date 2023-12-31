@@ -215,11 +215,6 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
         PKG_LIST+=" libidn2-dev libpsl-dev libpugixml-dev libssl-dev"
     fi
 
-    if [ "${DISTRO_CMP_VER}" -ge 2304 ]; then
-        # Rewards Theatre
-        PKG_LIST+=" libboost-json1.81-dev libboost-url1.81-dev"
-    fi
-
     DEBIAN_FRONTEND=noninteractive apt-get -y update
     DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
     #shellcheck disable=SC2086
@@ -366,14 +361,6 @@ function stage_06_plugins() {
             elif [ "${PLUGIN}" == "SceneSwitcher" ] && [ "${OBS_MAJ_VER}" -ge 29 ]; then
                 # SceneSwitcher 1.20 FTBFS on Ubuntu 20.04
                 BRANCH="1.19.2"
-            fi
-        fi
-
-        # Rewards Theatre requires libboost 1.81, which first appeared in Ubuntu 23.04
-        if [ "${DISTRO_CMP_VER}" -lt 2304 ]; then
-            if [ "${PLUGIN}" == " RewardsTheater" ]; then
-                echo "Skipping ${PLUGIN} (not supported on ${DISTRO} ${DISTRO_VER})"
-                continue
             fi
         fi
 
