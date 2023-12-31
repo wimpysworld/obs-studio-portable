@@ -508,6 +508,13 @@ function stage_06_plugins() {
         mv -v "${DIR_INSTALL}/waveform/data/"* "${DIR_INSTALL}/data/obs-plugins/waveform/" || true
         rm -rf "${DIR_INSTALL}/waveform/"
     fi
+    # Re-organise multi-rtmp plugin
+    if [ -d "${DIR_INSTALL}/dist/obs-multi-rtmp" ]; then
+        mv -v "${DIR_INSTALL}/dist/obs-multi-rtmp/bin/64bit/"*.so "${DIR_INSTALL}/obs-plugins/64bit/"
+        mkdir -p "${DIR_INSTALL}/data/obs-plugins/obs-multi-rtmp"
+        mv -v "${DIR_INSTALL}/dist/obs-multi-rtmp/data/"* "${DIR_INSTALL}/data/obs-plugins/obs-multi-rtmp/"
+        rm -rf "${DIR_INSTALL}/dist/obs-multi-rtmp"
+    fi
     # Reorganise the StreamFX plugin
     if [ -d "${DIR_INSTALL}/plugins/StreamFX" ]; then
         mv "${DIR_INSTALL}/plugins/StreamFX/bin/64bit/"* "${DIR_INSTALL}/obs-plugins/64bit/" || true
