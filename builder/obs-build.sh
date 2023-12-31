@@ -23,7 +23,7 @@ if [ -e /etc/os-release ] && grep --quiet UBUNTU_CODENAME /etc/os-release; then
     DISTRO_CODENAME=$(grep VERSION_CODENAME /etc/os-release | cut -d'=' -f2 | sed 's/"//g')
     DISTRO_VERSION=$(grep VERSION_ID /etc/os-release | cut -d'=' -f2 | sed 's/"//g')
     DISTRO_CMP_VER="${DISTRO_VERSION//./}"
-    if [ "${DISTRO_CMP_VER}" -lt 2004 ]; then
+    if [ "${DISTRO_CMP_VER}" -le 2004 ]; then
         echo "Unsupported Ubuntu version: ${DISTRO_VERSION}"
         exit 1
     fi
@@ -118,13 +118,7 @@ function clone_source() {
 function stage_01_get_apt() {
     local PKG_LIST="binutils bzip2 clang-format clang-tidy cmake curl file git gzip libarchive-tools libc6-dev make meson ninja-build patch pkg-config tree unzip wget xz-utils"
 
-    if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
-        # Newer cmake, ninja-build, meson for Ubuntu 20.04
-        DEBIAN_FRONTEND=noninteractive apt-get -y update
-        DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends software-properties-common
-        add-apt-repository -y --no-update ppa:flexiondotorg/build-tools
-        PKG_LIST+=" gcc-10 g++-10 golang-1.16-go"
-    elif [ "${DISTRO_CMP_VER}" -ge 2310 ]; then
+    if [ "${DISTRO_CMP_VER}" -ge 2310 ]; then
         PKG_LIST+=" gcc-12 g++-12 golang-go"
     else
         PKG_LIST+=" gcc g++ golang-go"
@@ -220,10 +214,7 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     #shellcheck disable=SC2086
     DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends ${PKG_LIST}
 
-    if [ "${DISTRO_CMP_VER}" -eq 2004 ]; then
-        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 800 --slave /usr/bin/g++ g++ /usr/bin/g++-10
-        update-alternatives --install /usr/bin/go go /usr/lib/go-1.16/bin/go 10
-    elif [ "${DISTRO_CMP_VER}" -ge 2310 ]; then
+    if [ "${DISTRO_CMP_VER}" -ge 2310 ]; then
         update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 800 --slave /usr/bin/g++ g++ /usr/bin/g++-12
     fi
 }
@@ -344,26 +335,6 @@ function stage_06_plugins() {
             continue
         fi
 
-        # Insufficient Golang or PipeWire or Qt support in Ubuntu 20.04 to build these plugins
-        if [ "${DISTRO_CMP_VER}" -le 2004 ]; then
-            if [ "${PLUGIN}" == "obs-backgroundremoval" ] || \
-               [ "${PLUGIN}" == "obs-localvocal" ] || \
-               [ "${PLUGIN}" == "obs-pipewire-audio-capture" ] || \
-               [ "${PLUGIN}" == "obs-rtspserver" ] || \
-               [ "${PLUGIN}" == "obs-teleport" ] || \
-               [ "${PLUGIN}" == "obs-urlsource" ] || \
-               [ "${PLUGIN}" == "obs-vertical-canvas" ] || \
-               [ "${PLUGIN}" == "obs-vkcapture" ] || \
-               [ "${PLUGIN}" == "pixel-art" ] || \
-               [ "${PLUGIN}" == "tuna" ]; then
-                 echo "Skipping ${PLUGIN} (not supported on ${DISTRO} ${DISTRO_VER})"
-                 continue
-            elif [ "${PLUGIN}" == "SceneSwitcher" ] && [ "${OBS_MAJ_VER}" -ge 29 ]; then
-                # SceneSwitcher 1.20 FTBFS on Ubuntu 20.04
-                BRANCH="1.19.2"
-            fi
-        fi
-
         clone_source "${URL}.git" "${BRANCH}" "${DIR_PLUGIN}/${PLUGIN}"
 
         ERROR=""
@@ -411,11 +382,7 @@ function stage_06_plugins() {
             fi
             case "${PLUGIN}" in
                 obs-face-tracker)
-                    if [ "${DISTRO_CMP_VER}" -le 2004 ]; then
-                        EXTRA+=" -DQT_VERSION=5"
-                    else
-                        EXTRA+=" -DQT_VERSION=6"
-                    fi
+                    EXTRA+=" -DQT_VERSION=6"
                     # Add face detection models for face tracker plugin
                     mkdir -p "${DIR_INSTALL}/data/obs-plugins/obs-face-tracker"
                     download_file "https://github.com/norihiro/obs-face-tracker/releases/download/0.7.0-hogdata/frontal_face_detector.dat.bz2"

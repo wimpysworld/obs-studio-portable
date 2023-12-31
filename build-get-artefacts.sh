@@ -16,7 +16,6 @@ fi
 
 DISTRO="${1}"
 case "${DISTRO}" in
-    focal) DISTRO_VER="20.04";;
     jammy) DISTRO_VER="22.04";;
     lunar) DISTRO_VER="23.04";;
     mantic) DISTRO_VER="23.10";;

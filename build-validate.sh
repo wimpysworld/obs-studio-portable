@@ -4,8 +4,8 @@ DISTRO="${1}"
 OBS_VER="${2}"
 OBS_MAJ_VER="${OBS_VER%%.*}"
 
-if [ "${DISTRO}" == "focal" ] && [ "${OBS_MAJ_VER}" -ge 30 ]; then
-    # OBS Studio 30+ is not supported on Ubuntu 20.04
+if [ "${DISTRO}" == "focal" ]; then
+    # Ubuntu 20.04 is no longer supported
     exit 1
 fi
 
