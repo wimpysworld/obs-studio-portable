@@ -48,7 +48,7 @@ https://github.com/obsproject/obs-websocket,4.9.1-compat,essential
 https://github.com/occ-ai/obs-backgroundremoval,1.1.8,auxiliary
 https://github.com/occ-ai/obs-localvocal,0.0.8,essential
 https://github.com/occ-ai/obs-urlsource,0.2.5,essential
-https://github.com/phandasm/waveform,v1.7.0,essential
+https://github.com/phandasm/waveform,v1.8.0-beta1,essential
 https://github.com/sorayuki/obs-multi-rtmp,0.5.0.4-flatpak,essential
 https://github.com/univrsal/tuna,v1.9.7,disabled
 https://github.com/wimpysworld/obs-dvd-screensaver,0.0.2,essential
