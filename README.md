@@ -150,7 +150,7 @@ distrobox-enter --name obs -- ~/OBS-Studio-again/obs-portable
 
 # Batteries included 🔋
 
-I'm incredibly thankful to the OBS Studio developers and developers of the growing list of excellent plugins.
+I'm incredibly thankful to the OBS Studio developers and developers of the growing list of excellent plugins, scripts and themes.
 These Portable builds of OBS Studio for Ubuntu celebrate the best of what's available. Thank you! 🙇
 
 Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ubuntu:
@@ -228,6 +228,11 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ub
 - [**Markdown**](https://github.com/exeldro/obs-markdown) plugin; add Markdown sources
 - [**Text PThread**](https://github.com/norihiro/obs-text-pthread) plugin; Rich text source plugin with many advanced features, including multi-language support, emoji support, vertical rendering and RTL support.
 - [**URL Source**](https://github.com/obs-ai/obs-urlsource) plugin; fetches data from a URL (API), parses and displays live updates in the scene.
+
+## Themes 🎨
+
+- [**simplyGray**](https://obsproject.com/forum/resources/simplygray-dark-theme-with-customizable-highlight-color.1598/) theme; space efficient with customizable highlight color.
+- [**Yami Resized**](https://obsproject.com/forum/resources/yami-resized.1611/) theme; based on the original Yami theme but made for people who need more space or have a 1080p or lower resolution.
 
 ### Removed 🗑️
 

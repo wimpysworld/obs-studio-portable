@@ -77,6 +77,7 @@ function download_file() {
     case "${FILE_EXTENSION}" in
         bzip2|bz2) FILE_TEST="bzip2 -t";;
         gzip|gz) FILE_TEST="gzip -t";;
+        rar) FILE_TEST="unrar t";;
         xz) FILE_TEST="xz -t";;
         zip) FILE_TEST="unzip -qq -t";;
     esac
@@ -116,7 +117,7 @@ function clone_source() {
 }
 
 function stage_01_get_apt() {
-    local PKG_LIST="binutils bzip2 clang-format clang-tidy cmake curl file git gzip libarchive-tools libc6-dev make meson ninja-build patch pkg-config tree unzip wget xz-utils"
+    local PKG_LIST="binutils bzip2 clang-format clang-tidy cmake curl file git gzip libarchive-tools libc6-dev make meson ninja-build patch pkg-config tree unrar unzip wget xz-utils"
 
     if [ "${DISTRO_CMP_VER}" -ge 2310 ]; then
         PKG_LIST+=" gcc-12 g++-12 golang-go"
@@ -423,6 +424,8 @@ function stage_07_scripts() {
 function stage_08_themes() {
     download_file "https://obsproject.com/forum/resources/yami-resized.1611/version/5246/download" "${DIR_DOWNLOAD}/Yami-Resized-1.2.zip"
     unzip -o -qq "${DIR_DOWNLOAD}/Yami-Resized-1.2.zip" -d "${DIR_INSTALL}/data/obs-studio/themes"
+    download_file "https://obsproject.com/forum/resources/simplygray-dark-theme-with-customizable-highlight-color.1598/download" "${DIR_DOWNLOAD}/simplyGray1.3.2.rar"
+    unrar e "${DIR_DOWNLOAD}/simplyGray1.3.2.rar" "${DIR_INSTALL}/data/obs-studio/themes/"
 }
 
 function stage_09_finalise() {
