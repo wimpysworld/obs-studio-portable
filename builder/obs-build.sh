@@ -508,17 +508,14 @@ function stage_09_make_scripts() {
 
     # Provide additional runtime requirements
     #shellcheck disable=SC1003
+    {
     echo -e '\tqt6-image-formats-plugins \\\n\tqt6-qpa-plugins \\\n\tqt6-wayland \\' | tee -a "${DIR_INSTALL}/obs-dependencies" "${DIR_INSTALL}/obs-container-dependencies"
-    #shellcheck disable=SC1003
     echo -e '\tgstreamer1.0-plugins-good \\\n\tgstreamer1.0-plugins-bad \\\n\tgstreamer1.0-plugins-ugly \\\n\tgstreamer1.0-x \\' | tee -a "${DIR_INSTALL}/obs-dependencies" "${DIR_INSTALL}/obs-container-dependencies"
-    #shellcheck disable=SC1003
     echo -e '\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tstterm' | tee -a "${DIR_INSTALL}/obs-dependencies"
-    #shellcheck disable=SC1003
     echo -e '\tlibgles2-mesa \\\n\tlibvlc5 \\\n\tvlc-plugin-base \\\n\tstterm \\' | tee -a "${DIR_INSTALL}/obs-container-dependencies"
-    #shellcheck disable=SC1003
     echo -e '\tmesa-vdpau-drivers \\\n\tmesa-va-drivers && \\' | tee -a "${DIR_INSTALL}/obs-container-dependencies"
-    #shellcheck disable=SC1003
     echo -e 'apt-get -y clean && rm -rd /var/lib/apt/lists/*' | tee -a "${DIR_INSTALL}/obs-container-dependencies"
+    }
 }
 
 function stage_10_make_tarball() {
