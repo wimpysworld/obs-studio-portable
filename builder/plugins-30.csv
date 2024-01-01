@@ -50,7 +50,7 @@ https://github.com/occ-ai/obs-localvocal,0.0.8,essential
 https://github.com/occ-ai/obs-urlsource,0.2.5,essential
 https://github.com/phandasm/waveform,v1.7.0,essential
 https://github.com/sorayuki/obs-multi-rtmp,0.5.0.4-flatpak,essential
-https://github.com/univrsal/tuna,v1.9.7,disabled
+https://github.com/univrsal/tuna,723bd3c7b4e257cf0997611426e555068de77ae7,auxiliary
 https://github.com/wimpysworld/obs-dvd-screensaver,0.0.2,essential
 https://github.com/wimpysworld/obs-rgb-levels,1.0.2,essential
 https://github.com/FiniteSingularity/obs-advanced-masks,v1.0.1,essential
