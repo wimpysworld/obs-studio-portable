@@ -125,10 +125,10 @@ function stage_01_get_apt() {
     fi
 
     PKG_LIST+=" qt6-base-dev qt6-base-private-dev qt6-wayland"
-    if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
-        PKG_LIST+=" libqt6svg6-dev"
-    elif [ "${DISTRO_CMP_VER}" -ge 2304 ]; then
+    if [ "${DISTRO_CMP_VER}" -ge 2304 ]; then
         PKG_LIST+=" qt6-svg-dev"
+    else
+        PKG_LIST+=" libqt6svg6-dev"
     fi
 
     # Core OBS
@@ -159,20 +159,12 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     # - https://github.com/obsproject/obs-studio/pull/8194
     PKG_LIST+=" libasio-dev libwebsocketpp-dev nlohmann-json3-dev"
 
-    # OBS Studio 30.0.0 added qrcode and oneVPL
+    # OBS Studio 30.0.0 added qrcode and Intel® oneAPI Video Processing Library (oneVPL)
     # https://github.com/obsproject/obs-studio/pull/8943
-    PKG_LIST+=" libqrcodegencpp-dev"
-    if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
-        # Intel® oneAPI Video Processing Library (oneVPL)
-        PKG_LIST+=" libvpl-dev libvpl2"
-    fi
+    PKG_LIST+=" libqrcodegencpp-dev libvpl-dev libvpl2"
 
     # Pipewire
-    if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
-        PKG_LIST+=" libpipewire-0.3-dev"
-    else
-        PKG_LIST+=" libpipewire-0.2-dev"
-    fi
+    PKG_LIST+=" libpipewire-0.3-dev"
 
     # Screne Switcher
     PKG_LIST+=" libleptonica-dev libopencv-dev libtesseract-dev libxss-dev libxtst-dev"
@@ -194,15 +186,12 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     PKG_LIST+=" libdbus-1-dev libmpdclient-dev libtag1-dev"
     # Async Audio Filter
     PKG_LIST+=" libsamplerate0-dev  libsndfile1-dev"
-
-    if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
-        # VKCapture
-        PKG_LIST+=" glslang-dev glslang-tools"
-        #AV1
-        PKG_LIST+=" libaom-dev"
-        # URL Source
-        PKG_LIST+=" libidn2-dev libpsl-dev libssl-dev"
-    fi
+    # VKCapture
+    PKG_LIST+=" glslang-dev glslang-tools"
+    #AV1
+    PKG_LIST+=" libaom-dev"
+    # URL Source
+    PKG_LIST+=" libidn2-dev libpsl-dev libssl-dev"
 
     DEBIAN_FRONTEND=noninteractive apt-get -y update
     DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
@@ -245,7 +234,7 @@ function stage_04_build_aja() {
 function stage_05_build_obs() {
     local BUILD_TO="${DIR_SYSTEM}"
     local INSTALL_TO="/usr"
-    local OPTIONS="-DENABLE_BROWSER=ON -DENABLE_RTMPS=ON -DENABLE_VST=ON"
+    local OPTIONS="-DENABLE_BROWSER=ON -DENABLE_RTMPS=ON -DENABLE_VST=ON -DENABLE_PIPEWIRE=ON"
 
     if [ "${1}" == "portable" ]; then
         BUILD_TO="${DIR_PORTABLE}"
@@ -253,12 +242,6 @@ function stage_05_build_obs() {
         OPTIONS+=" -DLINUX_PORTABLE=ON"
     else
         OPTIONS+=" -DLINUX_PORTABLE=OFF"
-    fi
-
-    if [ "${DISTRO_CMP_VER}" -ge 2204 ]; then
-        OPTIONS+=" -DENABLE_PIPEWIRE=ON"
-    else
-        OPTIONS+=" -DENABLE_PIPEWIRE=OFF"
     fi
 
     if [ "${DISTRO_CMP_VER}" -ge 2210 ]; then
@@ -338,7 +321,6 @@ function stage_06_plugins() {
         ERROR=""
         EXTRA=""
         if [ "${PLUGIN}" == "obs-teleport" ]; then
-            # Requires Go 1.17, which is not available in Ubuntu 20.04
             export CGO_CPPFLAGS="${CPPFLAGS}"
             export CGO_CFLAGS="${CFLAGS} -I/usr/include/obs"
             export CGO_CXXFLAGS="${CXXFLAGS}"
@@ -349,7 +331,7 @@ function stage_06_plugins() {
             mv "${DIR_INSTALL}/obs-plugins/64bit/${PLUGIN}.h" "${DIR_INSTALL}/include/" || true
             popd
         elif [ "${PLUGIN}" == "obs-gstreamer" ] || [ "${PLUGIN}" == "obs-vaapi" ]; then
-            if [ "${DISTRO_CMP_VER}" -le 2204 ]; then
+            if [ "${DISTRO_CMP_VER}" -eq 2204 ]; then
                 meson --buildtype=${BUILD_TYPE,,} --prefix="${DIR_INSTALL}" --libdir="${DIR_INSTALL}" "${DIR_PLUGIN}/${PLUGIN}" "${DIR_PLUGIN}/${PLUGIN}/build"
             else
                 meson setup --buildtype=${BUILD_TYPE,,} --prefix="${DIR_INSTALL}" --libdir="${DIR_INSTALL}" "${DIR_PLUGIN}/${PLUGIN}" "${DIR_PLUGIN}/${PLUGIN}/build"
