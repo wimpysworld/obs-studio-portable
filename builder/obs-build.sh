@@ -313,7 +313,7 @@ function stage_06_plugins() {
         # Ignore disabled or auxillary plugins if instructed to build only the essential plugins
         if [ "${STATUS}" == "disabled" ]; then
             continue
-        elif [ "${PLUGIN_LIST}" == "essential" ] && [ "${STATUS}" == "auxiliary" ]; then
+        elif [ "${STATUS}" == "auxiliary" ] && [ "${PLUGIN_LIST}" == "essential" ]; then
             continue
         fi
 
