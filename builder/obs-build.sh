@@ -417,6 +417,7 @@ function stage_06_plugins() {
 
 function stage_07_scripts() {
     download_file "https://github.com/cg2121/obs-advanced-timer/releases/download/6.0.0/advanced-timer.lua" "${DIR_INSTALL}/data/obs-plugins/frontend-tools/scripts/advanced-timer.lua"
+    download_file "https://github.com/BlankSourceCode/obs-zoom-to-mouse/releases/download/v1.0.1/obs-zoom-to-mouse.lua"  "${DIR_INSTALL}/data/obs-plugins/frontend-tools/scripts/obs-zoom-to-mouse.lua"
 }
 
 function stage_08_themes() {
