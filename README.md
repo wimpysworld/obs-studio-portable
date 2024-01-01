@@ -202,6 +202,7 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ub
 - [**Time Shift**](https://github.com/exeldro/obs-time-shift) plugin;  time shift a source using a filter.
 - [**Time Warp Scan**](https://github.com/exeldro/obs-time-warp-scan) plugin; a time warp scan filter.
 - [**Vintage Filter**](https://github.com/cg2121/obs-vintage-filter) plugin; a filter to make source black & white or sepia.
+- [**Zoom-to-Mouse**](https://github.com/BlankSourceCode/obs-zoom-to-mouse) script; to zoom a display-capture source to focus on the mouse.
 
 ## Encoding & Output 🎞
 
