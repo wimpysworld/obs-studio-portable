@@ -158,7 +158,7 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ub
 
 ## Audio 🔉
 
-- [Async Audio Filter](https://github.com/norihiro/obs-async-audio-filter) plugin; filter that aims to fix audio glitches caused by asynchronous audio.
+- [**Async Audio Filter**](https://github.com/norihiro/obs-async-audio-filter) plugin; filter that aims to fix audio glitches caused by asynchronous audio.
 - [**Audio Pan**](https://github.com/norihiro/obs-audio-pan-filter) plugin; controls stereo pan of audio sources.
 - [**Local Vocal**](https://github.com/obs-ai/obs-localvocal) plugin; local speech and text AI processing routines and  AI transcription.
 - [**Mute Filter**](https://github.com/norihiro/obs-mute-filter) plugin; to mute audio from a source.
