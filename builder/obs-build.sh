@@ -378,12 +378,6 @@ function stage_06_plugins() {
                 obs-urlsource)
                     ERROR+=" -Wno-error=conversion -Wno-error=float-conversion -Wno-error=shadow";;
                 tuna)
-                    # Use system libmpdclient and taglib
-                    # https://aur.archlinux.org/packages/obs-tuna
-                    download_file "https://aur.archlinux.org/cgit/aur.git/plain/FindLibMPDClient.cmake?h=obs-tuna" "${DIR_PLUGIN}/${PLUGIN}/cmake/external/FindLibMPDClient.cmake"
-                    download_file "https://aur.archlinux.org/cgit/aur.git/plain/FindTaglib.cmake?h=obs-tuna" "${DIR_PLUGIN}/${PLUGIN}/cmake/external/FindTaglib.cmake"
-                    download_file "https://aur.archlinux.org/cgit/aur.git/plain/deps_CMakeLists.txt?h=obs-tuna" "${DIR_PLUGIN}/${PLUGIN}/deps/CMakeLists.txt"
-                    sed -i '13 a find_package(LibMPDClient REQUIRED)\nfind_package(Taglib REQUIRED)' "${DIR_PLUGIN}/${PLUGIN}/CMakeLists.txt"
                     EXTRA+=" -DCREDS=MISSING -DLASTFM_CREDS=MISSING";;
             esac
             # Build process for OBS Studio 28 and newer
