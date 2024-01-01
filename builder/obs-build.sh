@@ -201,7 +201,7 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
         #AV1
         PKG_LIST+=" libaom-dev"
         # URL Source
-        PKG_LIST+=" libidn2-dev libpsl-dev libpugixml-dev libssl-dev"
+        PKG_LIST+=" libidn2-dev libpsl-dev libssl-dev"
     fi
 
     DEBIAN_FRONTEND=noninteractive apt-get -y update
@@ -364,12 +364,6 @@ function stage_06_plugins() {
         else
             if grep 'BUILD_OUT_OF_TREE' "${DIR_PLUGIN}/${PLUGIN}/CMakeLists.txt"; then
                 EXTRA+=" -DBUILD_OUT_OF_TREE=ON"
-            fi
-            if grep 'USE_SYSTEM_CURL' "${DIR_PLUGIN}/${PLUGIN}/CMakeLists.txt"; then
-                EXTRA+=" -DUSE_SYSTEM_CURL=ON"
-            fi
-            if grep 'USE_SYSTEM_PUGIXML' "${DIR_PLUGIN}/${PLUGIN}/CMakeLists.txt"; then
-                EXTRA+=" -DUSE_SYSTEM_PUGIXML=ON"
             fi
             if grep '"name": "linux-x86_64"' "${DIR_PLUGIN}/${PLUGIN}/CMakePresets.json"; then
                 EXTRA+=" --preset linux-x86_64"
