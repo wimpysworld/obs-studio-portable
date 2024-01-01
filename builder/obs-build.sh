@@ -423,6 +423,8 @@ function stage_07_scripts() {
 function stage_08_themes() {
     download_file "https://obsproject.com/forum/resources/yami-resized.1611/version/5246/download" "${DIR_DOWNLOAD}/Yami-Resized-1.2.zip"
     unzip -o -qq "${DIR_DOWNLOAD}/Yami-Resized-1.2.zip" -d "${DIR_INSTALL}/data/obs-studio/themes"
+    download_file "https://obsproject.com/forum/resources/simplygray-dark-theme-with-customizable-highlight-color.1598/download" "${DIR_DOWNLOAD}/simplyGray1.3.2.rar"
+    unrar e "${DIR_DOWNLOAD}/simplyGray1.3.2.rar" "${DIR_INSTALL}/data/obs-studio/themes/"
 }
 
 function stage_09_finalise() {
