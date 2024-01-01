@@ -42,7 +42,7 @@ https://github.com/norihiro/obs-face-tracker,0.7.1,auxiliary
 https://github.com/norihiro/obs-multisource-effect,0.2.1,auxiliary
 https://github.com/norihiro/obs-mute-filter,0.2.2,essential
 https://github.com/norihiro/obs-text-pthread,2.0.3,essential
-https://github.com/nowrep/obs-vkcapture,v1.4.3,auxiliary
+https://github.com/nowrep/obs-vkcapture,v1.4.8,auxiliary
 https://github.com/obs-ndi/obs-ndi,4.13.0,auxiliary
 https://github.com/obsproject/obs-websocket,4.9.1-compat,essential
 https://github.com/occ-ai/obs-backgroundremoval,1.1.8,auxiliary

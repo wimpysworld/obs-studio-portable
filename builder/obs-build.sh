@@ -188,7 +188,7 @@ libudev-dev libv4l-dev libva-dev libvlc-dev"
     # Async Audio Filter
     PKG_LIST+=" libsamplerate0-dev  libsndfile1-dev"
     # VKCapture
-    PKG_LIST+=" glslang-dev glslang-tools"
+    PKG_LIST+=" glslang-dev glslang-tools glslc"
     #AV1
     PKG_LIST+=" libaom-dev"
     # URL Source
