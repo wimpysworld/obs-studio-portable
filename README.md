@@ -223,6 +223,7 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ub
 
 ## Text 📝
 
+- [**Advanced Timer**](https://github.com/cg2121/obs-advanced-timer) script; a Lua script that sets a text source as a timer with advanced options.
 - [**Countdown**](https://github.com/ashmanix/obs-plugin-countdown) plugin; creates a countdown timer.
 - [**Markdown**](https://github.com/exeldro/obs-markdown) plugin; add Markdown sources
 - [**Text PThread**](https://github.com/norihiro/obs-text-pthread) plugin; Rich text source plugin with many advanced features, including multi-language support, emoji support, vertical rendering and RTL support.
