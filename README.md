@@ -34,12 +34,13 @@ Running OBS Studio in Portable Mode means all settings (Profiles and Scene Colle
 
 ## Supported Features
 
-| Ubuntu Release         | OBS Studio | SRT | RIST | Plugins | Scripts | Themes |
-| ---------------------- | ---------- | --- | ---- | ------- | ------- | ------ |
-| Ubuntu 20.04 (Focal)   | EOL        |                                         |
-| Ubuntu 22.04 (Jammy)   | 30.0.2     | ❌  | ❌   | 54      | 2       | 2      |
-| Ubuntu 23.04 (Lunar)   | 30.0.2     | ✅  | ✅   | 54      | 2       | 2      |
-| Ubuntu 23.10 (Mantic)  | 30.0.2     | ✅  | ✅   | 54      | 2       | 2      |
+| Ubuntu Release        | OBS Studio | SRT | RIST | Plugins | Scripts | Themes |
+| --------------------- | ---------- | --- | ---- | ------- | ------- | ------ |
+| Ubuntu 20.04 (Focal)  | EOL        |                                         |
+| Ubuntu 22.04 (Jammy)  | 30.0.2     | ❌  | ❌   | 54      | 2       | 2      |
+| Ubuntu 23.04 (Lunar)  | 30.0.2     | ✅  | ✅   | 54      | 2       | 2      |
+| Ubuntu 23.10 (Mantic) | 30.0.2     | ✅  | ✅   | 54      | 2       | 2      |
+| Ubuntu 24.04 (Noble)  | 30.0.2     | ✅  | ✅   | 54      | 2       | 2      |
 
 # Install
 
