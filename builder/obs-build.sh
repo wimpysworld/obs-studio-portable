@@ -415,12 +415,16 @@ function stage_06_plugins() {
     mv -v "${DIR_INSTALL}/lib/obs-plugins/obs-backgroundremoval/libonnxruntime"* "${DIR_INSTALL}/lib/" || true
 }
 
-function stage_07_themes() {
+function stage_07_scripts() {
+    return
+}
+
+function stage_08_themes() {
     download_file "https://obsproject.com/forum/resources/yami-resized.1611/version/5246/download" "${DIR_DOWNLOAD}/Yami-Resized-1.2.zip"
     unzip -o -qq "${DIR_DOWNLOAD}/Yami-Resized-1.2.zip" -d "${DIR_INSTALL}/data/obs-studio/themes"
 }
 
-function stage_08_finalise() {
+function stage_09_finalise() {
     # Remove CEF files that are lumped in with obs-plugins
     # Prevents OBS from enumating the .so files to determine if they can be loaded as a plugin
     rm -rf "${DIR_INSTALL}/obs-plugins/64bit/locales" || true
@@ -458,7 +462,7 @@ function stage_08_finalise() {
     fi
 }
 
-function stage_09_make_scripts() {
+function stage_10_make_scripts() {
     # Create scripts
     local SCRIPTS="obs-container-dependencies obs-dependencies obs-portable obs-gamecapture"
 
@@ -512,7 +516,7 @@ function stage_09_make_scripts() {
     }
 }
 
-function stage_10_make_tarball() {
+function stage_11_make_tarball() {
     local DIR_TARBALL=""
     DIR_TARBALL=$(basename "${DIR_INSTALL}")
     cd "${DIR_BASE}"
@@ -528,7 +532,8 @@ stage_04_build_aja
 stage_05_build_obs system
 stage_05_build_obs portable
 stage_06_plugins
-stage_07_themes
-stage_08_finalise
-stage_09_make_scripts
-stage_10_make_tarball
+stage_07_scripts
+stage_08_themes
+stage_09_finalise
+stage_10_make_scripts
+stage_11_make_tarball
