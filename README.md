@@ -32,15 +32,14 @@ Running OBS Studio in Portable Mode means all settings (Profiles and Scene Colle
 
 [OBS Studio Portable is also a container image](https://github.com/ublue-os/obs-studio-portable) for [Distrobox](https://distrobox.it/), so you can run OBS Studio Portable on *any Linux distro*.
 
-## Supported Software
+## Supported Features
 
-|                        | OBS Studio 30 |
-| ---------------------- | ------------- |
-| Ubuntu 20.04 (Focal)   | EOL           |
-| Ubuntu 22.04 (Jammy)   | 30.0.2        |
-| Ubuntu 23.04 (Lunar)   | 30.0.2        |
-| Ubuntu 23.10 (Mantic)  | 30.0.2        |
-| Plugins                | 54            |
+| Ubuntu Release         | OBS Studio | SRT | RIST | Plugins | Scripts | Themes |
+| ---------------------- | ---------- | --- | ---- | ------- | ------- | ------ |
+| Ubuntu 20.04 (Focal)   | EOL        |                                         |
+| Ubuntu 22.04 (Jammy)   | 30.0.2     | ❌  | ❌   | 54      | 2       | 2      |
+| Ubuntu 23.04 (Lunar)   | 30.0.2     | ✅  | ✅   | 54      | 2       | 2      |
+| Ubuntu 23.10 (Mantic)  | 30.0.2     | ✅  | ✅   | 54      | 2       | 2      |
 
 # Install
 
@@ -202,6 +201,7 @@ Here are the 3rd party plugins that come bundled with OBS Studio Portable for Ub
 - [**Time Shift**](https://github.com/exeldro/obs-time-shift) plugin;  time shift a source using a filter.
 - [**Time Warp Scan**](https://github.com/exeldro/obs-time-warp-scan) plugin; a time warp scan filter.
 - [**Vintage Filter**](https://github.com/cg2121/obs-vintage-filter) plugin; a filter to make source black & white or sepia.
+- [**Zoom-to-Mouse**](https://github.com/BlankSourceCode/obs-zoom-to-mouse) script; to zoom a display-capture source to focus on the mouse.
 
 ## Encoding & Output 🎞
 
