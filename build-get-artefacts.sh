@@ -16,9 +16,9 @@ fi
 
 DISTRO="${1}"
 case "${DISTRO}" in
-    jammy) DISTRO_VER="22.04";;
-    lunar) DISTRO_VER="23.04";;
-    mantic) DISTRO_VER="23.10";;
+#    jammy) DISTRO_VER="22.04";;
+#    lunar) DISTRO_VER="23.04";;
+#    mantic) DISTRO_VER="23.10";;
     noble) DISTRO_VER="24.04";;
     *) echo "ERROR! Unknown Ubuntu release: ${DISTRO}"
       exit 1;;

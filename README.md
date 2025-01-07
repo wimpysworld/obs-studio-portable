@@ -63,7 +63,7 @@ sha256sum -c obs-portable-30.0.2-r23365-ubuntu-$(lsb_release -rs).tar.bz2.sha256
 tar xvf obs-portable-30.0.2-r23365-ubuntu-$(lsb_release -rs).tar.bz2
 cd obs-portable-30.0.2-r23365-ubuntu-$(lsb_release -rs)
 sudo ./obs-dependencies
-./obs-portable
+./obs-portable 
 ```
 ### Upgrades
 

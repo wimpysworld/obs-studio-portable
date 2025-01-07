@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -x
 
 if [ -z "${SUDO_USER}" ]; then
     echo "ERROR! You must use sudo to run this script: sudo ./$(basename "${0}")"
